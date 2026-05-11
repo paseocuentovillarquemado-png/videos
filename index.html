@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta Bosque Encantado */
             --bosque-oscuro: #0a1a0a;
             --bosque-magico: #1a3a1a;
             --oro-teatro: #d4af37;
@@ -15,6 +14,8 @@
             --oro-oscuro: #8a6311;
             --texto-claro: #fdfaf0;
             --sombra-magica: 0 0 30px rgba(255, 229, 92, 0.3);
+            /* Variable dinámica para el color de la puerta */
+            --color-puerta: #4a1c1c; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,19 +42,17 @@
             z-index: 1;
         }
 
-        /* Partículas: Polvo de hadas */
+        /* Partículas: Polvo de hadas y Luciérnagas */
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
         .star { position: absolute; background: rgba(255, 250, 200, 0.8); border-radius: 50%; box-shadow: 0 0 5px rgba(255, 250, 200, 0.5); animation: twinkle 4s ease-in-out infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1) translateY(0); } 50% { opacity: 1; transform: scale(1.3) translateY(-5px); } }
 
-        /* Luciérnagas doradas */
         .firefly { position: fixed; width: 5px; height: 5px; background: var(--oro-brillo); border-radius: 50%; box-shadow: 0 0 12px var(--oro-brillo), 0 0 25px var(--oro-brillo); animation: floatup 12s linear infinite, blink 3s ease-in-out infinite; pointer-events: none; z-index: 3; }
         @keyframes floatup { 0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; } 10% { opacity: 1; transform: translateY(90vh) translateX(20px) scale(1); } 90% { opacity: 1; } 100% { transform: translateY(-10vh) translateX(-20px) scale(0); opacity: 0; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--oro-teatro); text-shadow: 2px 2px 6px rgba(0,0,0,0.9); }
 
-        /* Divisores */
         .magic-divider { width: 100%; height: 60px; position: relative; margin: 60px 0; display: flex; align-items: center; justify-content: center; z-index: 10; }
         .magic-divider::before { content: ''; position: absolute; width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--oro-teatro), transparent); }
         .magic-divider::after { content: '✦'; font-size: 2rem; color: var(--oro-brillo); text-shadow: 0 0 20px var(--oro-brillo); padding: 0 20px; z-index: 1; animation: rotate 4s linear infinite; }
@@ -73,9 +72,9 @@
         .btn-magic:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(255, 229, 92, 0.6); }
 
         /* ========================================= */
-        /* EL ESPEJO MÁGICO FÍSICO */
+        /* LA PUERTA MÁGICA (3D ANIMATION) */
         /* ========================================= */
-        .espejo-section {
+        .puerta-section {
             padding: 80px 20px;
             position: relative;
             z-index: 10;
@@ -84,116 +83,157 @@
             text-align: center;
         }
 
-        .espejo-intro { max-width: 700px; margin: 0 auto 40px; font-size: 1.2rem; line-height: 1.8; color: #eee; text-shadow: 0 2px 6px rgba(0,0,0,0.9); }
+        .puerta-intro { max-width: 700px; margin: 0 auto 40px; font-size: 1.2rem; line-height: 1.8; color: #eee; text-shadow: 0 2px 6px rgba(0,0,0,0.9); }
 
-        /* El Marco del Espejo */
-        .marco-espejo {
+        /* El Marco Exterior (Fijo) */
+        .marco-puerta {
             position: relative;
             width: 100%;
-            max-width: 360px; /* Ancho de espejo vertical */
+            max-width: 360px; /* Ancho formato móvil */
             margin: 0 auto 40px;
-            aspect-ratio: 9 / 16; /* Proporción móvil/vertical */
+            aspect-ratio: 9 / 16; /* Proporción vertical */
             padding: 15px; /* Grosor del marco dorado */
             
-            /* Degradado para simular metal precioso/oro labrado */
-            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro), var(--oro-oscuro), var(--oro-teatro), var(--oro-brillo));
+            /* Degradado oro para el marco */
+            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro), var(--oro-oscuro), var(--oro-teatro));
+            border-radius: 200px 200px 15px 15px; /* Forma de arco */
             
-            /* Forma de arco arriba, recto abajo */
-            border-radius: 200px 200px 15px 15px;
+            /* Perspectiva 3D para que las puertas se abran hacia adelante */
+            perspective: 1200px;
             
-            /* Sombras 3D del marco exterior */
-            box-shadow: 
-                0 40px 60px rgba(0,0,0,0.9), 
-                inset 0 0 15px rgba(255, 255, 255, 0.5), /* Brillo en el borde del marco */
-                0 0 50px rgba(212, 175, 55, 0.3); /* Resplandor mágico exterior */
+            box-shadow: 0 40px 60px rgba(0,0,0,0.9), inset 0 0 15px rgba(255,255,255,0.5), 0 0 50px rgba(212,175,55,0.3);
         }
 
-        /* El Cristal del Espejo (Contenedor del vídeo) */
-        .cristal-espejo {
+        /* Contenedor Interior (El Hueco de la Puerta) */
+        .hueco-puerta {
             position: relative;
             width: 100%;
             height: 100%;
-            background: #111; /* Fondo por si tarda en cargar */
-            border-radius: 185px 185px 8px 8px; /* Debe ser un poco menor que el marco exterior */
-            overflow: hidden;
-            /* Sombra interior para dar profundidad entre el cristal y el marco */
+            background: #000;
+            border-radius: 185px 185px 8px 8px; /* Ligeramente menor que el marco */
             box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
+            transform-style: preserve-3d; /* Clave para el 3D */
         }
 
-        /* El Vídeo */
-        .cristal-espejo video {
-            width: 100%;
+        /* Las dos hojas de la puerta (Izquierda y Derecha) */
+        .hoja-puerta {
+            position: absolute;
+            top: 0;
+            width: 50%;
             height: 100%;
-            display: block;
-            object-fit: cover; /* MAGIA: Llena todo el espacio y recorta lo que sobra */
-            transition: opacity 0.5s ease;
+            /* Color dinámico vía JS */
+            background: linear-gradient(180deg, var(--color-puerta) 0%, #111 100%);
+            border: 2px solid var(--oro-oscuro);
+            z-index: 20;
+            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            /* Textura de tablones de madera */
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.2) 15px, rgba(0,0,0,0.2) 16px);
         }
 
-        /* Reflejo del Cristal (El destello diagonal) */
-        .cristal-espejo::after {
+        .hoja-izquierda {
+            left: 0;
+            border-radius: 185px 0 0 8px;
+            transform-origin: left center;
+            border-right: 2px solid #000;
+        }
+
+        .hoja-derecha {
+            right: 0;
+            border-radius: 0 185px 8px 0;
+            transform-origin: right center;
+            border-left: 2px solid rgba(255,255,255,0.2);
+        }
+
+        /* Pomos de la puerta */
+        .hoja-puerta::after {
             content: '';
             position: absolute;
+            top: 50%;
+            width: 12px;
+            height: 25px;
+            background: var(--oro-brillo);
+            border-radius: 10px;
+            box-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+        }
+        .hoja-izquierda::after { right: 10px; }
+        .hoja-derecha::after { left: 10px; }
+
+        /* Clases de animación para abrir la puerta */
+        .puerta-abierta .hoja-izquierda { transform: rotateY(-110deg); }
+        .puerta-abierta .hoja-derecha { transform: rotateY(110deg); }
+
+        /* Capa superpuesta para hacer CLIC y abrir */
+        .click-overlay {
+            position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(
-                105deg, 
-                rgba(255,255,255,0) 30%, 
-                rgba(255,255,255,0.15) 45%, 
-                rgba(255,255,255,0.3) 50%, 
-                rgba(255,255,255,0) 55%
-            );
-            pointer-events: none; /* Crucial: permite que los clics pasen al video */
+            z-index: 30;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 185px 185px 8px 8px;
+            transition: opacity 0.3s;
+        }
+
+        .click-overlay:hover .toque-texto { transform: scale(1.1); color: var(--oro-brillo); }
+
+        .toque-texto {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 2px 10px #000;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--oro-teatro);
+            transition: all 0.3s;
+            animation: flotarBoton 2s ease-in-out infinite;
+        }
+
+        @keyframes flotarBoton { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        /* Título del Vídeo (Aparece al abrir la puerta) */
+        .titulo-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            border-radius: 185px 185px 8px 8px;
+        }
+
+        .titulo-overlay h3 {
+            font-size: 2rem;
+            color: var(--oro-brillo);
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* El Vídeo Recortado Perfectamente */
+        .hueco-puerta video {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; /* Centra y recorta los sobrantes */
+            border-radius: 185px 185px 8px 8px;
             z-index: 5;
         }
 
-        /* Título Flotante del Espejo */
-        #espejo-titulo {
-            position: absolute;
-            top: 40px; /* Un poco más abajo por el arco */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            color: #fff;
-            font-family: 'Cinzel', serif;
+        /* Indicador de número de cuento */
+        .contador-cuento {
+            margin-top: 20px;
             font-size: 1.2rem;
-            text-shadow: 0 2px 10px #000, 0 0 20px var(--oro-brillo);
-            pointer-events: none;
-            text-align: center;
-            width: 80%;
+            color: var(--oro-brillo);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
         }
 
-        /* Carrusel de Selector */
-        .cristales-container {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding: 20px 10px 40px;
-            scroll-behavior: smooth;
-            -ms-overflow-style: none;  
-            scrollbar-width: none;  
-        }
-        .cristales-container::-webkit-scrollbar { display: none; }
-
-        .cristal-item {
-            flex: 0 0 auto;
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(20,40,20,0.8), rgba(10,20,10,0.9));
-            border: 2px solid var(--oro-teatro);
-            display: flex; align-items: center; justify-content: center; flex-direction: column;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(212,175,55,0.2);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center; padding: 10px; backdrop-filter: blur(5px);
-        }
-
-        .cristal-item span { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.8rem; color: #ddd; transition: color 0.3s; }
-        .cristal-item:hover { transform: translateY(-10px) scale(1.05); border-color: var(--oro-brillo); box-shadow: 0 15px 25px rgba(0,0,0,0.8), 0 0 30px rgba(255,229,92,0.4); background: linear-gradient(135deg, rgba(30,60,30,0.9), rgba(20,40,20,0.9)); }
-        .cristal-item.active { background: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo)); border-color: #fff; transform: scale(1.1) translateY(-5px); box-shadow: 0 0 40px var(--oro-brillo), inset 0 0 20px rgba(255,255,255,0.5); }
-        .cristal-item.active span { color: #000; font-weight: 800; }
-
-        .swipe-hint { font-size: 0.9rem; color: #aaa; margin-top: -20px; font-style: italic; animation: pulseHint 2s infinite; }
-        @keyframes pulseHint { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
         /* ========================================= */
         /* RESTO DE SECCIONES */
@@ -227,10 +267,10 @@
         @media (max-width: 768px) {
             .title-pop { font-size: 3rem; }
             .info-grid { grid-template-columns: 1fr; padding: 40px 20px; }
-            .cristales-container { padding: 20px 0; }
-            /* Ajuste del marco en móvil */
-            .marco-espejo { max-width: 90%; border-width: 10px; border-radius: 150px 150px 10px 10px; }
-            .cristal-espejo { border-radius: 140px 140px 5px 5px; }
+            .marco-puerta { max-width: 90%; border-width: 10px; border-radius: 150px 150px 10px 10px; }
+            .hueco-puerta, .click-overlay, .titulo-overlay, .hueco-puerta video { border-radius: 140px 140px 5px 5px; }
+            .hoja-izquierda { border-radius: 140px 0 0 5px; }
+            .hoja-derecha { border-radius: 0 140px 5px 0; }
         }
 
     </style>
@@ -258,48 +298,36 @@
     <header>
         <h1 class="title-pop" data-text="Un paseo de Cuento">Un paseo de Cuento</h1>
         <p class="subtitle">Magia y aprendizaje en Villarquemado</p>
-        <a href="#espejo" class="btn-magic">Consultar el Espejo Mágico</a>
+        <a href="#ruta-magica" class="btn-magic">Iniciar el Paseo</a>
         <div class="scroll-indicator"></div>
     </header>
 
     <div class="magic-divider"></div>
 
-    <section class="espejo-section" id="espejo">
-        <h2>El Espejo de las Historias</h2>
-        <p class="espejo-intro">Toca uno de los cristales de memoria para revelar en el Espejo Mágico el cuento que encierra cada rincón del parque.</p>
+    <section class="puerta-section" id="ruta-magica">
+        <h2>Las Puertas del Reino</h2>
+        <p class="puerta-intro">Ábrelas una a una para descubrir todos los cuentos. Al terminar una historia, la puerta se cerrará para dar paso a la siguiente.</p>
 
-        <div class="marco-espejo">
+        <div class="marco-puerta" id="contenedor-puerta">
             
-            <h3 id="espejo-titulo">Selecciona un Cristal</h3>
-            
-            <div class="cristal-espejo">
-                <video id="espejo-video" controls preload="metadata" playsinline></video>
+            <div class="hueco-puerta">
+                <div class="click-overlay" id="click-overlay" onclick="abrirCuento()">
+                    <div class="toque-texto" id="texto-boton">Toca para<br>Abrir</div>
+                </div>
+
+                <div class="hoja-puerta hoja-izquierda"></div>
+                <div class="hoja-puerta hoja-derecha"></div>
+
+                <div class="titulo-overlay" id="titulo-overlay">
+                    <h3 id="titulo-texto">Título</h3>
+                </div>
+
+                <video id="video-cuento" playsinline></video>
             </div>
-
+            
         </div>
 
-        <p class="swipe-hint">← Desliza para ver más cristales →</p>
-
-        <div class="cristales-container" id="cristales-scroll">
-            <div class="cristal-item active" onclick="playMagic('cenicienta.mp4', 'La Cenicienta', this)"><span>La Cenicienta</span></div>
-            <div class="cristal-item" onclick="playMagic('pozo.mp4', 'El Pozo Mágico', this)"><span>El Pozo Mágico</span></div>
-            <div class="cristal-item" onclick="playMagic('cerdito.mp4', 'Los Tres Cerditos', this)"><span>Los Tres Cerditos</span></div>
-            <div class="cristal-item" onclick="playMagic('caperucit.mp4', 'Caperucita Roja', this)"><span>Caperucita Roja</span></div>
-            <div class="cristal-item" onclick="playMagic('enano.mp4', 'Los Enanitos', this)"><span>Los Enanitos</span></div>
-            <div class="cristal-item" onclick="playMagic('buho.mp4', 'El Búho Sabio', this)"><span>El Búho Sabio</span></div>
-            <div class="cristal-item" onclick="playMagic('pinocho.mp4', 'Pinocho', this)"><span>Pinocho</span></div>
-            <div class="cristal-item" onclick="playMagic('ricitos.mp4', 'Ricitos de Oro', this)"><span>Ricitos de Oro</span></div>
-            <div class="cristal-item" onclick="playMagic('conejo.mp4', 'El Conejo Blanco', this)"><span>El Conejo Blanco</span></div>
-            <div class="cristal-item" onclick="playMagic('ratita.mp4', 'La Ratita Presumida', this)"><span>La Ratita Presumida</span></div>
-            <div class="cristal-item" onclick="playMagic('peterpan.mp4', 'Peter Pan', this)"><span>Peter Pan</span></div>
-            <div class="cristal-item" onclick="playMagic('ratoncito.mp4', 'Ratoncito Pérez', this)"><span>Ratoncito Pérez</span></div>
-            <div class="cristal-item" onclick="playMagic('patitofeo.mp4', 'El Patito Feo', this)"><span>El Patito Feo</span></div>
-            <div class="cristal-item" onclick="playMagic('hanselygretel.mp4', 'Hansel y Gretel', this)"><span>Hansel y Gretel</span></div>
-            <div class="cristal-item" onclick="playMagic('oz.mp4', 'Mago de Oz', this)"><span>Mago de Oz</span></div>
-            <div class="cristal-item" onclick="playMagic('peon.mp4', 'El Peón Loco', this)"><span>El Peón Loco</span></div>
-            <div class="cristal-item" onclick="playMagic('hada.mp4', 'El Hada Madrina', this)"><span>El Hada Madrina</span></div>
-            <div class="cristal-item" onclick="playMagic('rapunzel.mp4', 'Rapunzel', this)"><span>Rapunzel</span></div>
-        </div>
+        <div class="contador-cuento" id="contador-texto">Cuento 1 de 18</div>
     </section>
 
     <div class="magic-divider"></div>
@@ -341,18 +369,12 @@
 
     <section class="making-off">
         <h2>El Hechizo de Creación</h2>
-        <p>Este parque es fruto de programas experienciales de empleo y formación. Ha sido construido con ilusión por alumnos y alumnas en formación que han dejado su huella en cada rincón mágico.</p>
+        <p>Este parque es fruto de programas experienciales de empleo y formación. Ha sido construido con ilusión por alumnos y alumnas en formación.</p>
         
         <div class="carousel">
             <div class="carousel-track" id="track">
-                <div class="carousel-slide">
-                    <img src="making1.jpg" alt="Construcción inicial">
-                    <div class="caption">Fase de cimentación y diseño de estructuras</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="making2.jpg" alt="Pintado artístico">
-                    <div class="caption">Nuestros alumnos aplicando el acabado artístico</div>
-                </div>
+                <div class="carousel-slide"><img src="making1.jpg" alt="Construcción inicial"><div class="caption">Fase de cimentación</div></div>
+                <div class="carousel-slide"><img src="making2.jpg" alt="Pintado artístico"><div class="caption">Nuestros alumnos pintando</div></div>
             </div>
         </div>
         
@@ -362,80 +384,139 @@
         </div>
     </section>
 
-    <footer>
-        <p>© 2024 Un paseo de Cuento - Villarquemado, Teruel | Donde los sueños cobran vida ✨</p>
-    </footer>
+    <footer><p>© 2024 Un paseo de Cuento - Villarquemado, Teruel | Donde los sueños cobran vida ✨</p></footer>
 
     <script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
         // =========================================
-        // LÓGICA DEL ESPEJO (CROP Y REPRODUCCIÓN)
+        // LÓGICA DE LAS PUERTAS SECUENCIALES
         // =========================================
-        const espejoVideo = document.getElementById('espejo-video');
-        const tituloEspejo = document.getElementById('espejo-titulo');
-        const cristales = document.querySelectorAll('.cristal-item');
+        const listaCuentos = [
+            { src: 'cenicienta.mp4', titulo: 'La Cenicienta', color: '#1034a6' },     /* Azul Real */
+            { src: 'pozo.mp4', titulo: 'El Pozo Mágico', color: '#135c34' },          /* Verde Esmeralda */
+            { src: 'cerdito.mp4', titulo: 'Los Tres Cerditos', color: '#a65d10' },    /* Naranja/Madera */
+            { src: 'caperucit.mp4', titulo: 'Caperucita Roja', color: '#8b0000' },    /* Rojo Carmesí */
+            { src: 'enano.mp4', titulo: 'Los Enanitos', color: '#5e2129' },           /* Marrón Oscuro */
+            { src: 'buho.mp4', titulo: 'El Búho Sabio', color: '#3a245e' },           /* Morado Místico */
+            { src: 'pinocho.mp4', titulo: 'Pinocho', color: '#8a7011' },              /* Ocre/Madera Clara */
+            { src: 'ricitos.mp4', titulo: 'Ricitos de Oro', color: '#b59218' },       /* Dorado */
+            { src: 'conejo.mp4', titulo: 'El Conejo Blanco', color: '#a62164' },      /* Magenta */
+            { src: 'ratita.mp4', titulo: 'La Ratita Presumida', color: '#b83b5e' },   /* Rosa Fuerte */
+            { src: 'peterpan.mp4', titulo: 'Peter Pan', color: '#2d6a4f' },           /* Verde Hoja */
+            { src: 'ratoncito.mp4', titulo: 'Ratoncito Pérez', color: '#114a5e' },    /* Azul Oscuro */
+            { src: 'patitofeo.mp4', titulo: 'El Patito Feo', color: '#366e75' },      /* Turquesa */
+            { src: 'hanselygretel.mp4', titulo: 'Hansel y Gretel', color: '#663b15' },/* Chocolate */
+            { src: 'oz.mp4', titulo: 'Mago de Oz', color: '#14753e' },                /* Verde Esmeralda Vivo */
+            { src: 'peon.mp4', titulo: 'El Peón Loco', color: '#6e142b' },            /* Granate */
+            { src: 'hada.mp4', titulo: 'El Hada Madrina', color: '#4a115e' },         /* Violeta */
+            { src: 'rapunzel.mp4', titulo: 'Rapunzel', color: '#75146c' }             /* Púrpura */
+        ];
 
-        // Inicializar el primer vídeo por defecto
-        window.addEventListener('DOMContentLoaded', () => {
-            if(cristales.length > 0) {
-                cristales[0].click();
-            }
-        });
+        let indiceActual = 0;
+        
+        const contPuerta = document.getElementById('contenedor-puerta');
+        const overlayBoton = document.getElementById('click-overlay');
+        const txtBoton = document.getElementById('texto-boton');
+        const overlayTitulo = document.getElementById('titulo-overlay');
+        const txtTitulo = document.getElementById('titulo-texto');
+        const txtContador = document.getElementById('contador-texto');
+        const videoCuento = document.getElementById('video-cuento');
 
-        function playMagic(src, title, element) {
-            // Actualizar diseño de botones
-            cristales.forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-
-            // Actualizar Título
-            tituloEspejo.innerText = title;
-
-            // Transición suave (fade out)
-            espejoVideo.style.opacity = 0;
-
-            setTimeout(() => {
-                // Cargar nueva fuente
-                espejoVideo.src = src;
-                espejoVideo.load();
-
-                // Centrar el cristal seleccionado en pantalla (para móviles)
-                element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-
-                // Mostrar con transición (fade in)
-                espejoVideo.style.opacity = 1;
-
-                // Intentar autoplay (Opcional, los navegadores pueden bloquearlo)
-                espejoVideo.play().catch(e => console.log("Se requiere interacción para reproducir"));
-            }, 300);
+        // Configura la puerta antes de abrirla
+        function prepararSiguienteCuento() {
+            const cuento = listaCuentos[indiceActual];
+            
+            // 1. Cambiar el color de la puerta
+            document.documentElement.style.setProperty('--color-puerta', cuento.color);
+            
+            // 2. Preparar textos
+            txtTitulo.innerText = cuento.titulo;
+            txtContador.innerText = `Cuento ${indiceActual + 1} de ${listaCuentos.length}`;
+            
+            // 3. Preparar el vídeo (sin reproducir)
+            videoCuento.src = cuento.src;
+            videoCuento.load();
         }
 
+        // Se ejecuta al hacer CLIC en la puerta cerrada
+        function abrirCuento() {
+            // Desactivar el botón para evitar doble clic
+            overlayBoton.style.pointerEvents = 'none';
+            overlayBoton.style.opacity = '0';
+            
+            // Abrir las puertas 3D
+            contPuerta.classList.add('puerta-abierta');
+            
+            // Aparece el Título en pantalla negra
+            overlayTitulo.style.opacity = '1';
+
+            // Tras 2.5 segundos (tiempo de abrir puertas + leer el título)...
+            setTimeout(() => {
+                // Desaparece el título revelando el vídeo
+                overlayTitulo.style.opacity = '0';
+                
+                // Empezar el vídeo
+                videoCuento.play().catch(e => {
+                    console.log("No se pudo iniciar automáticamente", e);
+                    // Si falla por alguna restricción, mostrar controles
+                    videoCuento.setAttribute("controls", "controls");
+                });
+                // Activamos controles para que el usuario pueda pausar/volumen
+                videoCuento.setAttribute("controls", "controls");
+
+            }, 2500);
+        }
+
+        // Se ejecuta automáticamente al TERMINAR el vídeo
+        videoCuento.onended = () => {
+            // Quitar controles para que no se vean al cerrar
+            videoCuento.removeAttribute("controls");
+            
+            // Cerrar la puerta
+            contPuerta.classList.remove('puerta-abierta');
+            
+            // Avanzar al siguiente cuento (vuelve al 0 si termina el 18)
+            indiceActual = (indiceActual + 1) % listaCuentos.length;
+            
+            // Tras 1.5s (tiempo que tarda en cerrarse la puerta físicamente)...
+            setTimeout(() => {
+                // Preparar la puerta con los datos del nuevo cuento
+                prepararSiguienteCuento();
+                
+                // Reactivar el botón de clic con texto nuevo
+                txtBoton.innerHTML = "Siguiente Cuento<br><span style='font-size:1rem'>Toca para Abrir</span>";
+                overlayBoton.style.opacity = '1';
+                overlayBoton.style.pointerEvents = 'auto';
+            }, 1500);
+        };
+
+        // Inicializar al cargar la página
+        window.addEventListener('DOMContentLoaded', prepararSiguienteCuento);
+
+
+        // =========================================
         // Lógica Carrusel (Making Off)
+        // =========================================
         const track = document.getElementById('track');
         let index = 0;
-
         function updateCarousel() {
             if (!track.querySelector('.carousel-slide')) return;
             const size = track.querySelector('.carousel-slide').clientWidth;
             track.style.transform = `translateX(${-index * size}px)`;
         }
-
         function nextSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
             if (totalSlides === 0) return;
             index = (index + 1) % totalSlides;
             updateCarousel();
         }
-
         function prevSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
             if (totalSlides === 0) return;

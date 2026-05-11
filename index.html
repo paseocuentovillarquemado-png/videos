@@ -91,9 +91,11 @@
         .espejo-marco {
             position: relative;
             width: 100%;
-            max-width: 900px;
+            /* 1. Reducimos el ancho máximo para que no parezca un rascacielos en el ordenador */
+            max-width: 450px; 
             margin: 0 auto 40px;
-            aspect-ratio: 16 / 9;
+            /* 2. Invertimos la proporción para que sea vertical (formato móvil) */
+            aspect-ratio: 9 / 16;
             /* Diseño de espejo con bordes redondeados ornamentales */
             border-radius: 40px 40px 15px 15px;
             border: 12px solid var(--oro-teatro);

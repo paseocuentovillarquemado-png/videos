@@ -1,1 +1,315 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feria del Cómic Villarquemado 197X</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f5f5dc;
+            --dark-cream: #e0d8b0;
+            --comic-red: #d22b2b;
+            --comic-blue: #2b5d8c;
+            --retro-black: #2d2d2d;
+            --wood: #5d4037;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--retro-black);
+            font-family: 'Courier Prime', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--comic-red);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 5px solid var(--retro-black);
+            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Bungee', cursive;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* --- CARRUSEL --- */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border: 4px solid var(--retro-black);
+            background: #000;
+            margin-bottom: 3rem;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active { opacity: 1; }
+
+        /* --- TELEVISIÓN RETRO --- */
+        .tv-frame {
+            background-color: var(--wood);
+            padding: 40px;
+            border-radius: 50px;
+            position: relative;
+            box-shadow: inset 0 0 20px #000, 10px 10px 0 rgba(0,0,0,0.2);
+            max-width: 700px;
+            margin: 4rem auto;
+            border: 4px solid #3e2723;
+        }
+
+        .tv-screen {
+            background: #000;
+            aspect-ratio: 4/3;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 15px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video { width: 100%; height: 100%; object-fit: cover; }
+
+        .tv-controls {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .knob {
+            width: 40px;
+            height: 40px;
+            background: #2d2d2d;
+            border-radius: 50%;
+            border: 2px solid #1a1a1a;
+        }
+
+        /* --- CARTEL RUTA 66 --- */
+        .route66-sign {
+            background: #fff;
+            border: 10px solid var(--retro-black);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 100%, 0 100%, 0% 25%);
+            margin-top: 3rem;
+            box-shadow: 5px 5px 0 var(--comic-blue);
+        }
+
+        .route66-sign h2 { color: var(--comic-red); font-size: 2.5rem; }
+
+        /* --- AUTORES Y HORARIO --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--dark-cream);
+            padding: 1.5rem;
+            border: 3px solid var(--retro-black);
+            box-shadow: 5px 5px 0 var(--retro-black);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-family: 'Special Elite', cursive;
+        }
+
+        th, td {
+            border: 2px solid var(--retro-black);
+            padding: 10px;
+            text-align: left;
+        }
+
+        th { background: var(--comic-blue); color: white; }
+
+        /* --- COMENTARIOS --- */
+        .bubble {
+            background: white;
+            border: 3px solid #000;
+            padding: 1rem;
+            border-radius: 20px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50px;
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: #000 transparent;
+        }
+
+        .mayor-section {
+            background: #ffecb3;
+            border: 4px dashed var(--comic-red);
+            padding: 2rem;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="color: white; font-size: 3rem;">Cómics de los 70</h1>
+    <p style="color: var(--dark-cream);">La era de oro del dibujo y la narrativa</p>
+</header>
+
+<div class="container">
+    <div class="carousel-container">
+        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1000x400?text=Clasicos+70s')">
+            <span>AVENTURAS GALÁCTICAS</span>
+        </div>
+        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1000x400?text=Terror+Vintage')">
+            <span>RELATOS DE MISTERIO</span>
+        </div>
+    </div>
+
+    <div class="tv-frame">
+        <div class="tv-screen">
+            <video controls>
+                <source src="buho.mp4" type="video/mp4">
+                Tu navegador no soporta vídeos.
+            </video>
+        </div>
+        <div class="tv-controls">
+            <div class="knob"></div>
+            <div class="knob"></div>
+            <div style="width:10px; height:10px; background:red; border-radius:50%; margin:auto;"></div>
+        </div>
+    </div>
+
+    <div class="route66-sign">
+        <p style="font-weight: bold;">U.S. ROUTE</p>
+        <h2>FERIA VILLARQUEMADO</h2>
+        <p>10 - 13 DE JULIO | PLAZA DEL AYUNTAMIENTO</p>
+    </div>
+
+    <h2 style="margin-top: 4rem; border-bottom: 4px solid var(--comic-red);">INVITADOS DE HONOR</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Víctor "Tinta" Velasco</h3>
+            <p>Presenta su nueva novela gráfica: <em>"Sombras sobre el Jiloca"</em>.</p>
+        </div>
+        <div class="card">
+            <h3>Elena Entintado</h3>
+            <p>La maestra del trazo fino nos trae: <em>"Las crónicas de Villarquemado Futuro"</em>.</p>
+        </div>
+        <div class="card">
+            <h3>Boris "Burbuja" Blanco</h3>
+            <p>Especialista en humor retro con: <em>"Aventuras en el Ayuntamiento"</em>.</p>
+        </div>
+    </div>
+
+    <h2 style="margin-top: 4rem;">PROGRAMA DE ACTIVIDADES</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Evento</th>
+                <th>Público</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>10:00</td>
+                <td>Apertura de puestos de intercambio</td>
+                <td>General</td>
+            </tr>
+            <tr>
+                <td>12:00</td>
+                <td>Taller: "Dibuja tu superhéroe"</td>
+                <td>Infantil (Niños)</td>
+            </tr>
+            <tr>
+                <td>17:00</td>
+                <td>Presentación oficial novedades 197X</td>
+                <td>General</td>
+            </tr>
+            <tr>
+                <td>19:00</td>
+                <td>Charla: El cómic en la transición</td>
+                <td>Adultos</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mayor-section" style="margin-top: 3rem;">
+        <h3>🤝 MERCADO DE INTERCAMBIO</h3>
+        <p>Organizado personalmente por nuestro <strong>Alcalde Federico</strong>.</p>
+        <p>Ubicación: <strong>Salón de Plenos del Ayuntamiento</strong>.</p>
+        <p><em>"Trae tus repetidos y llévate joyas. ¡Federico no acepta cromos rotos!"</em></p>
+    </div>
+
+    <h2 style="margin-top: 4rem;">LO QUE SE DIJO EL AÑO PASADO...</h2>
+    <div class="bubble">
+        "¡Increíble la colección de Federico! Conseguí el #1 de Los 4 Fantásticos por tres cómics del Capitán Trueno."
+        <br><strong>- Paco, vecino de Teruel.</strong>
+    </div>
+    <div class="bubble">
+        "Mis hijos aprendieron a dibujar un buey con capa y ahora no paran. ¡Gran feria!"
+        <br><strong>- María L., visitante.</strong>
+    </div>
+
+</div>
+
+<footer style="text-align: center; padding: 3rem; background: var(--retro-black); color: var(--cream); margin-top: 4rem;">
+    <p>&copy; 1975-2024 Villarquemado Comic-Con - Todos los derechos reservados</p>
+</footer>
+
+<script>
+    // Lógica simple para el carrusel
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    setInterval(nextSlide, 3000);
+</script>
+
+</body>
+</html>

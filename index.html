@@ -95,6 +95,28 @@
         .info-card ul { padding-left: 25px; line-height: 2; font-size: 1.05rem; }
         .special-poster { border: 3px dashed var(--oro-brillo); padding: 20px; margin-top: 20px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; }
 
+        /* Botón de Noticias del Ayuntamiento */
+        .btn-noticias {
+            display: inline-block;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--oro-teatro);
+            color: var(--oro-brillo);
+            padding: 10px 20px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        .btn-noticias:hover {
+            background: var(--oro-teatro);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            font-weight: 600;
+        }
+
         /* MAPA (GOOGLE MAPS) */
         .map-section { padding: 80px 20px; text-align: center; position: relative; z-index: 10; }
         .map-section h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 50px; }
@@ -192,7 +214,8 @@
             <p><strong>Horario Habitual:</strong><br>Fines de semana y festivos de 11:00 a 13:00.</p>
             <div class="special-poster">
                 <p style="margin:0; color: var(--oro-brillo); font-weight: 600;">✨ Aviso Mágico</p>
-                <p style="margin:10px 0 0; font-size: 0.95rem;">Próxima apertura especial: consultar web del ayuntamiento.</p>
+                <p style="margin:10px 0 0; font-size: 0.95rem;">Consulta las próximas aperturas especiales, festivos y novedades en el tablón oficial de la villa.</p>
+                <a href="https://www.villarquemado.es/category/noticias/" target="_blank" class="btn-noticias">Ver Noticias del Ayuntamiento 📜</a>
             </div>
         </div>
         <div class="info-card">
@@ -217,9 +240,6 @@
         <div class="map-container">
             <iframe 
                 src="https://maps.google.com/maps?q=Parque%20Un%20paseo%20de%20Cuento%20Villarquemado&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-                width="100%" 
-                height="450" 
-                style="border:0;" 
                 allowfullscreen="" 
                 loading="lazy" 
                 referrerpolicy="no-referrer-when-downgrade">

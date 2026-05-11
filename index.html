@@ -110,4 +110,212 @@
         .iframe-container {
             max-width: 1000px;
             margin: 40px auto 0;
-            border: 6px solid var(--oro-teatro
+            border: 6px solid var(--oro-teatro);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(212, 175, 55, 0.3);
+            background: #fff; /* Fondo blanco por si la web tarda en cargar */
+        }
+        
+        .iframe-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+        }
+
+        footer { text-align: center; padding: 40px 20px; background: rgba(5, 10, 5, 1); border-top: 2px solid var(--oro-teatro); position: relative; z-index: 10; }
+        footer p { color: #999; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .title-pop { font-size: 3rem; }
+            .marco-puerta { max-width: 90%; }
+            .map-container iframe { height: 300px; }
+            .iframe-container iframe { height: 450px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-illustration"></div>
+    <div class="stars" id="stars"></div>
+
+    <script>
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 80; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 4 + 2) + 'px'; 
+            star.style.animationDelay = Math.random() * 4 + 's';
+            starsContainer.appendChild(star);
+        }
+    </script>
+
+    <header>
+        <h1 class="title-pop" data-text="Un paseo de Cuento">Un paseo de Cuento</h1>
+        <p class="subtitle">Magia y aprendizaje en Villarquemado</p>
+        <a href="#ruta-magica" class="btn-magic">Iniciar el Paseo</a>
+        <div class="scroll-indicator"></div>
+    </header>
+
+    <div class="magic-divider"></div>
+
+    <section class="puerta-section" id="ruta-magica">
+        <h2>Las Puertas del Reino</h2>
+        <p class="puerta-intro">Ábrelas una a una para descubrir todos los cuentos. Al terminar una historia, la puerta se cerrará para dar paso a la siguiente.</p>
+
+        <div class="marco-puerta" id="contenedor-puerta">
+            <div class="hueco-puerta">
+                <div class="click-overlay" id="click-overlay" onclick="abrirCuento()">
+                    <div class="toque-texto" id="texto-boton">Toca para<br>Abrir</div>
+                </div>
+                <div class="hoja-puerta hoja-izquierda"></div>
+                <div class="hoja-puerta hoja-derecha"></div>
+                <div class="titulo-overlay" id="titulo-overlay"><h3 id="titulo-texto">Título</h3></div>
+                <video id="video-cuento" playsinline></video>
+            </div>
+        </div>
+        
+        <div class="contador-cuento" id="contador-texto">Cuento 1 de 18</div>
+        <div class="contenedor-saltar" id="contenedor-saltar">
+            <button class="btn-saltar" onclick="avanzarCuento()">Siguiente Cuento ⏭</button>
+        </div>
+    </section>
+
+    <div class="magic-divider"></div>
+
+    <section class="info-grid">
+        <div class="info-card">
+            <h3>⏳ Horarios y Apertura</h3>
+            <p><strong>Horario Habitual:</strong><br>Fines de semana y festivos de 11:00 a 13:00.</p>
+            <div class="special-poster">
+                <p style="margin:0; color: var(--oro-brillo); font-weight: 600;">✨ Aviso Mágico</p>
+                <p style="margin:10px 0 0; font-size: 0.95rem;">Próxima apertura especial: sin información por el momento.</p>
+            </div>
+        </div>
+        <div class="info-card">
+            <h3>🎟️ Tarifas Reales</h3>
+            <ul style="list-style-type: '👑 ';">
+                <li>Entrada General Adultos: <strong>5€</strong></li>
+                <li>Entrada Niños (3 a 14 años): <strong>2€</strong></li>
+                <li>Menores de 3 años: <strong>Gratis</strong></li>
+                <li>Grupos escolares: Consultar</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>📜 Leyes del Reino</h3>
+            <p>Respetar las construcciones temáticas, no subir a elementos no permitidos y mantener el entorno limpio para que la magia no desaparezca.</p>
+        </div>
+    </section>
+
+    <div class="magic-divider"></div>
+
+    <section class="map-section">
+        <h2>¿Cómo llegar a nuestro Reino?</h2>
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2975.059298485223!2d-1.3059439240899015!3d40.4851221714313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5b01859ebcc593%3A0x7d672dfb1338d155!2sVillarquemado%2C%20Teruel!5e0!3m2!1ses!2ses!4v1714480838192!5m2!1ses!2ses" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <div class="magic-divider"></div>
+
+    <section class="making-off">
+        <h2>El Hechizo de Creación</h2>
+        <p>Este parque ha sido construido con ilusión por alumnos y alumnas en programas formativos. Puedes consultar todo el proceso y los trabajos técnicos en nuestra crónica oficial a continuación.</p>
+        
+        <div class="iframe-container">
+            <iframe src="https://unpaseodecuentovillarquemado.wordpress.com/" title="Crónicas de Construcción del Parque"></iframe>
+        </div>
+        
+    </section>
+
+    <footer><p>© 2024 Un paseo de Cuento - Villarquemado, Teruel ✨</p></footer>
+
+    <script>
+        // Lógica de Puertas Secuenciales y Vídeo
+        const listaCuentos = [
+            { src: 'cenicienta.mp4', titulo: 'La Cenicienta', color: '#1034a6' },
+            { src: 'pozo.mp4', titulo: 'El Pozo Mágico', color: '#135c34' },
+            { src: 'cerdito.mp4', titulo: 'Los Tres Cerditos', color: '#a65d10' },
+            { src: 'caperucit.mp4', titulo: 'Caperucita Roja', color: '#8b0000' },
+            { src: 'enano.mp4', titulo: 'Los Enanitos', color: '#5e2129' },
+            { src: 'buho.mp4', titulo: 'El Búho Sabio', color: '#3a245e' },
+            { src: 'pinocho.mp4', titulo: 'Pinocho', color: '#8a7011' },
+            { src: 'ricitos.mp4', titulo: 'Ricitos de Oro', color: '#b59218' },
+            { src: 'conejo.mp4', titulo: 'El Conejo Blanco', color: '#a62164' },
+            { src: 'ratita.mp4', titulo: 'La Ratita Presumida', color: '#b83b5e' },
+            { src: 'peterpan.mp4', titulo: 'Peter Pan', color: '#2d6a4f' },
+            { src: 'ratoncito.mp4', titulo: 'Ratoncito Pérez', color: '#114a5e' },
+            { src: 'patitofeo.mp4', titulo: 'El Patito Feo', color: '#366e75' },
+            { src: 'hanselygretel.mp4', titulo: 'Hansel y Gretel', color: '#663b15' },
+            { src: 'oz.mp4', titulo: 'Mago de Oz', color: '#14753e' },
+            { src: 'peon.mp4', titulo: 'El Peón Loco', color: '#6e142b' },
+            { src: 'hada.mp4', titulo: 'El Hada Madrina', color: '#4a115e' },
+            { src: 'rapunzel.mp4', titulo: 'Rapunzel', color: '#75146c' }
+        ];
+
+        let indiceActual = 0;
+        const contPuerta = document.getElementById('contenedor-puerta');
+        const overlayBoton = document.getElementById('click-overlay');
+        const txtBoton = document.getElementById('texto-boton');
+        const overlayTitulo = document.getElementById('titulo-overlay');
+        const txtTitulo = document.getElementById('titulo-texto');
+        const txtContador = document.getElementById('contador-texto');
+        const videoCuento = document.getElementById('video-cuento');
+        const btnSaltarContenedor = document.getElementById('contenedor-saltar');
+
+        function prepararSiguienteCuento() {
+            const cuento = listaCuentos[indiceActual];
+            document.documentElement.style.setProperty('--color-puerta', cuento.color);
+            txtTitulo.innerText = cuento.titulo;
+            txtContador.innerText = `Cuento ${indiceActual + 1} de ${listaCuentos.length}`;
+            videoCuento.src = cuento.src;
+            videoCuento.load();
+        }
+
+        function abrirCuento() {
+            overlayBoton.style.pointerEvents = 'none';
+            overlayBoton.style.opacity = '0';
+            contPuerta.classList.add('puerta-abierta');
+            overlayTitulo.style.opacity = '1';
+            
+            setTimeout(() => {
+                overlayTitulo.style.opacity = '0';
+                videoCuento.play().catch(e => {
+                    console.log("Auto-play requirió interacción", e);
+                    videoCuento.setAttribute("controls", "controls");
+                });
+                videoCuento.setAttribute("controls", "controls");
+                btnSaltarContenedor.style.opacity = '1';
+                btnSaltarContenedor.style.pointerEvents = 'auto';
+            }, 2500);
+        }
+
+        function avanzarCuento() {
+            btnSaltarContenedor.style.opacity = '0';
+            btnSaltarContenedor.style.pointerEvents = 'none';
+            videoCuento.pause();
+            videoCuento.removeAttribute("controls");
+            contPuerta.classList.remove('puerta-abierta');
+            indiceActual = (indiceActual + 1) % listaCuentos.length;
+            
+            setTimeout(() => {
+                prepararSiguienteCuento();
+                txtBoton.innerHTML = "Siguiente Cuento<br><span style='font-size:1rem'>Toca para Abrir</span>";
+                overlayBoton.style.opacity = '1';
+                overlayBoton.style.pointerEvents = 'auto';
+            }, 1500);
+        }
+
+        videoCuento.onended = avanzarCuento;
+        window.addEventListener('DOMContentLoaded', prepararSiguienteCuento);
+    </script>
+</body>
+</html>

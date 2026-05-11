@@ -16,8 +16,8 @@
             --parchment:  #f5ead6;
             --forest:     #2d5a27;
             --ink:        #3a2618;
-            --page-w: 340px;
-            --page-h: 480px;
+            --page-w: 420px;
+            --page-h: 580px;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,6 +27,42 @@
             color: var(--ink);
             background: #1a1a2e;
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ── CURSOR MÁGICO ── */
+        #magic-cursor {
+            position: fixed;
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(240,208,128,0.9), rgba(212,168,67,0.3));
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+            box-shadow: 0 0 12px rgba(212,168,67,0.6), 0 0 24px rgba(212,168,67,0.3);
+        }
+        #magic-cursor.hovering {
+            width: 36px; height: 36px;
+            background: radial-gradient(circle, rgba(232,84,122,0.8), rgba(179,48,89,0.2));
+            box-shadow: 0 0 16px rgba(232,84,122,0.7), 0 0 32px rgba(232,84,122,0.3);
+        }
+        #cursor-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+        }
+        .trail-dot {
+            position: fixed;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: rgba(240,208,128,0.5);
+            pointer-events: none;
+            transform: translate(-50%,-50%);
+            animation: trailFade 0.5s forwards;
+        }
+        @keyframes trailFade {
+            to { opacity: 0; transform: translate(-50%,-50%) scale(0); }
         }
 
         /* ── FONDO ── */
@@ -34,31 +70,22 @@
             position: fixed; inset: 0; z-index: -2;
             background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 40%, #2d1f3d 100%);
         }
-
         .bg-forest {
             position: fixed; inset: 0; z-index: -1;
             background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=60&w=1200') center/cover;
             opacity: 0.18;
             filter: saturate(0.4) brightness(0.7);
         }
-
         .stars {
             position: fixed; inset: 0; z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
+            pointer-events: none; overflow: hidden;
         }
         .star {
-            position: absolute;
-            border-radius: 50%;
-            background: white;
+            position: absolute; border-radius: 50%; background: white;
             animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
         }
         @keyframes twinkle { from { opacity: 0.2; transform: scale(1); } to { opacity: 1; transform: scale(1.4); } }
-
-        #particles {
-            position: fixed; inset: 0; z-index: 1;
-            pointer-events: none;
-        }
+        #particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
         .particle {
             position: absolute;
             animation: drift linear infinite;
@@ -71,14 +98,10 @@
 
         /* ── ANIMACIONES DE ENTRADA ── */
         .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
+            opacity: 0; transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
         .fade-in-up.delay-1 { transition-delay: 0.15s; }
         .fade-in-up.delay-2 { transition-delay: 0.3s; }
         .fade-in-up.delay-3 { transition-delay: 0.45s; }
@@ -89,768 +112,58 @@
             text-align: center;
             padding: 60px 20px 30px;
         }
-
         .header-badge {
             display: inline-block;
             background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
             color: #5a3a00;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            padding: 6px 20px;
-            border-radius: 50px;
-            margin-bottom: 18px;
-            /* Animación brillo recorriendo el badge */
-            position: relative;
-            overflow: hidden;
+            font-family: 'Nunito', sans-serif; font-weight: 700;
+            font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+            padding: 6px 20px; border-radius: 50px; margin-bottom: 18px;
+            position: relative; overflow: hidden;
         }
         .header-badge::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 60%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 60%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
             animation: shimmer 3s ease-in-out infinite;
         }
-        @keyframes shimmer {
-            0%   { left: -100%; }
-            50%  { left: 150%; }
-            100% { left: 150%; }
-        }
-
+        @keyframes shimmer { 0%{left:-100%} 50%{left:150%} 100%{left:150%} }
         h1 {
             font-family: 'Great Vibes', cursive;
             font-size: clamp(3.5rem, 10vw, 6.5rem);
-            color: var(--gold-light);
-            line-height: 1.1;
+            color: var(--gold-light); line-height: 1.1;
             text-shadow: 0 0 40px rgba(212,168,67,0.5), 0 2px 0 rgba(0,0,0,0.4);
-            /* Animación de aparición del título */
             animation: titleGlow 4s ease-in-out infinite alternate;
         }
         @keyframes titleGlow {
             from { text-shadow: 0 0 30px rgba(212,168,67,0.4), 0 2px 0 rgba(0,0,0,0.4); }
             to   { text-shadow: 0 0 60px rgba(212,168,67,0.8), 0 0 80px rgba(212,168,67,0.3), 0 2px 0 rgba(0,0,0,0.4); }
         }
-
         .subtitle {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            color: rgba(255,255,255,0.65);
-            margin-top: 12px;
-            letter-spacing: 0.05em;
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.1rem; color: rgba(255,255,255,0.65);
+            margin-top: 12px; letter-spacing: 0.05em;
         }
-
         .ornament {
             display: flex; align-items: center; justify-content: center;
-            gap: 12px;
-            margin: 30px auto;
-            color: var(--gold);
-            font-size: 1.2rem;
+            gap: 12px; margin: 30px auto;
+            color: var(--gold); font-size: 1.2rem;
             position: relative; z-index: 5;
         }
         .ornament::before, .ornament::after {
-            content: '';
-            flex: 1; max-width: 120px;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--gold));
+            content: ''; flex: 1; max-width: 120px; height: 1px;
         }
-        .ornament::after { background: linear-gradient(to left, transparent, var(--gold)); }
+        .ornament::before { background: linear-gradient(to right, transparent, var(--gold)); }
+        .ornament::after  { background: linear-gradient(to left, transparent, var(--gold)); }
 
-        .map-section {
-            position: relative; z-index: 5;
-            display: flex; justify-content: center;
-            padding: 0 20px 40px;
-        }
-        .map-frame {
-            position: relative;
-            max-width: 680px; width: 100%;
-            transition: transform 0.4s ease;
-        }
-        .map-frame:hover {
-            transform: scale(1.01);
-        }
-        .map-frame::before {
-            content: '';
-            position: absolute; inset: -6px;
-            border-radius: 24px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
-            z-index: -1;
-            /* Animación pulso dorado */
-            animation: framePulse 3s ease-in-out infinite;
-        }
-        @keyframes framePulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(212,168,67,0.4); }
-            50%       { opacity: 0.85; box-shadow: 0 0 20px 6px rgba(212,168,67,0.2); }
-        }
-        .map-frame img {
-            width: 100%;
-            border-radius: 18px;
-            display: block;
-            filter: sepia(0.15) contrast(1.05);
-        }
-
+        /* ── LIBRO ── */
         .book-title {
-            text-align: center;
-            position: relative; z-index: 5;
-            margin-bottom: 20px;
+            text-align: center; position: relative; z-index: 5; margin-bottom: 20px;
         }
         .book-title h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            color: var(--gold-light);
-            font-weight: 400;
+            font-size: 1.6rem; color: var(--gold-light); font-weight: 400;
         }
 
         .scene {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative; z-index: 5;
-            padding: 40px 20px 10px;
-            perspective: 2800px;
-        }
-
-        .book-3d {
-            position: relative;
-            width: calc(var(--page-w) * 2 + 12px);
-            height: var(--page-h);
-            transform-style: preserve-3d;
-        }
-
-        .spine {
-            position: absolute;
-            left: calc(var(--page-w) + 2px);
-            top: 0;
-            width: 8px;
-            height: 100%;
-            background: linear-gradient(to right, #8b5e3c, #c8924e, #8b5e3c);
-            border-radius: 2px;
-            z-index: 100;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .left-page, .right-page {
-            position: absolute;
-            top: 0;
-            width: var(--page-w);
-            height: var(--page-h);
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .left-page {
-            left: 0;
-            border-radius: 15px 0 0 15px;
-            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12), -4px 0 12px rgba(0,0,0,0.2);
-        }
-
-        .right-page {
-            right: 0;
-            border-radius: 0 15px 15px 0;
-            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 12px rgba(0,0,0,0.2);
-        }
-
-        .flip-page {
-            position: absolute;
-            right: 0; top: 0;
-            width: var(--page-w);
-            height: var(--page-h);
-            transform-origin: left center;
-            transform-style: preserve-3d;
-            z-index: 50;
-            display: none;
-        }
-
-        .flip-page.flipping { transform: rotateY(-180deg); }
-
-        .flip-front, .flip-back {
-            position: absolute; inset: 0;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-        }
-
-        .flip-front {
-            border-radius: 0 15px 15px 0;
-            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 15px rgba(0,0,0,0.25);
-        }
-
-        .flip-back {
-            transform: rotateY(180deg);
-            border-radius: 15px 0 0 15px;
-            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12);
-        }
-
-        .page-video {
-            width: 100%;
-            border-radius: 10px;
-            border: 3px solid rgba(212,168,67,0.4);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-            background: #000;
-        }
-
-        .page-label {
-            margin-top: 12px;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 1rem;
-            color: var(--pink-dark);
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .page-number {
-            position: absolute;
-            bottom: 10px;
-            font-size: 0.7rem;
-            color: rgba(100,60,30,0.4);
-            font-family: 'Playfair Display', serif;
-        }
-
-        .page-counter {
-            text-align: center;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.85rem;
-            margin-top: 8px;
-            position: relative; z-index: 5;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .controls {
-            display: flex; justify-content: center; gap: 20px;
-            padding: 30px 20px 50px;
-            position: relative; z-index: 5;
-        }
-
-        .btn {
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            padding: 13px 32px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .btn-prev {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .btn-prev:not(:disabled):hover {
-            background: rgba(255,255,255,0.18);
-            transform: translateX(-3px);
-        }
-        .btn-next {
-            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
-            color: white;
-            box-shadow: 0 4px 15px rgba(179,48,89,0.4);
-        }
-        .btn-next:not(:disabled):hover {
-            transform: translateX(3px);
-            box-shadow: 0 6px 22px rgba(179,48,89,0.6);
-        }
-        .btn:disabled { opacity: 0.35; cursor: default; }
-
-        /* ── INVITACIÓN ── */
-        .invitation-wrap {
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px 80px;
-            position: relative;
-            z-index: 5;
-        }
-
-        .invitation {
-            max-width: 900px;
-            width: 100%;
-            position: relative;
-            padding: 60px 50px;
-            text-align: center;
-            background: #fdfaf0;
-            background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
-            border: 12px solid #fff;
-            box-shadow:
-                0 0 0 2px var(--gold),
-                0 15px 50px rgba(0,0,0,0.5),
-                inset 0 0 100px rgba(212,168,67,0.1);
-            border-radius: 2px;
-            /* Animación entrada */
-            opacity: 0;
-            transform: translateY(40px) scale(0.98);
-            transition: opacity 0.9s ease, transform 0.9s ease;
-        }
-        .invitation.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .invitation h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 4rem;
-            color: var(--pink-dark);
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
-        }
-
-        .invitation h3 {
-            font-family: 'Playfair Display', serif;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 0.85rem;
-            color: var(--gold);
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        /* Columnas */
-        .inv-columns {
-            display: flex;
-            justify-content: space-around;
-            align-items: stretch;
-            gap: 40px;
-            margin-top: 30px;
-        }
-
-        .inv-col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 0;
-        }
-
-        /* Divisor animado */
-        .inv-divider-vertical {
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-            margin: 0 10px;
-            position: relative;
-            overflow: hidden;
-        }
-        .inv-divider-vertical::after {
-            content: '';
-            position: absolute;
-            top: -30%;
-            left: 0;
-            width: 100%;
-            height: 30%;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8), transparent);
-            animation: dividerShine 2.5s ease-in-out infinite;
-        }
-        @keyframes dividerShine {
-            0%   { top: -30%; }
-            100% { top: 130%; }
-        }
-
-        .invitation p {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.15rem;
-            margin: 10px 0;
-            color: #3a2618;
-            line-height: 1.5;
-        }
-
-        .invitation strong {
-            color: var(--pink-dark);
-            font-weight: 700;
-        }
-
-        /* ── BOTÓN COMPARTIDO (maps + instagram) ── */
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
-            color: white !important;
-            padding: 13px 26px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 15px rgba(179, 48, 89, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-action::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.4s ease;
-        }
-        .btn-action:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 22px rgba(179, 48, 89, 0.6);
-            color: white !important;
-        }
-        .btn-action:hover::after {
-            left: 150%;
-        }
-
-        /* Animación pulso para "Localizar el Parque" */
-        .btn-action.pulse {
-            animation: btnPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes btnPulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(179,48,89,0.4); }
-            50%       { box-shadow: 0 4px 28px rgba(179,48,89,0.7), 0 0 0 6px rgba(179,48,89,0.12); }
-        }
-        .btn-action.pulse:hover {
-            animation: none;
-        }
-
-        .inv-footer {
-            margin-top: 40px;
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
-            color: var(--gold);
-            /* Animación brillo */
-            animation: footerGlow 3s ease-in-out infinite alternate;
-        }
-        @keyframes footerGlow {
-            from { text-shadow: none; }
-            to   { text-shadow: 0 0 20px rgba(212,168,67,0.6); }
-        }
-
-        /* Decoración esquinas */
-        .invitation::before { content: '❧'; position: absolute; top: 15px; left: 15px; color: var(--gold); font-size: 1.8rem; }
-        .invitation::after  { content: '☙'; position: absolute; bottom: 15px; right: 15px; color: var(--gold); font-size: 1.8rem; }
-
-        /* Separador de precios */
-        .price-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin: 8px 0;
-        }
-        .price-line {
-            flex: 1;
-            height: 1px;
-            background: rgba(212,168,67,0.25);
-        }
-
-        @media (max-width: 850px) {
-            .inv-columns { flex-direction: column; gap: 20px; }
-            .inv-divider-vertical {
-                height: 1px; width: 60%; margin: 10px auto;
-                background: linear-gradient(to right, transparent, var(--gold), transparent);
-            }
-            .inv-divider-vertical::after { display: none; }
-            :root { --page-w: 155px; --page-h: 260px; }
-            h1 { font-size: 3rem; }
-            .book-3d { width: calc(var(--page-w) * 2 + 6px); }
-            .invitation { padding: 40px 20px; }
-            .invitation h2 { font-size: 2.8rem; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="bg-layer"></div>
-<div class="bg-forest"></div>
-<div class="stars" id="stars"></div>
-<div id="particles"></div>
-
-<header>
-    <div class="header-badge fade-in-up">✦ Villarquemado ✦</div>
-    <h1 class="fade-in-up delay-1">Un Paseo de Cuento</h1>
-    <p class="subtitle fade-in-up delay-2">Donde los cuentos clásicos cobran vida entre los árboles</p>
-</header>
-
-<div class="ornament fade-in-up">✦ ✦ ✦</div>
-
-<section class="map-section fade-in-up">
-    <div class="map-frame">
-        <img src="mapa.png" alt="Mapa del Parque de Cuentos de Villarquemado">
-    </div>
-</section>
-
-<div class="ornament">🌿 📖 🌿</div>
-
-<div class="book-title fade-in-up">
-    <h2>Nuestros Personajes</h2>
-</div>
-
-<div class="scene">
-    <div class="book-3d" id="book3d">
-        <div class="cover-left"></div>
-        <div class="cover-right"></div>
-        <div class="left-page" id="leftPage">
-            <video class="page-video" id="leftVideo" controls playsinline></video>
-            <p class="page-label" id="leftLabel"></p>
-            <span class="page-number" id="leftNum"></span>
-        </div>
-        <div class="right-page" id="rightPage">
-            <video class="page-video" id="rightVideo" controls playsinline></video>
-            <p class="page-label" id="rightLabel"></p>
-            <span class="page-number" id="rightNum"></span>
-        </div>
-        <div class="spine"></div>
-        <div class="flip-page" id="flipPage">
-            <div class="flip-front" id="flipFront">
-                <video class="page-video" id="flipFrontVideo" controls playsinline></video>
-                <p class="page-label" id="flipFrontLabel"></p>
-            </div>
-            <div class="flip-back" id="flipBack">
-                <video class="page-video" id="flipBackVideo" controls playsinline></video>
-                <p class="page-label" id="flipBackLabel"></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<p class="page-counter" id="counter"></p>
-
-<div class="controls">
-    <button class="btn btn-prev" id="btnPrev" onclick="prevPage()">← Anterior</button>
-    <button class="btn btn-next" id="btnNext" onclick="nextPage()">Siguiente →</button>
-</div>
-
-<div class="invitation-wrap">
-    <div class="invitation" id="invitation">
-        <h3>Edictos del Reino</h3>
-        <h2>Vuestra Invitación</h2>
-
-        <div class="inv-columns">
-            <!-- Columna izquierda: horario y localización -->
-            <div class="inv-col">
-                <p>Quedan convocados todos los soñadores para descubrir la magia los fines de semana y festivos señalados.</p>
-                <p>🕙 <strong>Sábados, Domingos y Festivos</strong><br>de 11:00 a 13:00 horas</p>
-                <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd5dd7b08acc1577:0xea3fc11d119e400?sa=X&ved=1t:8290&ictx=111"
-                   target="_blank"
-                   class="btn-action pulse">
-                    📍 Localizar el Parque
-                </a>
-            </div>
-
-            <div class="inv-divider-vertical"></div>
-
-            <!-- Columna derecha: precios e Instagram -->
-            <div class="inv-col">
-                <p>Caballeros y Damas: <strong>5 €</strong></p>
-                <p>Pequeños Escuderos (3-14 años): <strong>2 €</strong></p>
-                <p>Infantes Menores de 3: <strong>Entrada Libre</strong></p>
-                <p>🏠 <strong>Hijos de la Villa</strong><br>Acceso Gratuito</p>
-                <a href="https://www.instagram.com/ayuntamientodevillarquemado/"
-                   target="_blank"
-                   class="btn-action">
-                    📸 Visita nuestro Instagram
-                </a>
-            </div>
-        </div>
-
-        <div class="inv-footer">La magia os espera...</div>
-    </div>
-</div>
-
-<script>
-const videos = [
-    { file: "cerdito.mp4",      name: "Los Tres Cerditos" },
-    { file: "ratoncito.mp4",    name: "Ratoncito Pérez" },
-    { file: "conejo.mp4",       name: "El Conejo" },
-    { file: "hada.mp4",         name: "El Hada" },
-    { file: "patitofeo.mp4",    name: "El Patito Feo" },
-    { file: "pozo.mp4",         name: "El Pozo" },
-    { file: "hanselgretel.mp4", name: "Hansel y Gretel" },
-    { file: "buho.mp4",         name: "El Búho" },
-    { file: "peon.mp4",         name: "El Peón" },
-    { file: "caperucita.mp4",   name: "Caperucita" },
-    { file: "enano.mp4",        name: "Blancanieves" },
-    { file: "ratita.mp4",       name: "La Ratita" },
-    { file: "peterpan.mp4",     name: "Peter Pan" },
-    { file: "cenicienta.mp4",   name: "Cenicienta" },
-    { file: "oz.mp4",           name: "El Mago de Oz" },
-    { file: "pinocho.mp4",      name: "Pinocho" },
-    { file: "rapunzel.mp4",     name: "Rapunzel" },
-    { file: "ricitos.mp4",      name: "Ricitos de Oro" }
-];
-
-let pagesTurned = 0;
-let isAnimating  = false;
-
-const flipPage   = document.getElementById('flipPage');
-const leftVid    = document.getElementById('leftVideo');
-const leftLbl    = document.getElementById('leftLabel');
-const leftNum    = document.getElementById('leftNum');
-const rightVid   = document.getElementById('rightVideo');
-const rightLbl   = document.getElementById('rightLabel');
-const rightNum   = document.getElementById('rightNum');
-const ffVideo    = document.getElementById('flipFrontVideo');
-const ffLabel    = document.getElementById('flipFrontLabel');
-const fbVideo    = document.getElementById('flipBackVideo');
-const fbLabel    = document.getElementById('flipBackLabel');
-const btnPrev    = document.getElementById('btnPrev');
-const btnNext    = document.getElementById('btnNext');
-const counter    = document.getElementById('counter');
-
-function applyToEl(videoEl, labelEl, numEl, idx) {
-    if (idx === null || idx === undefined || idx < 0 || idx >= videos.length) {
-        videoEl.style.display = "none";
-        videoEl.src = '';
-        labelEl.textContent = '';
-        if (numEl) numEl.textContent = '';
-    } else {
-        videoEl.style.display = "block";
-        if (!videoEl.src.includes(videos[idx].file)) {
-            videoEl.src = videos[idx].file;
-            videoEl.load();
-        }
-        labelEl.textContent = videos[idx].name;
-        if (numEl) numEl.textContent = `${idx + 1} / ${videos.length}`;
-    }
-}
-
-function renderSpread() {
-    const leftIdx  = pagesTurned === 0 ? null : (pagesTurned * 2) - 1;
-    const rightIdx = (pagesTurned * 2) < videos.length ? (pagesTurned * 2) : null;
-
-    applyToEl(leftVid,  leftLbl,  leftNum,  leftIdx);
-    applyToEl(rightVid, rightLbl, rightNum, rightIdx);
-
-    btnPrev.disabled = pagesTurned === 0;
-    btnNext.disabled = (pagesTurned * 2) >= videos.length - 1;
-
-    if (rightIdx !== null && leftIdx !== null) {
-        counter.textContent = `Vídeos ${leftIdx + 1} y ${rightIdx + 1} de ${videos.length}`;
-    } else if (rightIdx !== null) {
-        counter.textContent = `Vídeo ${rightIdx + 1} de ${videos.length}`;
-    } else {
-        counter.textContent = `Fin del libro`;
-    }
-}
-
-function nextPage() {
-    if (isAnimating || (pagesTurned * 2) >= videos.length - 1) return;
-    isAnimating = true;
-
-    const currentRightIdx = pagesTurned * 2;
-    const nextLeftIdx = currentRightIdx + 1;
-
-    applyToEl(ffVideo, ffLabel, null, currentRightIdx);
-    applyToEl(fbVideo, fbLabel, null, nextLeftIdx);
-
-    flipPage.style.display = "block";
-    flipPage.style.transition = 'none';
-    flipPage.classList.remove('flipping');
-    void flipPage.offsetWidth;
-
-    flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
-    flipPage.classList.add('flipping');
-
-    setTimeout(() => { pagesTurned++; renderSpread(); }, 450);
-    setTimeout(() => { isAnimating = false; flipPage.style.display = "none"; }, 900);
-}
-
-function prevPage() {
-    if (isAnimating || pagesTurned === 0) return;
-    isAnimating = true;
-
-    const currentLeftIdx = (pagesTurned * 2) - 1;
-    const prevRightIdx = currentLeftIdx - 1;
-
-    applyToEl(ffVideo, ffLabel, null, prevRightIdx);
-    applyToEl(fbVideo, fbLabel, null, currentLeftIdx);
-
-    flipPage.style.display = "block";
-    flipPage.style.transition = 'none';
-    flipPage.classList.add('flipping');
-    void flipPage.offsetWidth;
-
-    flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
-    flipPage.classList.remove('flipping');
-
-    setTimeout(() => { pagesTurned--; renderSpread(); }, 450);
-    setTimeout(() => { isAnimating = false; flipPage.style.display = "none"; }, 900);
-}
-
-renderSpread();
-
-// ── Partículas ──
-const particleContainer = document.getElementById('particles');
-const emojis = ['🍃','✨','🌸','🍂','🌿'];
-function spawnParticle() {
-    const el = document.createElement('div');
-    el.className = 'particle';
-    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    el.style.left = Math.random() * 100 + 'vw';
-    const dur = Math.random() * 6 + 8;
-    el.style.animationDuration = dur + 's';
-    particleContainer.appendChild(el);
-    setTimeout(() => el.remove(), dur * 1000);
-}
-setInterval(spawnParticle, 700);
-
-// ── Estrellas ──
-const starsContainer = document.getElementById('stars');
-for (let i = 0; i < 50; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = Math.random() * 2 + 1;
-    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}vw;top:${Math.random()*100}vh;--d:${Math.random()*3+2}s;`;
-    starsContainer.appendChild(s);
-}
-
-// ── Animaciones de entrada con IntersectionObserver ──
-const observerOptions = { threshold: 0.15 };
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Elementos fade-in-up
-document.querySelectorAll('.fade-in-up').forEach(el => {
-    observer.observe(el);
-});
-
-// Invitación
-const invitationEl = document.getElementById('invitation');
-const invObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            invitationEl.classList.add('visible');
-            invObserver.unobserve(invitationEl);
-        }
-    });
-}, { threshold: 0.1 });
-invObserver.observe(invitationEl);
-
-// Trigger inmediato para elementos ya visibles en pantalla
-setTimeout(() => {
-    document.querySelectorAll('.fade-in-up').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) el.classList.add('visible');
-    });
-}, 100);
-</script>
-
-</body>
-</html>
+            display: flex; justify-content: center; align-items: center;

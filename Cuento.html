@@ -32,8 +32,7 @@
         /* ── FONDO ── */
         .bg-layer {
             position: fixed; inset: 0; z-index: -2;
-            background:
-                linear-gradient(160deg, #0d1b2a 0%, #1b2838 40%, #2d1f3d 100%);
+            background: linear-gradient(160deg, #0d1b2a 0%, #1b2838 40%, #2d1f3d 100%);
         }
 
         .bg-forest {
@@ -43,7 +42,6 @@
             filter: saturate(0.4) brightness(0.7);
         }
 
-        /* Estrellas */
         .stars {
             position: fixed; inset: 0; z-index: 0;
             pointer-events: none;
@@ -57,7 +55,6 @@
         }
         @keyframes twinkle { from { opacity: 0.2; transform: scale(1); } to { opacity: 1; transform: scale(1.4); } }
 
-        /* ── PARTÍCULAS ── */
         #particles {
             position: fixed; inset: 0; z-index: 1;
             pointer-events: none;
@@ -72,7 +69,21 @@
             100% { transform: translateY(105vh) rotate(400deg) translateX(30px); opacity: 0; }
         }
 
-        /* ── HEADER ── */
+        /* ── ANIMACIONES DE ENTRADA ── */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fade-in-up.delay-1 { transition-delay: 0.15s; }
+        .fade-in-up.delay-2 { transition-delay: 0.3s; }
+        .fade-in-up.delay-3 { transition-delay: 0.45s; }
+        .fade-in-up.delay-4 { transition-delay: 0.6s; }
+
         header {
             position: relative; z-index: 5;
             text-align: center;
@@ -91,6 +102,23 @@
             padding: 6px 20px;
             border-radius: 50px;
             margin-bottom: 18px;
+            /* Animación brillo recorriendo el badge */
+            position: relative;
+            overflow: hidden;
+        }
+        .header-badge::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%   { left: -100%; }
+            50%  { left: 150%; }
+            100% { left: 150%; }
         }
 
         h1 {
@@ -98,9 +126,13 @@
             font-size: clamp(3.5rem, 10vw, 6.5rem);
             color: var(--gold-light);
             line-height: 1.1;
-            text-shadow:
-                0 0 40px rgba(212,168,67,0.5),
-                0 2px 0 rgba(0,0,0,0.4);
+            text-shadow: 0 0 40px rgba(212,168,67,0.5), 0 2px 0 rgba(0,0,0,0.4);
+            /* Animación de aparición del título */
+            animation: titleGlow 4s ease-in-out infinite alternate;
+        }
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 30px rgba(212,168,67,0.4), 0 2px 0 rgba(0,0,0,0.4); }
+            to   { text-shadow: 0 0 60px rgba(212,168,67,0.8), 0 0 80px rgba(212,168,67,0.3), 0 2px 0 rgba(0,0,0,0.4); }
         }
 
         .subtitle {
@@ -112,7 +144,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* ── DIVISOR ORNAMENTAL ── */
         .ornament {
             display: flex; align-items: center; justify-content: center;
             gap: 12px;
@@ -129,7 +160,6 @@
         }
         .ornament::after { background: linear-gradient(to left, transparent, var(--gold)); }
 
-        /* ── MAPA ── */
         .map-section {
             position: relative; z-index: 5;
             display: flex; justify-content: center;
@@ -138,6 +168,10 @@
         .map-frame {
             position: relative;
             max-width: 680px; width: 100%;
+            transition: transform 0.4s ease;
+        }
+        .map-frame:hover {
+            transform: scale(1.01);
         }
         .map-frame::before {
             content: '';
@@ -145,6 +179,12 @@
             border-radius: 24px;
             background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
             z-index: -1;
+            /* Animación pulso dorado */
+            animation: framePulse 3s ease-in-out infinite;
+        }
+        @keyframes framePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(212,168,67,0.4); }
+            50%       { opacity: 0.85; box-shadow: 0 0 20px 6px rgba(212,168,67,0.2); }
         }
         .map-frame img {
             width: 100%;
@@ -153,7 +193,6 @@
             filter: sepia(0.15) contrast(1.05);
         }
 
-        /* ── TÍTULO LIBRO ── */
         .book-title {
             text-align: center;
             position: relative; z-index: 5;
@@ -166,7 +205,6 @@
             font-weight: 400;
         }
 
-        /* ── LIBRO 3D ── */
         .scene {
             display: flex;
             justify-content: center;
@@ -176,7 +214,6 @@
             perspective: 2800px;
         }
 
-        /* El libro como contenedor fijo */
         .book-3d {
             position: relative;
             width: calc(var(--page-w) * 2 + 12px);
@@ -184,7 +221,6 @@
             transform-style: preserve-3d;
         }
 
-        /* Lomo central */
         .spine {
             position: absolute;
             left: calc(var(--page-w) + 2px);
@@ -197,49 +233,34 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* Página izquierda (fija, muestra el "front" de la hoja ya girada) */
+        .left-page, .right-page {
+            position: absolute;
+            top: 0;
+            width: var(--page-w);
+            height: var(--page-h);
+            background: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
         .left-page {
-            position: absolute;
-            left: 0; top: 0;
-            width: var(--page-w);
-            height: var(--page-h);
+            left: 0;
             border-radius: 15px 0 0 15px;
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            box-shadow:
-                inset -8px 0 20px rgba(0,0,0,0.12),
-                -4px 0 12px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            z-index: 1;
+            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12), -4px 0 12px rgba(0,0,0,0.2);
         }
 
-        /* Página derecha (fija, muestra el "front" de la hoja actual) */
         .right-page {
-            position: absolute;
-            right: 0; top: 0;
-            width: var(--page-w);
-            height: var(--page-h);
+            right: 0;
             border-radius: 0 15px 15px 0;
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-            box-shadow:
-                inset 8px 0 20px rgba(0,0,0,0.12),
-                4px 0 12px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            overflow: hidden;
-            z-index: 1;
+            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 12px rgba(0,0,0,0.2);
         }
 
-        /* Hoja que gira (el "flipping page") */
         .flip-page {
             position: absolute;
             right: 0; top: 0;
@@ -247,9 +268,8 @@
             height: var(--page-h);
             transform-origin: left center;
             transform-style: preserve-3d;
-            transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
             z-index: 50;
-            pointer-events: none;
+            display: none;
         }
 
         .flip-page.flipping { transform: rotateY(-180deg); }
@@ -263,36 +283,21 @@
             justify-content: center;
             padding: 24px;
             overflow: hidden;
+            background: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
         }
 
         .flip-front {
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             border-radius: 0 15px 15px 0;
-            box-shadow:
-                inset 8px 0 20px rgba(0,0,0,0.12),
-                4px 0 15px rgba(0,0,0,0.25);
+            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 15px rgba(0,0,0,0.25);
         }
 
         .flip-back {
-            background: var(--parchment);
-            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             transform: rotateY(180deg);
             border-radius: 15px 0 0 15px;
-            box-shadow:
-                inset -8px 0 20px rgba(0,0,0,0.12);
+            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12);
         }
 
-        /* Sombra que aparece al girar */
-        .flip-front::after {
-            content: '';
-            position: absolute; inset: 0;
-            border-radius: inherit;
-            background: linear-gradient(to left, rgba(0,0,0,0.15), transparent 60%);
-            pointer-events: none;
-        }
-
-        /* Contenido de página */
         .page-video {
             width: 100%;
             border-radius: 10px;
@@ -319,50 +324,6 @@
             font-family: 'Playfair Display', serif;
         }
 
-        .page-ornament {
-            font-size: 1.4rem;
-            color: var(--gold);
-            margin-bottom: 8px;
-        }
-
-        /* Tapas del libro */
-        .cover-left {
-            position: absolute;
-            left: -22px; top: -6px;
-            width: calc(var(--page-w) + 12px);
-            height: calc(var(--page-h) + 12px);
-            background: linear-gradient(135deg, #3d1f0a, #6b3520, #3d1f0a);
-            border-radius: 18px 0 0 18px;
-            z-index: 0;
-            box-shadow: -6px 0 20px rgba(0,0,0,0.5);
-        }
-        .cover-right {
-            position: absolute;
-            right: -22px; top: -6px;
-            width: calc(var(--page-w) + 12px);
-            height: calc(var(--page-h) + 12px);
-            background: linear-gradient(135deg, #3d1f0a, #6b3520, #3d1f0a);
-            border-radius: 0 18px 18px 0;
-            z-index: 0;
-            box-shadow: 6px 0 20px rgba(0,0,0,0.5);
-        }
-        /* Detalle dorado en las tapas */
-        .cover-left::after, .cover-right::after {
-            content: '';
-            position: absolute; inset: 10px;
-            border: 1px solid rgba(212,168,67,0.3);
-            border-radius: 10px;
-        }
-
-        /* Sombra bajo el libro */
-        .book-shadow {
-            position: absolute;
-            bottom: -30px; left: 10%; right: 10%;
-            height: 30px;
-            background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, transparent 70%);
-        }
-
-        /* ── CONTADOR ── */
         .page-counter {
             text-align: center;
             color: rgba(255,255,255,0.5);
@@ -370,15 +331,10 @@
             margin-top: 8px;
             position: relative; z-index: 5;
             font-family: 'Playfair Display', serif;
-            font-style: italic;
         }
 
-        /* ── BOTONES ── */
         .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
+            display: flex; justify-content: center; gap: 20px;
             padding: 30px 20px 50px;
             position: relative; z-index: 5;
         }
@@ -386,101 +342,230 @@
         .btn {
             font-family: 'Nunito', sans-serif;
             font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 0.05em;
             padding: 13px 32px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.25s ease;
         }
 
         .btn-prev {
             background: rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.85);
+            color: white;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .btn-prev:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
-
+        .btn-prev:not(:disabled):hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateX(-3px);
+        }
         .btn-next {
             background: linear-gradient(135deg, var(--pink), var(--pink-dark));
             color: white;
-            box-shadow: 0 4px 20px rgba(232,84,122,0.4), 0 2px 0 #8b1a38;
+            box-shadow: 0 4px 15px rgba(179,48,89,0.4);
         }
-        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,84,122,0.5), 0 2px 0 #8b1a38; }
-        .btn-next:active { transform: translateY(1px); box-shadow: 0 2px 12px rgba(232,84,122,0.3), 0 1px 0 #8b1a38; }
-        .btn:disabled { opacity: 0.35; cursor: default; transform: none !important; }
+        .btn-next:not(:disabled):hover {
+            transform: translateX(3px);
+            box-shadow: 0 6px 22px rgba(179,48,89,0.6);
+        }
+        .btn:disabled { opacity: 0.35; cursor: default; }
 
         /* ── INVITACIÓN ── */
         .invitation-wrap {
-            display: flex; justify-content: center;
-            padding: 20px 20px 60px;
-            position: relative; z-index: 5;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px 80px;
+            position: relative;
+            z-index: 5;
         }
 
         .invitation {
-            max-width: 560px; width: 100%;
+            max-width: 900px;
+            width: 100%;
             position: relative;
-            padding: 48px 44px;
+            padding: 60px 50px;
             text-align: center;
-        }
-
-        /* Marco pergamino con capas */
-        .invitation::before {
-            content: '';
-            position: absolute; inset: 0;
-            background:
-                linear-gradient(135deg, rgba(212,168,67,0.15), rgba(212,168,67,0.05)),
-                url('https://www.transparenttextures.com/patterns/parchment.png');
-            border-radius: 4px;
-            border: 2px solid rgba(212,168,67,0.4);
+            background: #fdfaf0;
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+            border: 12px solid #fff;
             box-shadow:
-                0 0 0 8px rgba(212,168,67,0.08),
-                0 20px 60px rgba(0,0,0,0.4);
+                0 0 0 2px var(--gold),
+                0 15px 50px rgba(0,0,0,0.5),
+                inset 0 0 100px rgba(212,168,67,0.1);
+            border-radius: 2px;
+            /* Animación entrada */
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.9s ease, transform 0.9s ease;
         }
-
-        .invitation > * { position: relative; }
+        .invitation.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
 
         .invitation h2 {
             font-family: 'Great Vibes', cursive;
-            font-size: 3rem;
+            font-size: 4rem;
+            color: var(--pink-dark);
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+        }
+
+        .invitation h3 {
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.85rem;
             color: var(--gold);
-            line-height: 1.1;
-            margin-bottom: 24px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        /* Columnas */
+        .inv-columns {
+            display: flex;
+            justify-content: space-around;
+            align-items: stretch;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .inv-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0;
+        }
+
+        /* Divisor animado */
+        .inv-divider-vertical {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            margin: 0 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .inv-divider-vertical::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8), transparent);
+            animation: dividerShine 2.5s ease-in-out infinite;
+        }
+        @keyframes dividerShine {
+            0%   { top: -30%; }
+            100% { top: 130%; }
         }
 
         .invitation p {
-            font-size: 1rem;
-            color: rgba(60,30,10,0.9);
-            margin: 8px 0;
-            line-height: 1.6;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            margin: 10px 0;
+            color: #3a2618;
+            line-height: 1.5;
         }
 
         .invitation strong {
             color: var(--pink-dark);
-            font-size: 1.05rem;
+            font-weight: 700;
         }
 
-        .inv-divider {
-            width: 60px; height: 2px;
-            background: linear-gradient(to right, transparent, var(--gold), transparent);
-            margin: 20px auto;
+        /* ── BOTÓN COMPARTIDO (maps + instagram) ── */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+            color: white !important;
+            padding: 13px 26px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(179, 48, 89, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-action::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.4s ease;
+        }
+        .btn-action:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 22px rgba(179, 48, 89, 0.6);
+            color: white !important;
+        }
+        .btn-action:hover::after {
+            left: 150%;
         }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 780px) {
+        /* Animación pulso para "Localizar el Parque" */
+        .btn-action.pulse {
+            animation: btnPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(179,48,89,0.4); }
+            50%       { box-shadow: 0 4px 28px rgba(179,48,89,0.7), 0 0 0 6px rgba(179,48,89,0.12); }
+        }
+        .btn-action.pulse:hover {
+            animation: none;
+        }
+
+        .inv-footer {
+            margin-top: 40px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--gold);
+            /* Animación brillo */
+            animation: footerGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes footerGlow {
+            from { text-shadow: none; }
+            to   { text-shadow: 0 0 20px rgba(212,168,67,0.6); }
+        }
+
+        /* Decoración esquinas */
+        .invitation::before { content: '❧'; position: absolute; top: 15px; left: 15px; color: var(--gold); font-size: 1.8rem; }
+        .invitation::after  { content: '☙'; position: absolute; bottom: 15px; right: 15px; color: var(--gold); font-size: 1.8rem; }
+
+        /* Separador de precios */
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        .price-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(212,168,67,0.25);
+        }
+
+        @media (max-width: 850px) {
+            .inv-columns { flex-direction: column; gap: 20px; }
+            .inv-divider-vertical {
+                height: 1px; width: 60%; margin: 10px auto;
+                background: linear-gradient(to right, transparent, var(--gold), transparent);
+            }
+            .inv-divider-vertical::after { display: none; }
             :root { --page-w: 155px; --page-h: 260px; }
             h1 { font-size: 3rem; }
-            .book-3d { width: calc(var(--page-w) * 2 + 12px); }
-            .cover-left { left: -10px; width: calc(var(--page-w) + 6px); }
-            .cover-right { right: -10px; width: calc(var(--page-w) + 6px); }
-            .page-label { font-size: 0.75rem; }
-            .page-video { border-radius: 6px; }
-            .invitation { padding: 32px 24px; }
-            .invitation h2 { font-size: 2.2rem; }
+            .book-3d { width: calc(var(--page-w) * 2 + 6px); }
+            .invitation { padding: 40px 20px; }
+            .invitation h2 { font-size: 2.8rem; }
         }
     </style>
 </head>
@@ -491,97 +576,99 @@
 <div class="stars" id="stars"></div>
 <div id="particles"></div>
 
-<!-- HEADER -->
 <header>
-    <div class="header-badge">✦ Villarquemado ✦</div>
-    <h1>Un Paseo de Cuento</h1>
-    <p class="subtitle">Donde los cuentos clásicos cobran vida entre los árboles</p>
+    <div class="header-badge fade-in-up">✦ Villarquemado ✦</div>
+    <h1 class="fade-in-up delay-1">Un Paseo de Cuento</h1>
+    <p class="subtitle fade-in-up delay-2">Donde los cuentos clásicos cobran vida entre los árboles</p>
 </header>
 
-<div class="ornament">✦ ✦ ✦</div>
+<div class="ornament fade-in-up">✦ ✦ ✦</div>
 
-<!-- MAPA -->
-<section class="map-section">
+<section class="map-section fade-in-up">
     <div class="map-frame">
-        <img src="mapa.jpg" alt="Mapa del Parque de Cuentos de Villarquemado">
+        <img src="mapa.png" alt="Mapa del Parque de Cuentos de Villarquemado">
     </div>
 </section>
 
 <div class="ornament">🌿 📖 🌿</div>
 
-<!-- TÍTULO LIBRO -->
-<div class="book-title">
+<div class="book-title fade-in-up">
     <h2>Nuestros Personajes</h2>
 </div>
 
-<!-- LIBRO 3D -->
 <div class="scene">
     <div class="book-3d" id="book3d">
         <div class="cover-left"></div>
         <div class="cover-right"></div>
-
-        <!-- Página izquierda: siempre visible, muestra el video "anterior" -->
         <div class="left-page" id="leftPage">
-            <div class="page-ornament">🌿</div>
             <video class="page-video" id="leftVideo" controls playsinline></video>
             <p class="page-label" id="leftLabel"></p>
             <span class="page-number" id="leftNum"></span>
         </div>
-
-        <!-- Página derecha: siempre visible, muestra el video "actual" -->
         <div class="right-page" id="rightPage">
-            <div class="page-ornament">🌿</div>
             <video class="page-video" id="rightVideo" controls playsinline></video>
             <p class="page-label" id="rightLabel"></p>
             <span class="page-number" id="rightNum"></span>
         </div>
-
-        <!-- Lomo -->
         <div class="spine"></div>
-
-        <!-- Hoja animada que gira -->
         <div class="flip-page" id="flipPage">
             <div class="flip-front" id="flipFront">
-                <div class="page-ornament">🌿</div>
                 <video class="page-video" id="flipFrontVideo" controls playsinline></video>
                 <p class="page-label" id="flipFrontLabel"></p>
             </div>
             <div class="flip-back" id="flipBack">
-                <div class="page-ornament">🌿</div>
                 <video class="page-video" id="flipBackVideo" controls playsinline></video>
                 <p class="page-label" id="flipBackLabel"></p>
             </div>
         </div>
-
-        <div class="book-shadow"></div>
     </div>
 </div>
 
 <p class="page-counter" id="counter"></p>
 
-<!-- CONTROLES -->
 <div class="controls">
     <button class="btn btn-prev" id="btnPrev" onclick="prevPage()">← Anterior</button>
     <button class="btn btn-next" id="btnNext" onclick="nextPage()">Siguiente →</button>
 </div>
 
-<!-- INFORMACIÓN -->
 <div class="invitation-wrap">
-    <div class="invitation">
-        <h2>Información</h2>
-        <div class="inv-divider"></div>
-        <p>🕙 Sábados y Domingos · 11:00 a 13:00</p>
-        <div class="inv-divider"></div>
-        <p>Menores de 3 años: <strong>Gratis</strong></p>
-        <p>De 3 a 14 años: <strong>2 €</strong></p>
-        <p>Adultos: <strong>5 €</strong></p>
-        <div class="inv-divider"></div>
-        <p>🏠 <strong>Empadronados en Villarquemado: Gratis</strong></p>
+    <div class="invitation" id="invitation">
+        <h3>Edictos del Reino</h3>
+        <h2>Vuestra Invitación</h2>
+
+        <div class="inv-columns">
+            <!-- Columna izquierda: horario y localización -->
+            <div class="inv-col">
+                <p>Quedan convocados todos los soñadores para descubrir la magia los fines de semana y festivos señalados.</p>
+                <p>🕙 <strong>Sábados, Domingos y Festivos</strong><br>de 11:00 a 13:00 horas</p>
+                <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd5dd7b08acc1577:0xea3fc11d119e400?sa=X&ved=1t:8290&ictx=111"
+                   target="_blank"
+                   class="btn-action pulse">
+                    📍 Localizar el Parque
+                </a>
+            </div>
+
+            <div class="inv-divider-vertical"></div>
+
+            <!-- Columna derecha: precios e Instagram -->
+            <div class="inv-col">
+                <p>Caballeros y Damas: <strong>5 €</strong></p>
+                <p>Pequeños Escuderos (3-14 años): <strong>2 €</strong></p>
+                <p>Infantes Menores de 3: <strong>Entrada Libre</strong></p>
+                <p>🏠 <strong>Hijos de la Villa</strong><br>Acceso Gratuito</p>
+                <a href="https://www.instagram.com/ayuntamientodevillarquemado/"
+                   target="_blank"
+                   class="btn-action">
+                    📸 Visita nuestro Instagram
+                </a>
+            </div>
+        </div>
+
+        <div class="inv-footer">La magia os espera...</div>
     </div>
 </div>
 
 <script>
-// ─── DATOS ───────────────────────────────────────────────────────────────────
 const videos = [
     { file: "cerdito.mp4",      name: "Los Tres Cerditos" },
     { file: "ratoncito.mp4",    name: "Ratoncito Pérez" },
@@ -603,219 +690,166 @@ const videos = [
     { file: "ricitos.mp4",      name: "Ricitos de Oro" }
 ];
 
-/*
-    MODELO MENTAL — LIBRO REAL
-    ══════════════════════════
-    Cada HOJA física tiene dos caras: FRENTE y REVERSO.
-    Las hojas se numeran 0, 1, 2 …
-
-      Hoja 0 → frente = vídeo 0 | reverso = vídeo 1
-      Hoja 1 → frente = vídeo 2 | reverso = vídeo 3
-      Hoja 2 → frente = vídeo 4 | reverso = vídeo 5
-      …
-
-    El libro empieza con TODAS las hojas sin girar (apiladas a la derecha).
-    Lo que se ve en cada momento:
-
-      pagesTurned = 0  →  izquierda: vacía          | derecha: hoja0.frente (vídeo 0)
-      pagesTurned = 1  →  izquierda: hoja0.reverso (vídeo 1) | derecha: hoja1.frente (vídeo 2)
-      pagesTurned = 2  →  izquierda: hoja1.reverso (vídeo 3) | derecha: hoja2.frente (vídeo 4)
-      …
-
-    Fórmula:
-      leftIdx  = pagesTurned === 0 ? null : (pagesTurned * 2) - 1
-      rightIdx = pagesTurned * 2      (si existe)
-
-    Al girar "Siguiente": la hoja que sale de la derecha tiene
-      frente  = rightIdx  (= lo que ya se ve en la derecha, la hoja que va a girar)
-      reverso = rightIdx + 1  (= el nuevo contenido que aparece en la izquierda)
-    Tras girar: pagesTurned++  → nueva derecha = pagesTurned*2
-
-    Al girar "Anterior": la hoja que vuelve tiene
-      frente  = (pagesTurned-1)*2   (nuevo rightIdx tras decrementar)
-      reverso = (pagesTurned-1)*2+1 = leftIdx actual
-    Parte ya girada y se "desdobla" hacia la derecha.
-*/
-
 let pagesTurned = 0;
 let isAnimating  = false;
 
-const flipPage  = document.getElementById('flipPage');
-const leftVid   = document.getElementById('leftVideo');
-const leftLbl   = document.getElementById('leftLabel');
-const leftNum   = document.getElementById('leftNum');
-const rightVid  = document.getElementById('rightVideo');
-const rightLbl  = document.getElementById('rightLabel');
-const rightNum  = document.getElementById('rightNum');
-const ffVideo   = document.getElementById('flipFrontVideo');
-const ffLabel   = document.getElementById('flipFrontLabel');
-const fbVideo   = document.getElementById('flipBackVideo');
-const fbLabel   = document.getElementById('flipBackLabel');
-const btnPrev   = document.getElementById('btnPrev');
-const btnNext   = document.getElementById('btnNext');
-const counter   = document.getElementById('counter');
-
-function getSpread(turned) {
-    const leftIdx  = turned === 0 ? null : turned * 2 - 1;
-    const rightIdx = turned * 2 < videos.length ? turned * 2 : null;
-    return { leftIdx, rightIdx };
-}
-
-// Número total de hojas (cada hoja tiene 2 vídeos)
-const totalSheets = Math.ceil(videos.length / 2);
+const flipPage   = document.getElementById('flipPage');
+const leftVid    = document.getElementById('leftVideo');
+const leftLbl    = document.getElementById('leftLabel');
+const leftNum    = document.getElementById('leftNum');
+const rightVid   = document.getElementById('rightVideo');
+const rightLbl   = document.getElementById('rightLabel');
+const rightNum   = document.getElementById('rightNum');
+const ffVideo    = document.getElementById('flipFrontVideo');
+const ffLabel    = document.getElementById('flipFrontLabel');
+const fbVideo    = document.getElementById('flipBackVideo');
+const fbLabel    = document.getElementById('flipBackLabel');
+const btnPrev    = document.getElementById('btnPrev');
+const btnNext    = document.getElementById('btnNext');
+const counter    = document.getElementById('counter');
 
 function applyToEl(videoEl, labelEl, numEl, idx) {
-    if (idx === null || idx === undefined || idx >= videos.length) {
+    if (idx === null || idx === undefined || idx < 0 || idx >= videos.length) {
+        videoEl.style.display = "none";
         videoEl.src = '';
-        videoEl.load();
         labelEl.textContent = '';
         if (numEl) numEl.textContent = '';
     } else {
-        videoEl.src = videos[idx].file;
-        videoEl.load();
+        videoEl.style.display = "block";
+        if (!videoEl.src.includes(videos[idx].file)) {
+            videoEl.src = videos[idx].file;
+            videoEl.load();
+        }
         labelEl.textContent = videos[idx].name;
         if (numEl) numEl.textContent = `${idx + 1} / ${videos.length}`;
     }
 }
 
 function renderSpread() {
-    const { leftIdx, rightIdx } = getSpread(pagesTurned);
+    const leftIdx  = pagesTurned === 0 ? null : (pagesTurned * 2) - 1;
+    const rightIdx = (pagesTurned * 2) < videos.length ? (pagesTurned * 2) : null;
+
     applyToEl(leftVid,  leftLbl,  leftNum,  leftIdx);
     applyToEl(rightVid, rightLbl, rightNum, rightIdx);
 
     btnPrev.disabled = pagesTurned === 0;
-    btnNext.disabled = pagesTurned >= totalSheets;
+    btnNext.disabled = (pagesTurned * 2) >= videos.length - 1;
 
     if (rightIdx !== null && leftIdx !== null) {
         counter.textContent = `Vídeos ${leftIdx + 1} y ${rightIdx + 1} de ${videos.length}`;
     } else if (rightIdx !== null) {
         counter.textContent = `Vídeo ${rightIdx + 1} de ${videos.length}`;
-    } else if (leftIdx !== null) {
-        counter.textContent = `Vídeo ${leftIdx + 1} de ${videos.length} · Fin del libro`;
     } else {
-        counter.textContent = '';
+        counter.textContent = `Fin del libro`;
     }
 }
 
-// ── NEXT ──────────────────────────────────────────────────────────────────────
 function nextPage() {
-    if (isAnimating || pagesTurned >= totalSheets) return;
-
-    const { rightIdx } = getSpread(pagesTurned);
-    if (rightIdx === null) return;   // nada que girar
-
+    if (isAnimating || (pagesTurned * 2) >= videos.length - 1) return;
     isAnimating = true;
 
-    // La hoja animada:
-    //   frente  = lo que actualmente se ve en la derecha (rightIdx)
-    //   reverso = el siguiente vídeo (rightIdx + 1), que pasará a la izquierda
-    const frontIdx = rightIdx;
-    const backIdx  = rightIdx + 1 < videos.length ? rightIdx + 1 : null;
+    const currentRightIdx = pagesTurned * 2;
+    const nextLeftIdx = currentRightIdx + 1;
 
-    applyToEl(ffVideo, ffLabel, null, frontIdx);
-    applyToEl(fbVideo, fbLabel, null, backIdx);
+    applyToEl(ffVideo, ffLabel, null, currentRightIdx);
+    applyToEl(fbVideo, fbLabel, null, nextLeftIdx);
 
-    // La hoja empieza sin girar (cubre la página derecha)
+    flipPage.style.display = "block";
     flipPage.style.transition = 'none';
     flipPage.classList.remove('flipping');
     void flipPage.offsetWidth;
 
-    // Lanza la animación de giro
     flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
     flipPage.classList.add('flipping');
 
-    // A mitad del giro actualiza las páginas estáticas (quedan ocultas bajo la hoja)
-    setTimeout(() => {
-        pagesTurned++;
-        renderSpread();
-    }, 450);
-
-    // Fin del giro: oculta la hoja animada
-    setTimeout(() => {
-        flipPage.classList.remove('flipping');
-        flipPage.style.transition = 'none';
-        ffVideo.src = '';
-        fbVideo.src = '';
-        isAnimating = false;
-    }, 920);
+    setTimeout(() => { pagesTurned++; renderSpread(); }, 450);
+    setTimeout(() => { isAnimating = false; flipPage.style.display = "none"; }, 900);
 }
 
-// ── PREV ──────────────────────────────────────────────────────────────────────
 function prevPage() {
     if (isAnimating || pagesTurned === 0) return;
     isAnimating = true;
 
-    // Tras decrementar, la hoja que "vuelve" tiene:
-    //   frente  = (pagesTurned-1)*2      → nuevo rightIdx
-    //   reverso = (pagesTurned-1)*2 + 1  → leftIdx actual
-    const newRight = (pagesTurned - 1) * 2;
-    const curLeft  = pagesTurned * 2 - 1;
+    const currentLeftIdx = (pagesTurned * 2) - 1;
+    const prevRightIdx = currentLeftIdx - 1;
 
-    const frontIdx = newRight < videos.length ? newRight : null;
-    const backIdx  = curLeft  < videos.length ? curLeft  : null;
+    applyToEl(ffVideo, ffLabel, null, prevRightIdx);
+    applyToEl(fbVideo, fbLabel, null, currentLeftIdx);
 
-    applyToEl(ffVideo, ffLabel, null, frontIdx);
-    applyToEl(fbVideo, fbLabel, null, backIdx);
-
-    // La hoja ya aparece girada (mostrando el reverso = izquierda actual)
+    flipPage.style.display = "block";
     flipPage.style.transition = 'none';
     flipPage.classList.add('flipping');
     void flipPage.offsetWidth;
 
-    // Animación inversa: la hoja se "desdobla" hacia la derecha
     flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
     flipPage.classList.remove('flipping');
 
-    // A mitad del giro actualiza las páginas estáticas
-    setTimeout(() => {
-        pagesTurned--;
-        renderSpread();
-    }, 450);
-
-    // Fin
-    setTimeout(() => {
-        flipPage.style.transition = 'none';
-        ffVideo.src = '';
-        fbVideo.src = '';
-        isAnimating = false;
-    }, 920);
+    setTimeout(() => { pagesTurned--; renderSpread(); }, 450);
+    setTimeout(() => { isAnimating = false; flipPage.style.display = "none"; }, 900);
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
 renderSpread();
 
-// ─── PARTÍCULAS ──────────────────────────────────────────────────────────────
+// ── Partículas ──
 const particleContainer = document.getElementById('particles');
-const emojis = ['🍃','✨','🐦','🌸','🍂','⭐','🌿'];
+const emojis = ['🍃','✨','🌸','🍂','🌿'];
 function spawnParticle() {
     const el = document.createElement('div');
     el.className = 'particle';
     el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     el.style.left = Math.random() * 100 + 'vw';
-    el.style.fontSize = (Math.random() * 18 + 12) + 'px';
     const dur = Math.random() * 6 + 8;
     el.style.animationDuration = dur + 's';
-    el.style.animationDelay = '0s';
     particleContainer.appendChild(el);
     setTimeout(() => el.remove(), dur * 1000);
 }
-setInterval(spawnParticle, 500);
+setInterval(spawnParticle, 700);
 
-// ─── ESTRELLAS ───────────────────────────────────────────────────────────────
+// ── Estrellas ──
 const starsContainer = document.getElementById('stars');
-for (let i = 0; i < 80; i++) {
+for (let i = 0; i < 50; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    const size = Math.random() * 2.5 + 0.5;
-    s.style.cssText = `
-        width: ${size}px; height: ${size}px;
-        left: ${Math.random()*100}vw;
-        top: ${Math.random()*100}vh;
-        --d: ${Math.random()*3+2}s;
-        animation-delay: ${Math.random()*4}s;
-    `;
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}vw;top:${Math.random()*100}vh;--d:${Math.random()*3+2}s;`;
     starsContainer.appendChild(s);
 }
+
+// ── Animaciones de entrada con IntersectionObserver ──
+const observerOptions = { threshold: 0.15 };
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+// Elementos fade-in-up
+document.querySelectorAll('.fade-in-up').forEach(el => {
+    observer.observe(el);
+});
+
+// Invitación
+const invitationEl = document.getElementById('invitation');
+const invObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            invitationEl.classList.add('visible');
+            invObserver.unobserve(invitationEl);
+        }
+    });
+}, { threshold: 0.1 });
+invObserver.observe(invitationEl);
+
+// Trigger inmediato para elementos ya visibles en pantalla
+setTimeout(() => {
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+}, 100);
 </script>
 
 </body>

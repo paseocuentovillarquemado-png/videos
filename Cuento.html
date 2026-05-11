@@ -167,3 +167,877 @@
 
         .scene {
             display: flex; justify-content: center; align-items: center;
+            position: relative; z-index: 5;
+            padding: 40px 20px 10px;
+            perspective: 3200px;
+        }
+
+        .book-3d {
+            position: relative;
+            width: calc(var(--page-w) * 2 + 14px);
+            height: var(--page-h);
+            transform-style: preserve-3d;
+            /* Leve inclinación 3D permanente */
+            transform: rotateX(2deg);
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
+            transition: transform 0.4s ease;
+        }
+        .book-3d:hover {
+            transform: rotateX(0deg) scale(1.01);
+        }
+
+        .spine {
+            position: absolute; left: calc(var(--page-w) + 3px); top: 0;
+            width: 8px; height: 100%;
+            background: linear-gradient(to right, #8b5e3c, #c8924e, #8b5e3c);
+            border-radius: 2px; z-index: 100;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .left-page, .right-page {
+            position: absolute; top: 0;
+            width: var(--page-w); height: var(--page-h);
+            background: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 28px; overflow: hidden; z-index: 1;
+        }
+        .left-page {
+            left: 0; border-radius: 15px 0 0 15px;
+            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12), -4px 0 12px rgba(0,0,0,0.2);
+        }
+        .right-page {
+            right: 0; border-radius: 0 15px 15px 0;
+            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 12px rgba(0,0,0,0.2);
+        }
+
+        /* ── PÁGINAS ESPECIALES (portada / cierre) ── */
+        .cover-page-content {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            width: 100%; height: 100%;
+            text-align: center; gap: 8px;
+        }
+        .cover-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8rem; color: var(--pink-dark);
+            line-height: 1.1;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+            animation: coverGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes coverGlow {
+            from { text-shadow: 1px 1px 0 rgba(255,255,255,0.6); }
+            to   { text-shadow: 1px 1px 0 rgba(255,255,255,0.6), 0 0 20px rgba(179,48,89,0.4); }
+        }
+        .cover-subtitle {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 0.85rem; color: #7a4a2a; letter-spacing: 0.05em;
+        }
+        .cover-ornament {
+            font-size: 2rem; margin: 4px 0;
+            animation: floatOrn 3s ease-in-out infinite;
+        }
+        @keyframes floatOrn {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-6px); }
+        }
+        .cover-divider {
+            width: 70%; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 6px 0;
+        }
+        .cover-village {
+            font-family: 'Nunito', sans-serif; font-weight: 700;
+            font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--gold); margin-top: 4px;
+        }
+        .cover-characters {
+            font-size: 1.4rem; letter-spacing: 4px; margin: 4px 0;
+        }
+
+        /* Página de cierre */
+        .ending-page-content {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            width: 100%; height: 100%; text-align: center; gap: 10px;
+        }
+        .ending-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.4rem; color: var(--forest);
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+        .ending-text {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 0.85rem; color: #5a3a18; line-height: 1.6;
+            max-width: 80%; margin: 0 auto;
+        }
+        .ending-stars {
+            font-size: 1.6rem; animation: spinStars 6s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spinStars { to { transform: rotate(360deg); } }
+        .ending-hearts { font-size: 1.2rem; letter-spacing: 8px; }
+
+        /* Mariposa animada en portada */
+        .butterfly {
+            font-size: 1.8rem;
+            position: absolute;
+            animation: butterflyFly 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes butterflyFly {
+            0%   { transform: translate(10px, 20px) rotate(-5deg); opacity: 0.7; }
+            25%  { transform: translate(60px, 0px) rotate(5deg); opacity: 1; }
+            50%  { transform: translate(30px, 15px) rotate(-3deg); opacity: 0.8; }
+            75%  { transform: translate(70px, 30px) rotate(8deg); opacity: 1; }
+            100% { transform: translate(10px, 20px) rotate(-5deg); opacity: 0.7; }
+        }
+
+        /* ── FLIP ── */
+        .flip-page {
+            position: absolute; right: 0; top: 0;
+            width: var(--page-w); height: var(--page-h);
+            transform-origin: left center; transform-style: preserve-3d;
+            z-index: 50; display: none;
+        }
+        .flip-page.flipping { transform: rotateY(-180deg); }
+        .flip-front, .flip-back {
+            position: absolute; inset: 0; backface-visibility: hidden;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 28px; overflow: hidden;
+            background: var(--parchment);
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+        }
+        .flip-front {
+            border-radius: 0 15px 15px 0;
+            box-shadow: inset 8px 0 20px rgba(0,0,0,0.12), 4px 0 15px rgba(0,0,0,0.25);
+        }
+        .flip-back {
+            transform: rotateY(180deg); border-radius: 15px 0 0 15px;
+            box-shadow: inset -8px 0 20px rgba(0,0,0,0.12);
+        }
+
+        .page-video {
+            width: 100%; border-radius: 10px;
+            border: 3px solid rgba(212,168,67,0.4);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            background: #000;
+            transition: box-shadow 0.3s ease;
+        }
+        .page-video:hover {
+            box-shadow: 0 4px 24px rgba(212,168,67,0.4);
+        }
+        .page-label {
+            margin-top: 12px;
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.05rem; color: var(--pink-dark); font-weight: 700;
+            text-align: center;
+        }
+        .page-number {
+            position: absolute; bottom: 10px;
+            font-size: 0.7rem; color: rgba(100,60,30,0.4);
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Efecto hover páginas */
+        .left-page:hover .page-video,
+        .right-page:hover .page-video {
+            border-color: rgba(212,168,67,0.7);
+        }
+
+        /* ── CONTADOR Y CONTROLES ── */
+        .page-counter {
+            text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85rem;
+            margin-top: 8px; position: relative; z-index: 5;
+            font-family: 'Playfair Display', serif;
+        }
+        .controls {
+            display: flex; justify-content: center; gap: 20px;
+            padding: 30px 20px 50px; position: relative; z-index: 5;
+        }
+        .btn {
+            font-family: 'Nunito', sans-serif; font-weight: 700;
+            padding: 13px 32px; border: none; border-radius: 50px;
+            cursor: none; transition: all 0.25s ease;
+        }
+        .btn-prev {
+            background: rgba(255,255,255,0.1); color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-prev:not(:disabled):hover {
+            background: rgba(255,255,255,0.18); transform: translateX(-3px);
+        }
+        .btn-next {
+            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+            color: white; box-shadow: 0 4px 15px rgba(179,48,89,0.4);
+        }
+        .btn-next:not(:disabled):hover {
+            transform: translateX(3px); box-shadow: 0 6px 22px rgba(179,48,89,0.6);
+        }
+        .btn:disabled { opacity: 0.35; cursor: default; }
+
+        /* ── INDICADOR DE PROGRESO ── */
+        .progress-bar-wrap {
+            display: flex; justify-content: center; align-items: center;
+            gap: 6px; position: relative; z-index: 5; padding: 0 20px;
+        }
+        .progress-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: background 0.4s ease, transform 0.4s ease;
+            cursor: none;
+        }
+        .progress-dot.active {
+            background: var(--gold);
+            transform: scale(1.4);
+            box-shadow: 0 0 8px rgba(212,168,67,0.6);
+        }
+        .progress-dot.done {
+            background: rgba(212,168,67,0.4);
+        }
+
+        /* ── MAPA (movido debajo del libro) ── */
+        .map-section {
+            position: relative; z-index: 5;
+            display: flex; justify-content: center;
+            padding: 60px 20px 20px;
+        }
+        .map-title {
+            text-align: center; position: relative; z-index: 5;
+            padding-top: 20px; margin-bottom: 10px;
+        }
+        .map-title h2 {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            color: var(--gold-light); font-weight: 400;
+        }
+        .map-frame {
+            position: relative; max-width: 720px; width: 100%;
+            transition: transform 0.4s ease;
+        }
+        .map-frame:hover { transform: scale(1.01); }
+        .map-frame::before {
+            content: ''; position: absolute; inset: -6px; border-radius: 24px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+            z-index: -1; animation: framePulse 3s ease-in-out infinite;
+        }
+        @keyframes framePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(212,168,67,0.4); }
+            50%       { opacity: 0.85; box-shadow: 0 0 20px 6px rgba(212,168,67,0.2); }
+        }
+        .map-frame img {
+            width: 100%; border-radius: 18px; display: block;
+            filter: sepia(0.15) contrast(1.05);
+        }
+
+        /* Marcadores interactivos en el mapa */
+        .map-markers {
+            position: absolute; inset: 0; border-radius: 18px; overflow: hidden;
+            pointer-events: none;
+        }
+        .map-pin {
+            position: absolute;
+            animation: pinBounce 2s ease-in-out infinite;
+            cursor: none; pointer-events: all; font-size: 1.4rem;
+        }
+        .map-pin:hover .pin-tooltip { opacity: 1; transform: translateY(-4px); }
+        .pin-tooltip {
+            position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(0);
+            background: rgba(20,10,5,0.9); color: var(--gold-light);
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 0.75rem; white-space: nowrap;
+            padding: 4px 10px; border-radius: 20px;
+            border: 1px solid rgba(212,168,67,0.4);
+            opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease;
+            pointer-events: none;
+        }
+        @keyframes pinBounce {
+            0%,100% { transform: translateY(0); }
+            50%     { transform: translateY(-5px); }
+        }
+
+        /* ── INVITACIÓN ── */
+        .invitation-wrap {
+            display: flex; justify-content: center;
+            padding: 40px 20px 80px; position: relative; z-index: 5;
+        }
+        .invitation {
+            max-width: 900px; width: 100%; position: relative;
+            padding: 60px 50px; text-align: center;
+            background: #fdfaf0;
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png');
+            border: 12px solid #fff;
+            box-shadow:
+                0 0 0 2px var(--gold),
+                0 15px 50px rgba(0,0,0,0.5),
+                inset 0 0 100px rgba(212,168,67,0.1);
+            border-radius: 2px;
+            opacity: 0; transform: translateY(40px) scale(0.98);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+        .invitation.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .invitation h2 {
+            font-family: 'Great Vibes', cursive; font-size: 4rem;
+            color: var(--pink-dark); margin-bottom: 5px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+        }
+        .invitation h3 {
+            font-family: 'Playfair Display', serif; text-transform: uppercase;
+            letter-spacing: 4px; font-size: 0.85rem; color: var(--gold);
+            margin-bottom: 15px; font-weight: 700;
+        }
+        .inv-columns {
+            display: flex; justify-content: space-around;
+            align-items: stretch; gap: 40px; margin-top: 30px;
+        }
+        .inv-col {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: flex-start; gap: 0;
+        }
+        .inv-divider-vertical {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            margin: 0 10px; position: relative; overflow: hidden;
+        }
+        .inv-divider-vertical::after {
+            content: ''; position: absolute; top: -30%; left: 0;
+            width: 100%; height: 30%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.8), transparent);
+            animation: dividerShine 2.5s ease-in-out infinite;
+        }
+        @keyframes dividerShine { 0%{top:-30%} 100%{top:130%} }
+        .invitation p {
+            font-family: 'Playfair Display', serif; font-size: 1.15rem;
+            margin: 10px 0; color: #3a2618; line-height: 1.5;
+        }
+        .invitation strong { color: var(--pink-dark); font-weight: 700; }
+        .btn-action {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 10px; margin-top: 20px;
+            background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+            color: white !important; padding: 13px 26px; border-radius: 50px;
+            text-decoration: none; font-family: 'Nunito', sans-serif;
+            font-weight: 700; font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(179,48,89,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; overflow: hidden; cursor: none;
+        }
+        .btn-action::after {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.4s ease;
+        }
+        .btn-action:hover {
+            transform: scale(1.05); box-shadow: 0 6px 22px rgba(179,48,89,0.6);
+            color: white !important;
+        }
+        .btn-action:hover::after { left: 150%; }
+        .btn-action.pulse { animation: btnPulse 2.5s ease-in-out infinite; }
+        @keyframes btnPulse {
+            0%,100% { box-shadow: 0 4px 15px rgba(179,48,89,0.4); }
+            50%     { box-shadow: 0 4px 28px rgba(179,48,89,0.7), 0 0 0 6px rgba(179,48,89,0.12); }
+        }
+        .btn-action.pulse:hover { animation: none; }
+        .inv-footer {
+            margin-top: 40px; font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem; color: var(--gold);
+            animation: footerGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes footerGlow {
+            from { text-shadow: none; }
+            to   { text-shadow: 0 0 20px rgba(212,168,67,0.6); }
+        }
+        .invitation::before { content: '❧'; position: absolute; top: 15px; left: 15px; color: var(--gold); font-size: 1.8rem; }
+        .invitation::after  { content: '☙'; position: absolute; bottom: 15px; right: 15px; color: var(--gold); font-size: 1.8rem; }
+
+        /* ── EFECTO DESTELLO AL PASAR PÁGINA ── */
+        #page-flash {
+            position: fixed; inset: 0; z-index: 200;
+            background: radial-gradient(ellipse at center, rgba(240,208,128,0.25), transparent 70%);
+            pointer-events: none; opacity: 0;
+            transition: opacity 0.15s ease;
+        }
+        #page-flash.flash { opacity: 1; }
+
+        /* ── TOOLTIP DEL LIBRO ── */
+        .book-hint {
+            text-align: center; color: rgba(255,255,255,0.35);
+            font-size: 0.8rem; font-style: italic;
+            position: relative; z-index: 5; margin-top: -10px; margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            animation: hintPulse 3s ease-in-out infinite;
+        }
+        @keyframes hintPulse {
+            0%,100% { opacity: 0.5; }
+            50%     { opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .inv-columns { flex-direction: column; gap: 20px; }
+            .inv-divider-vertical {
+                height: 1px; width: 60%; margin: 10px auto;
+                background: linear-gradient(to right, transparent, var(--gold), transparent);
+            }
+            .inv-divider-vertical::after { display: none; }
+            :root { --page-w: 170px; --page-h: 290px; }
+            h1 { font-size: 3rem; }
+            .book-3d { width: calc(var(--page-w) * 2 + 6px); }
+            .invitation { padding: 40px 20px; }
+            .invitation h2 { font-size: 2.8rem; }
+            .cover-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-forest"></div>
+<div class="stars" id="stars"></div>
+<div id="particles"></div>
+<div id="page-flash"></div>
+<div id="magic-cursor"></div>
+
+<header>
+    <div class="header-badge fade-in-up">✦ Villarquemado ✦</div>
+    <h1 class="fade-in-up delay-1">Un Paseo de Cuento</h1>
+    <p class="subtitle fade-in-up delay-2">Donde los cuentos clásicos cobran vida entre los árboles</p>
+</header>
+
+<div class="ornament fade-in-up">✦ ✦ ✦</div>
+
+<div class="book-title fade-in-up">
+    <h2>Nuestros Personajes</h2>
+</div>
+
+<div class="scene">
+    <div class="book-3d" id="book3d">
+        <div class="left-page" id="leftPage">
+            <!-- Contenido dinámico -->
+        </div>
+        <div class="right-page" id="rightPage">
+            <!-- Contenido dinámico -->
+        </div>
+        <div class="spine"></div>
+        <div class="flip-page" id="flipPage">
+            <div class="flip-front" id="flipFront"></div>
+            <div class="flip-back" id="flipBack"></div>
+        </div>
+    </div>
+</div>
+
+<p class="book-hint">↓ Usa los botones para pasar las páginas ↓</p>
+
+<!-- Indicador de progreso -->
+<div class="progress-bar-wrap" id="progressBar"></div>
+
+<p class="page-counter" id="counter"></p>
+
+<div class="controls">
+    <button class="btn btn-prev" id="btnPrev" onclick="prevPage()">← Anterior</button>
+    <button class="btn btn-next" id="btnNext" onclick="nextPage()">Siguiente →</button>
+</div>
+
+<div class="ornament">🌿 🗺️ 🌿</div>
+
+<div class="map-title fade-in-up">
+    <h2>El Mapa del Parque</h2>
+</div>
+
+<section class="map-section fade-in-up">
+    <div class="map-frame">
+        <img src="mapa.png" alt="Mapa del Parque de Cuentos de Villarquemado">
+        <div class="map-markers" id="mapMarkers"></div>
+    </div>
+</section>
+
+<div class="ornament">🌿 📖 🌿</div>
+
+<div class="invitation-wrap">
+    <div class="invitation" id="invitation">
+        <h3>Edictos del Reino</h3>
+        <h2>Vuestra Invitación</h2>
+        <div class="inv-columns">
+            <div class="inv-col">
+                <p>Quedan convocados todos los soñadores para descubrir la magia los fines de semana y festivos señalados.</p>
+                <p>🕙 <strong>Sábados, Domingos y Festivos</strong><br>de 11:00 a 13:00 horas</p>
+                <a href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd5dd7b08acc1577:0xea3fc11d119e400?sa=X&ved=1t:8290&ictx=111"
+                   target="_blank" class="btn-action pulse">
+                    📍 Localizar el Parque
+                </a>
+            </div>
+            <div class="inv-divider-vertical"></div>
+            <div class="inv-col">
+                <p>Caballeros y Damas: <strong>5 €</strong></p>
+                <p>Pequeños Escuderos (3-14 años): <strong>2 €</strong></p>
+                <p>Infantes Menores de 3: <strong>Entrada Libre</strong></p>
+                <p>🏠 <strong>Hijos de la Villa</strong><br>Acceso Gratuito</p>
+                <a href="https://www.instagram.com/ayuntamientodevillarquemado/"
+                   target="_blank" class="btn-action">
+                    📸 Visita nuestro Instagram
+                </a>
+            </div>
+        </div>
+        <div class="inv-footer">La magia os espera...</div>
+    </div>
+</div>
+
+<script>
+/* ── CURSOR MÁGICO ── */
+const cursor = document.getElementById('magic-cursor');
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top  = mouseY + 'px';
+
+    // Trail
+    const dot = document.createElement('div');
+    dot.className = 'trail-dot';
+    dot.style.left = mouseX + 'px';
+    dot.style.top  = mouseY + 'px';
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 500);
+});
+
+document.querySelectorAll('button, a, .map-pin').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+});
+
+/* ── DATOS ── */
+const videos = [
+    { file: "cerdito.mp4",      name: "Los Tres Cerditos" },
+    { file: "ratoncito.mp4",    name: "Ratoncito Pérez" },
+    { file: "conejo.mp4",       name: "El Conejo" },
+    { file: "hada.mp4",         name: "El Hada" },
+    { file: "patitofeo.mp4",    name: "El Patito Feo" },
+    { file: "pozo.mp4",         name: "El Pozo" },
+    { file: "hanselgretel.mp4", name: "Hansel y Gretel" },
+    { file: "buho.mp4",         name: "El Búho" },
+    { file: "peon.mp4",         name: "El Peón" },
+    { file: "caperucita.mp4",   name: "Caperucita" },
+    { file: "enano.mp4",        name: "Blancanieves" },
+    { file: "ratita.mp4",       name: "La Ratita" },
+    { file: "peterpan.mp4",     name: "Peter Pan" },
+    { file: "cenicienta.mp4",   name: "Cenicienta" },
+    { file: "oz.mp4",           name: "El Mago de Oz" },
+    { file: "pinocho.mp4",      name: "Pinocho" },
+    { file: "rapunzel.mp4",     name: "Rapunzel" },
+    { file: "ricitos.mp4",      name: "Ricitos de Oro" }
+];
+
+// Total de "páginas dobles": 1 portada + ceil(videos/2) pares + 1 cierre
+const totalSpreads = 1 + Math.ceil(videos.length / 2) + 1;
+let pagesTurned = 0;
+let isAnimating  = false;
+
+const flipPage   = document.getElementById('flipPage');
+const flipFront  = document.getElementById('flipFront');
+const flipBack   = document.getElementById('flipBack');
+const leftPage   = document.getElementById('leftPage');
+const rightPage  = document.getElementById('rightPage');
+const btnPrev    = document.getElementById('btnPrev');
+const btnNext    = document.getElementById('btnNext');
+const counter    = document.getElementById('counter');
+const flash      = document.getElementById('page-flash');
+
+/* ── HTML DE PÁGINAS ESPECIALES ── */
+function coverHTML() {
+    return `
+      <div class="cover-page-content">
+        <span class="butterfly" style="top:10%;left:10%">🦋</span>
+        <div class="cover-village">✦ Villarquemado ✦</div>
+        <div class="cover-divider"></div>
+        <div class="cover-ornament">🌿</div>
+        <div class="cover-title">Un Paseo<br>de Cuento</div>
+        <div class="cover-ornament" style="animation-delay:1s">📖</div>
+        <div class="cover-subtitle">Descubre los personajes<br>que habitan el parque</div>
+        <div class="cover-divider"></div>
+        <div class="cover-characters">🐷 🐰 🧚 🦆</div>
+        <div class="cover-characters">🦉 🐭 🐺 ⭐</div>
+      </div>`;
+}
+
+function endingHTML() {
+    return `
+      <div class="ending-page-content">
+        <div class="ending-stars">✨</div>
+        <div class="ending-title">Fin del Cuento</div>
+        <div class="cover-divider" style="width:60%;height:1px;background:linear-gradient(to right,transparent,#d4a843,transparent);margin:8px auto"></div>
+        <p class="ending-text">
+          Cada personaje tiene una historia<br>que contarte entre los árboles.<br>
+          <em>¡Ven a descubrirla!</em>
+        </p>
+        <div class="ending-hearts">💛 💛 💛</div>
+        <div class="cover-ornament" style="font-size:1.4rem;margin-top:6px">🌿 📖 🌿</div>
+      </div>`;
+}
+
+function videoPageHTML(idx, position) {
+    if (idx < 0 || idx >= videos.length) return '<div style="width:100%;height:100%"></div>';
+    const id = `vid-${position}-${idx}`;
+    return `
+      <video class="page-video" id="${id}" controls playsinline src="${videos[idx].file}"></video>
+      <p class="page-label">${videos[idx].name}</p>
+      <span class="page-number">${idx + 1} / ${videos.length}</span>`;
+}
+
+/* ── CALCULAR ÍNDICES DE VÍDEO para un spread ── */
+// spread 0 = portada
+// spread 1..N = pares de vídeos
+// spread last = cierre
+function getVideoIndices(spread) {
+    if (spread === 0) return { left: null, right: null, leftSpecial: null, rightSpecial: 'cover' };
+    if (spread === totalSpreads - 1) return { left: null, right: null, leftSpecial: 'ending', rightSpecial: null };
+    const videoSpread = spread - 1; // 0-based para vídeos
+    const leftIdx  = videoSpread * 2;
+    const rightIdx = videoSpread * 2 + 1;
+    return {
+        left:  leftIdx  < videos.length ? leftIdx  : null,
+        right: rightIdx < videos.length ? rightIdx : null,
+        leftSpecial: null, rightSpecial: null
+    };
+}
+
+/* ── RENDERIZAR SPREAD ── */
+function renderSpread() {
+    const info = getVideoIndices(pagesTurned);
+
+    // Página izquierda
+    if (info.leftSpecial === 'ending') {
+        leftPage.innerHTML = endingHTML();
+    } else if (info.leftSpecial === null && info.left !== null) {
+        leftPage.innerHTML = videoPageHTML(info.left, 'L');
+    } else {
+        leftPage.innerHTML = '<div></div>';
+    }
+
+    // Página derecha
+    if (info.rightSpecial === 'cover') {
+        rightPage.innerHTML = coverHTML();
+    } else if (info.rightSpecial === null && info.right !== null) {
+        rightPage.innerHTML = videoPageHTML(info.right, 'R');
+    } else {
+        rightPage.innerHTML = '<div></div>';
+    }
+
+    // Botones
+    btnPrev.disabled = pagesTurned === 0;
+    btnNext.disabled = pagesTurned >= totalSpreads - 1;
+
+    // Contador
+    if (pagesTurned === 0) {
+        counter.textContent = 'Portada del libro';
+    } else if (pagesTurned === totalSpreads - 1) {
+        counter.textContent = 'Última página';
+    } else {
+        const l = (pagesTurned - 1) * 2;
+        const r = l + 1;
+        if (r < videos.length) {
+            counter.textContent = `Personajes ${l+1} y ${r+1} de ${videos.length}`;
+        } else {
+            counter.textContent = `Personaje ${l+1} de ${videos.length}`;
+        }
+    }
+
+    updateProgress();
+}
+
+/* ── PROGRESO ── */
+function buildProgress() {
+    const pb = document.getElementById('progressBar');
+    pb.innerHTML = '';
+    for (let i = 0; i < totalSpreads; i++) {
+        const d = document.createElement('div');
+        d.className = 'progress-dot';
+        d.title = i === 0 ? 'Portada' : i === totalSpreads-1 ? 'Final' : `Pág. ${i}`;
+        d.addEventListener('click', () => jumpToSpread(i));
+        d.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+        d.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        pb.appendChild(d);
+    }
+}
+function updateProgress() {
+    const dots = document.querySelectorAll('.progress-dot');
+    dots.forEach((d, i) => {
+        d.classList.remove('active','done');
+        if (i === pagesTurned) d.classList.add('active');
+        else if (i < pagesTurned) d.classList.add('done');
+    });
+}
+function jumpToSpread(target) {
+    if (isAnimating || target === pagesTurned) return;
+    if (target > pagesTurned) {
+        const steps = target - pagesTurned;
+        let i = 0;
+        function doNext() {
+            if (i++ < steps) { nextPage(); setTimeout(doNext, 950); }
+        }
+        doNext();
+    } else {
+        const steps = pagesTurned - target;
+        let i = 0;
+        function doPrev() {
+            if (i++ < steps) { prevPage(); setTimeout(doPrev, 950); }
+        }
+        doPrev();
+    }
+}
+
+/* ── FLIP ANIMACIÓN ── */
+function doFlash() {
+    flash.classList.add('flash');
+    setTimeout(() => flash.classList.remove('flash'), 300);
+}
+
+function buildFlipContent(frontIdx, frontSpecial, backIdx, backSpecial) {
+    if (frontSpecial === 'cover') {
+        flipFront.innerHTML = coverHTML();
+    } else if (frontIdx !== null && frontIdx !== undefined && frontIdx >= 0 && frontIdx < videos.length) {
+        flipFront.innerHTML = videoPageHTML(frontIdx, 'FF');
+    } else {
+        flipFront.innerHTML = '<div></div>';
+    }
+
+    if (backSpecial === 'ending') {
+        flipBack.innerHTML = endingHTML();
+    } else if (backIdx !== null && backIdx !== undefined && backIdx >= 0 && backIdx < videos.length) {
+        flipBack.innerHTML = videoPageHTML(backIdx, 'FB');
+    } else {
+        flipBack.innerHTML = '<div></div>';
+    }
+}
+
+function nextPage() {
+    if (isAnimating || pagesTurned >= totalSpreads - 1) return;
+    isAnimating = true;
+    doFlash();
+
+    // Lo que hay ahora en la derecha va al frente del flip
+    const currentSpread = pagesTurned;
+    const nextSpread    = pagesTurned + 1;
+    const cur = getVideoIndices(currentSpread);
+    const nxt = getVideoIndices(nextSpread);
+
+    // Frente = página derecha actual, Atrás = página izquierda del siguiente spread
+    if (currentSpread === 0) {
+        // Portada está en la derecha; al pasar, el frente del flip es la portada y el atrás el left del siguiente
+        flipFront.innerHTML = coverHTML();
+        if (nxt.leftSpecial === 'ending') flipBack.innerHTML = endingHTML();
+        else if (nxt.left !== null) flipBack.innerHTML = videoPageHTML(nxt.left, 'FB');
+        else flipBack.innerHTML = '<div></div>';
+    } else {
+        // frente = right de current spread
+        if (cur.rightSpecial === 'cover') flipFront.innerHTML = coverHTML();
+        else if (cur.right !== null) flipFront.innerHTML = videoPageHTML(cur.right, 'FF');
+        else flipFront.innerHTML = '<div></div>';
+        // atrás = left de next spread
+        if (nxt.leftSpecial === 'ending') flipBack.innerHTML = endingHTML();
+        else if (nxt.left !== null) flipBack.innerHTML = videoPageHTML(nxt.left, 'FB');
+        else flipBack.innerHTML = '<div></div>';
+    }
+
+    flipPage.style.display = 'block';
+    flipPage.style.transition = 'none';
+    flipPage.classList.remove('flipping');
+    void flipPage.offsetWidth;
+    flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
+    flipPage.classList.add('flipping');
+
+    setTimeout(() => { pagesTurned++; renderSpread(); }, 450);
+    setTimeout(() => { isAnimating = false; flipPage.style.display = 'none'; }, 900);
+}
+
+function prevPage() {
+    if (isAnimating || pagesTurned === 0) return;
+    isAnimating = true;
+    doFlash();
+
+    const currentSpread = pagesTurned;
+    const prevSpread    = pagesTurned - 1;
+    const cur = getVideoIndices(currentSpread);
+    const prv = getVideoIndices(prevSpread);
+
+    // Frente = página izquierda actual, Atrás = página derecha del spread anterior
+    if (cur.leftSpecial === 'ending') flipFront.innerHTML = endingHTML();
+    else if (cur.left !== null) flipFront.innerHTML = videoPageHTML(cur.left, 'FF');
+    else flipFront.innerHTML = '<div></div>';
+
+    if (prevSpread === 0) {
+        flipBack.innerHTML = coverHTML();
+    } else {
+        if (prv.rightSpecial === 'cover') flipBack.innerHTML = coverHTML();
+        else if (prv.right !== null) flipBack.innerHTML = videoPageHTML(prv.right, 'FB');
+        else flipBack.innerHTML = '<div></div>';
+    }
+
+    flipPage.style.display = 'block';
+    flipPage.style.transition = 'none';
+    flipPage.classList.add('flipping');
+    void flipPage.offsetWidth;
+    flipPage.style.transition = 'transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1)';
+    flipPage.classList.remove('flipping');
+
+    setTimeout(() => { pagesTurned--; renderSpread(); }, 450);
+    setTimeout(() => { isAnimating = false; flipPage.style.display = 'none'; }, 900);
+}
+
+buildProgress();
+renderSpread();
+
+/* ── PARTÍCULAS ── */
+const particleContainer = document.getElementById('particles');
+const emojis = ['🍃','✨','🌸','🍂','🌿'];
+function spawnParticle() {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    const dur = Math.random() * 6 + 8;
+    el.style.animationDuration = dur + 's';
+    particleContainer.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000);
+}
+setInterval(spawnParticle, 700);
+
+/* ── ESTRELLAS ── */
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 1;
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}vw;top:${Math.random()*100}vh;--d:${Math.random()*3+2}s;`;
+    starsContainer.appendChild(s);
+}
+
+/* ── FADE-IN OBSERVER ── */
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+const invEl = document.getElementById('invitation');
+new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { invEl.classList.add('visible'); } });
+}, { threshold: 0.1 }).observe(invEl);
+
+setTimeout(() => {
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+    });
+}, 100);
+
+/* ── TECLADO ── */
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextPage();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prevPage();
+});
+</script>
+
+</body>
+</html>

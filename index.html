@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Nueva paleta adaptada a la ilustración del bosque */
+            /* Paleta adaptada al bosque ilustrado */
             --bosque-oscuro: #0a1a0a;
             --bosque-magico: #1a3a1a;
             --oro-teatro: #d4af37;
@@ -16,6 +16,7 @@
             --rojo-vivo: #a80000;
             --texto-claro: #fdfaf0;
             --sombra-magica: 0 0 20px rgba(212, 175, 55, 0.4);
+            --modal-bg: rgba(0, 0, 0, 0.9);
         }
 
         * {
@@ -32,701 +33,266 @@
             background-color: var(--bosque-oscuro);
         }
 
-        /* FONDO ILUSTRADO FIJO CON TU IMAGEN */
+        /* FONDO ILUSTRADO FIJO */
         .bg-illustration {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0;
             background-image: url('fondo.png');
             background-size: cover;
             background-position: center bottom;
             background-attachment: fixed;
-            /* Potenciamos los colores vivos de tu ilustración */
             filter: saturate(1.2) contrast(1.05);
         }
 
-        /* Capa de oscurecimiento (Gradient) para legibilidad */
         .bg-illustration::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Transparente arriba para ver la luz, oscuro abajo para leer textos */
+            top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(10, 26, 10, 0.1), rgba(10, 26, 10, 0.6) 50%, rgba(5, 15, 5, 0.95) 100%);
             z-index: 1;
         }
 
         /* Partículas: Polvo de hadas y motas de luz */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-        }
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+        .star { position: absolute; background: rgba(255, 250, 200, 0.8); border-radius: 50%; box-shadow: 0 0 5px rgba(255, 250, 200, 0.5); animation: twinkle 4s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1) translateY(0); } 50% { opacity: 1; transform: scale(1.3) translateY(-5px); } }
 
-        .star {
-            position: absolute;
-            background: rgba(255, 250, 200, 0.8); /* Tono más cálido para el día */
-            border-radius: 50%;
-            box-shadow: 0 0 5px rgba(255, 250, 200, 0.5);
-            animation: twinkle 4s ease-in-out infinite;
-        }
+        /* Luciérnagas */
+        .firefly { position: fixed; width: 5px; height: 5px; background: var(--oro-brillo); border-radius: 50%; box-shadow: 0 0 12px var(--oro-brillo), 0 0 25px var(--oro-brillo); animation: floatup 12s linear infinite, blink 3s ease-in-out infinite; pointer-events: none; z-index: 3; }
+        @keyframes floatup { 0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; } 10% { opacity: 1; transform: translateY(90vh) translateX(20px) scale(1); } 90% { opacity: 1; } 100% { transform: translateY(-10vh) translateX(-20px) scale(0); opacity: 0; } }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1) translateY(0); }
-            50% { opacity: 1; transform: scale(1.3) translateY(-5px); }
-        }
-
-        /* Luciérnagas / Brillos mayores */
-        .firefly {
-            position: fixed;
-            width: 5px;
-            height: 5px;
-            background: var(--oro-brillo);
-            border-radius: 50%;
-            box-shadow: 0 0 12px var(--oro-brillo), 0 0 25px var(--oro-brillo);
-            animation: floatup 12s linear infinite, blink 3s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 3;
-        }
-
-        @keyframes floatup {
-            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
-            10% { opacity: 1; transform: translateY(90vh) translateX(20px) scale(1); }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) translateX(-20px) scale(0); opacity: 0; }
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        h1, h2, h3 { 
-            font-family: 'Cinzel', serif;
-            color: var(--oro-teatro); 
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
-        }
+        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--oro-teatro); text-shadow: 2px 2px 6px rgba(0,0,0,0.9); }
 
         /* Divisores Mágicos */
-        .magic-divider {
-            width: 100%;
-            height: 60px;
-            position: relative;
-            margin: 60px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-        }
-
-        .magic-divider::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, var(--oro-teatro), transparent);
-            animation: glow 2s ease-in-out infinite;
-        }
-
-        .magic-divider::after {
-            content: '✦';
-            font-size: 2rem;
-            color: var(--oro-brillo);
-            text-shadow: 0 0 20px var(--oro-brillo);
-            padding: 0 20px;
-            z-index: 1;
-            animation: rotate 4s linear infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; box-shadow: 0 0 20px var(--oro-teatro); }
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .magic-divider { width: 100%; height: 60px; position: relative; margin: 60px 0; display: flex; align-items: center; justify-content: center; z-index: 10; }
+        .magic-divider::before { content: ''; position: absolute; width: 100%; height: 2px; background: linear-gradient(to right, transparent, var(--oro-teatro), transparent); animation: glow 2s ease-in-out infinite; }
+        .magic-divider::after { content: '✦'; font-size: 2rem; color: var(--oro-brillo); text-shadow: 0 0 20px var(--oro-brillo); padding: 0 20px; z-index: 1; animation: rotate 4s linear infinite; }
+        @keyframes glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; box-shadow: 0 0 20px var(--oro-teatro); } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* Botones Principales */
-        .btn-magic {
-            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro));
-            color: #111;
-            border: 3px solid #fff;
-            padding: 18px 45px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: var(--sombra-magica), 0 5px 15px rgba(0,0,0,0.6);
-            transition: all 0.4s ease;
-            text-decoration: none;
-            display: inline-block;
-            font-family: 'Cinzel', serif;
-            position: relative;
-            z-index: 10;
-            overflow: hidden;
-        }
+        .btn-magic { background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro)); color: #111; border: 3px solid #fff; padding: 18px 45px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: var(--sombra-magica), 0 5px 15px rgba(0,0,0,0.6); transition: all 0.4s ease; text-decoration: none; display: inline-block; font-family: 'Cinzel', serif; position: relative; z-index: 10; overflow: hidden; }
+        .btn-magic::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.4); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s; }
+        .btn-magic:hover::before { width: 300px; height: 300px; }
+        .btn-magic:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(255, 229, 92, 0.8), 0 0 50px rgba(255, 229, 92, 0.4); border-color: var(--oro-brillo); }
 
-        .btn-magic::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
+        /* Header Hero */
+        header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; position: relative; z-index: 10; }
+        .title-pop { font-size: clamp(3rem, 10vw, 7rem); margin: 0; color: #fff; text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro), 0 0 60px var(--bosque-magico); animation: latidoMagico 3s ease-in-out infinite; letter-spacing: 5px; position: relative; }
+        @keyframes latidoMagico { 0%, 100% { text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro), 0 0 60px var(--bosque-oscuro); transform: scale(1); } 50% { text-shadow: 0 0 30px var(--oro-brillo), 0 0 60px var(--oro-teatro), 0 0 90px var(--oro-brillo); transform: scale(1.02); } }
+        .subtitle { font-size: clamp(1.2rem, 4vw, 2rem); margin: 20px 0 40px; color: var(--oro-brillo); font-family: 'Cinzel', serif; letter-spacing: 3px; opacity: 0; text-shadow: 0 4px 12px rgba(0,0,0,0.9); animation: fadeInUp 1s ease forwards 0.5s; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
+        .scroll-indicator::before { content: '↓'; font-size: 2rem; color: var(--oro-brillo); text-shadow: 0 0 10px var(--bosque-oscuro); }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
 
-        .btn-magic:hover::before {
-            width: 300px;
-            height: 300px;
-        }
 
-        .btn-magic:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 229, 92, 0.8), 0 0 50px rgba(255, 229, 92, 0.4);
-            border-color: var(--oro-brillo);
-        }
-
-        /* 1. Header Hero */
-        header {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .title-pop {
-            font-size: clamp(3rem, 10vw, 7rem);
-            margin: 0;
-            color: #fff;
-            text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro), 0 0 60px var(--bosque-magico);
-            animation: latidoMagico 3s ease-in-out infinite;
-            letter-spacing: 5px;
-            position: relative;
-        }
-
-        @keyframes latidoMagico {
-            0%, 100% { 
-                text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro), 0 0 60px var(--bosque-oscuro);
-                transform: scale(1);
-            }
-            50% { 
-                text-shadow: 0 0 30px var(--oro-brillo), 0 0 60px var(--oro-teatro), 0 0 90px var(--oro-brillo);
-                transform: scale(1.02);
-            }
-        }
-
-        .subtitle {
-            font-size: clamp(1.2rem, 4vw, 2rem);
-            margin: 20px 0 40px;
-            color: var(--oro-brillo);
-            font-family: 'Cinzel', serif;
-            letter-spacing: 3px;
-            opacity: 0;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.9);
-            animation: fadeInUp 1s ease forwards 0.5s;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator::before {
-            content: '↓';
-            font-size: 2rem;
-            color: var(--oro-brillo);
-            text-shadow: 0 0 10px var(--bosque-oscuro);
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
-        }
-
-        /* 2. Teatro y Cartelera */
-        .theater-section {
+        /* ========================================= */
+        /* NUEVA SECCIÓN: NAVEGACIÓN POR MAPA */
+        /* ========================================= */
+        .map-navigation {
             padding: 80px 20px;
             text-align: center;
-            position: relative;
-            z-index: 10;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-intro {
-            max-width: 700px;
-            margin: 0 auto 50px;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #eee;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-        }
-
-        /* Cartelera de Programación */
-        .marquee-board {
-            /* Ajustado a verde oscuro de bosque */
-            background: linear-gradient(135deg, rgba(10, 20, 10, 0.95), rgba(20, 35, 20, 0.95));
-            backdrop-filter: blur(5px);
-            border: 10px solid var(--oro-teatro);
-            border-radius: 20px 20px 0 0;
-            padding: 30px;
-            margin: 0 auto 0;
-            box-shadow: inset 0 0 30px #000, 0 0 40px rgba(212, 175, 55, 0.6);
-            position: relative;
-        }
-
-        .marquee-board::before {
-            content: '';
-            position: absolute;
-            top: -15px; left: -15px; right: -15px; bottom: -15px;
-            border: 4px dotted var(--oro-brillo);
-            border-radius: 25px 25px 0 0;
-            pointer-events: none;
-            animation: parpadeoLuces 1.5s infinite alternate;
-        }
-
-        @keyframes parpadeoLuces {
-            from { opacity: 0.4; filter: blur(1px); }
-            to { opacity: 1; filter: blur(0); }
-        }
-
-        .marquee-title {
-            color: var(--oro-brillo);
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.5rem, 4vw, 2.2rem);
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            border-bottom: 3px solid var(--oro-teatro);
-            display: inline-block;
-            padding-bottom: 10px;
-            position: relative;
-        }
-
-        .marquee-title::before, .marquee-title::after {
-            content: '✦';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--oro-brillo);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .marquee-title::before { left: -40px; }
-        .marquee-title::after { right: -40px; }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .video-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .video-selector::-webkit-scrollbar { width: 10px; }
-        .video-selector::-webkit-scrollbar-track { 
-            background: rgba(10, 20, 10, 0.5); 
-            border-radius: 5px; 
-            border: 1px solid #222;
-        }
-        .video-selector::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, var(--oro-brillo), var(--oro-teatro)); 
-            border-radius: 5px;
-        }
-
-        .selector-item {
-            background: linear-gradient(135deg, rgba(20, 35, 20, 0.8), rgba(30, 50, 30, 0.8));
-            color: #eee;
-            padding: 15px 10px;
-            border: 2px solid #3a5a3a;
-            border-radius: 10px;
-            cursor: pointer;
-            font-family: 'Fredoka', sans-serif;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .selector-item::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 229, 92, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .selector-item:hover::before { left: 100%; }
-
-        .selector-item:hover {
-            background: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo));
-            color: #000;
-            border-color: var(--oro-brillo);
-            box-shadow: 0 5px 20px rgba(255, 229, 92, 0.4);
-            transform: scale(1.08) translateY(-3px);
-        }
-
-        .selector-item.active {
-            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro));
-            color: #000;
-            border-color: #fff;
-            box-shadow: 0 0 25px var(--oro-brillo), inset 0 0 15px rgba(255, 255, 255, 0.5);
-            transform: scale(1.05);
-        }
-
-        /* Escenario */
-        .stage-container {
-            position: relative;
-            background: #000;
-            border: 25px solid;
-            border-image: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo), var(--oro-teatro)) 1;
-            border-top: none;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.3);
-        }
-
-        .stage-container::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: 50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(ellipse at center, rgba(255, 229, 92, 0.15) 0%, transparent 50%);
-            transform: translateX(-50%);
-            pointer-events: none;
-            z-index: 5;
-            animation: spotlight 5s ease-in-out infinite;
-        }
-
-        @keyframes spotlight {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        .curtain {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, 
-                var(--rojo-telon) 0%, var(--rojo-vivo) 10%, 
-                var(--rojo-telon) 20%, var(--rojo-vivo) 30%, 
-                var(--rojo-telon) 40%, var(--rojo-vivo) 50%, 
-                var(--rojo-telon) 60%, var(--rojo-vivo) 70%, 
-                var(--rojo-telon) 80%, var(--rojo-vivo) 90%, 
-                var(--rojo-telon) 100%);
-            z-index: 10;
-            transition: transform 2s cubic-bezier(0.645, 0.045, 0.355, 1);
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
-        }
-        
-        .curtain-left { 
-            left: 0; 
-            border-right: 8px solid rgba(0,0,0,0.6); 
-            transform-origin: left top;
-        }
-        
-        .curtain-right { 
-            right: 0; 
-            border-left: 8px solid rgba(0,0,0,0.6); 
-            transform-origin: right top;
-        }
-
-        .curtain::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
-        }
-
-        .stage-container.open .curtain-left { transform: translateX(-105%) rotateY(10deg); }
-        .stage-container.open .curtain-right { transform: translateX(105%) rotateY(-10deg); }
-
-        #main-video { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-        }
-
-        /* 3. Info General */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            padding: 80px 5%;
             position: relative;
             z-index: 10;
             max-width: 1400px;
             margin: 0 auto;
         }
-        
-        .info-card {
-            /* Tonos verdes musgo y oscuros acordes a tu imagen */
-            background: linear-gradient(135deg, rgba(15, 30, 15, 0.8), rgba(20, 40, 20, 0.9));
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid rgba(212, 175, 55, 0.4);
-            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.1), 
-                        0 15px 40px rgba(0,0,0,0.8),
-                        0 0 50px rgba(212, 175, 55, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+        .map-wrapper {
             position: relative;
-            overflow: hidden;
+            display: inline-block;
+            border: 12px solid var(--oro-teatro);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9), var(--sombra-magica);
+            overflow: hidden; /* Para que los puntos no salgan */
         }
 
-        .info-card::before {
+        .map-wrapper img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            filter: brightness(0.9) contrast(1.1);
+        }
+
+        /* Puntos interactivos en el mapa */
+        .map-point {
+            position: absolute;
+            width: clamp(25px, 4vw, 40px); /* Tamaño responsive */
+            height: clamp(25px, 4vw, 40px);
+            background: radial-gradient(circle, var(--oro-brillo) 0%, var(--oro-teatro) 100%);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--oro-brillo), 0 0 30px rgba(255, 229, 92, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #111;
+            font-weight: 800;
+            font-size: clamp(0.8rem, 2vw, 1.2rem);
+            font-family: 'Cinzel', serif;
+        }
+
+        .map-point:hover {
+            transform: scale(1.3) translateY(-5px);
+            box-shadow: 0 0 25px var(--oro-brillo), 0 0 50px var(--oro-brillo);
+        }
+
+        /* Animación de pulso para los puntos */
+        .map-point::after {
             content: '';
             position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255, 229, 92, 0.1) 0%, transparent 70%);
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 2px solid var(--oro-brillo);
+            border-radius: 50%;
             opacity: 0;
-            transition: opacity 0.4s;
+            animation: puntoPulso 2s infinite;
         }
 
-        .info-card:hover::before { opacity: 1; }
-
-        .info-card:hover { 
-            transform: translateY(-15px) scale(1.02);
-            border-color: var(--oro-brillo);
-            box-shadow: inset 0 0 40px rgba(255, 229, 92, 0.15), 
-                        0 20px 50px rgba(0,0,0,0.9),
-                        0 0 60px rgba(255, 229, 92, 0.3);
+        @keyframes puntoPulso {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
         }
 
-        .info-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            color: var(--oro-brillo);
-        }
-
-        .info-card ul { 
-            padding-left: 25px; 
-            line-height: 2;
-            font-size: 1.05rem;
-        }
-        
-        .special-poster {
-            border: 3px dashed var(--oro-brillo);
-            padding: 20px;
-            margin-top: 20px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 229, 92, 0.05));
-            border-radius: 10px;
-            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.2);
-        }
-
-        /* 4. Mapa */
-        .map-section {
-            padding: 80px 20px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .map-section h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 50px;
-        }
-
-        .map-container {
-            max-width: 900px;
-            margin: 0 auto;
-            border: 12px solid var(--oro-teatro);
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(10,20,10,0.8), rgba(15,30,15,0.9));
-            backdrop-filter: blur(8px);
-            border-radius: 15px;
-            box-shadow: var(--sombra-magica), 0 20px 50px rgba(0,0,0,0.9);
-            transform: perspective(1000px) rotateY(-2deg);
-            transition: all 0.5s ease;
-        }
-
-        .map-container:hover { 
-            transform: perspective(1000px) rotateY(0deg) scale(1.02);
-            box-shadow: 0 0 60px rgba(212, 175, 55, 0.5), 0 25px 60px rgba(0,0,0,1);
-        }
-
-        .map-container img { 
-            width: 100%; 
-            border-radius: 8px; 
-            display: block;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-        }
-
-        /* 5. Making Off */
-        .making-off {
-            padding: 100px 20px;
-            background: linear-gradient(180deg, rgba(10,20,10,0.6), rgba(5,10,5,0.98));
-            border-top: 3px solid var(--oro-teatro);
-            position: relative;
-            z-index: 10;
-        }
-
-        .making-off h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .making-off > p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            text-align: center;
-            max-width: 750px;
-            margin: 0 auto 50px;
-            color: #ddd;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.9);
-        }
-
-        .carousel {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            overflow: hidden;
-            border: 6px solid var(--oro-teatro);
-            border-radius: 15px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 60px rgba(212, 175, 55, 0.2);
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        .carousel-slide {
-            min-width: 100%;
-            position: relative;
-        }
-
-        .carousel-slide img { 
-            width: 100%; 
-            display: block;
-            filter: brightness(0.9);
-            transition: filter 0.3s;
-        }
-
-        .carousel:hover .carousel-slide img { filter: brightness(1); }
-
-        .caption {
+        /* Etiquetas flotantes sobre los puntos */
+        .point-label {
             position: absolute;
-            bottom: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.95));
-            width: 100%;
-            padding: 40px 20px 20px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 1.1rem;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--bosque-magico), var(--bosque-oscuro));
             color: var(--oro-brillo);
-            box-sizing: border-box;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--oro-teatro);
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
         }
 
-        .carousel-controls {
-            text-align: center;
-            margin-top: 40px;
-            gap: 25px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+        .map-point:hover .point-label {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
         }
+
+        /* ========================================= */
+        /* NUEVA SECCIÓN: VENTANA MÁGICA (MODAL) */
+        /* ========================================= */
+        .video-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--modal-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            padding: 20px;
+        }
+
+        .video-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            /* El truco clave: ancho y alto máximos flexibles */
+            max-width: 90%; 
+            max-height: 90%;
+            border: 10px solid;
+            border-image: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo), var(--oro-teatro)) 1;
+            box-shadow: 0 30px 90px #000, 0 0 60px rgba(212, 175, 55, 0.5);
+            background: #000;
+            border-radius: 10px; /* Nota: border-image puede anular esto en algunos navegadores */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modal-video {
+            /* Mantiene su relación de aspecto sin cortar */
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        /* Botón de cerrar modal */
+        .close-modal {
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--rojo-vivo), var(--rojo-telon));
+            color: #fff;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            font-size: 2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            z-index: 1010;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: var(--rojo-vivo);
+        }
+
+        /* Info General */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; padding: 80px 5%; position: relative; z-index: 10; max-width: 1400px; margin: 0 auto; }
+        .info-card { background: linear-gradient(135deg, rgba(15, 30, 15, 0.8), rgba(20, 40, 20, 0.9)); backdrop-filter: blur(12px); padding: 40px; border-radius: 20px; border: 2px solid rgba(212, 175, 55, 0.4); box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.1), 0 15px 40px rgba(0,0,0,0.8), 0 0 50px rgba(212, 175, 55, 0.1); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .info-card h3 { font-size: 1.8rem; margin-bottom: 20px; color: var(--oro-brillo); }
+        .info-card ul { padding-left: 25px; line-height: 2; font-size: 1.05rem; }
+        .special-poster { border: 3px dashed var(--oro-brillo); padding: 20px; margin-top: 20px; background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 229, 92, 0.05)); border-radius: 10px; box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.2); }
+
+        /* Making Off */
+        .making-off { padding: 100px 20px; background: linear-gradient(180deg, rgba(10,20,10,0.6), rgba(5,10,5,0.98)); border-top: 3px solid var(--oro-teatro); position: relative; z-index: 10; }
+        .making-off h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 30px; text-align: center; }
+        .making-off > p { font-size: 1.1rem; line-height: 1.8; text-align: center; max-width: 750px; margin: 0 auto 50px; color: #ddd; text-shadow: 0 2px 5px rgba(0,0,0,0.9); }
+        .carousel { position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border: 6px solid var(--oro-teatro); border-radius: 15px; box-shadow: 0 25px 50px rgba(0,0,0,0.9), 0 0 60px rgba(212, 175, 55, 0.2); }
+        .carousel-track { display: flex; transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .carousel-slide { min-width: 100%; position: relative; }
+        .carousel-slide img { width: 100%; display: block; filter: brightness(0.9); transition: filter 0.3s; }
+        .carousel:hover .carousel-slide img { filter: brightness(1); }
+        .caption { position: absolute; bottom: 0; background: linear-gradient(transparent, rgba(0,0,0,0.95)); width: 100%; padding: 40px 20px 20px; text-align: center; font-weight: 600; font-size: 1.1rem; color: var(--oro-brillo); box-sizing: border-box; }
+        .carousel-controls { text-align: center; margin-top: 40px; gap: 25px; display: flex; justify-content: center; flex-wrap: wrap; }
 
         /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(5, 10, 5, 1);
-            border-top: 2px solid var(--oro-teatro);
-            position: relative;
-            z-index: 10;
-        }
-
-        footer p {
-            color: #999;
-            font-size: 0.9rem;
-        }
+        footer { text-align: center; padding: 40px 20px; background: rgba(5, 10, 5, 1); border-top: 2px solid var(--oro-teatro); position: relative; z-index: 10; }
+        footer p { color: #999; font-size: 0.9rem; }
 
         /* Responsive */
         @media (max-width: 768px) {
             .title-pop { font-size: 3rem; }
             .subtitle { font-size: 1.2rem; }
-            
-            .video-selector {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 10px;
-                max-height: 250px;
-            }
-            
-            .selector-item {
-                padding: 12px 8px;
-                font-size: 0.8rem;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-                padding: 40px 20px;
-            }
-            
-            .btn-magic {
-                padding: 15px 35px;
-                font-size: 1rem;
-            }
-
-            .marquee-title::before, .marquee-title::after { display: none; }
+            .info-grid { grid-template-columns: 1fr; padding: 40px 20px; }
+            .btn-magic { padding: 15px 35px; font-size: 1rem; }
+            .map-wrapper { border-width: 6px; }
+            .map-point { border-width: 2px; }
+            .modal-content { border-width: 5px; }
+            .close-modal { top: -15px; right: -15px; width: 35px; height: 35px; font-size: 1.5rem; border-width: 2px;}
         }
 
-        /* Animación de entrada para las cards */
-        .info-card {
-            opacity: 0;
-            animation: fadeInScale 0.6s ease forwards;
-        }
-
-        .info-card:nth-child(1) { animation-delay: 0.1s; }
-        .info-card:nth-child(2) { animation-delay: 0.2s; }
-        .info-card:nth-child(3) { animation-delay: 0.3s; }
-
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.9) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -736,14 +302,14 @@
     <div class="stars" id="stars"></div>
 
     <script>
-        // Generar motas de polen/luz cálida (reemplazando las antiguas estrellas frías)
+        // Generar motas de polen/luz cálida
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 80; i++) {
             let star = document.createElement('div');
             star.className = 'star';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
-            star.style.width = (Math.random() * 4 + 2) + 'px'; // Más grandecitas
+            star.style.width = (Math.random() * 4 + 2) + 'px'; 
             star.style.height = star.style.width;
             star.style.animationDelay = Math.random() * 4 + 's';
             star.style.animationDuration = (Math.random() * 4 + 3) + 's';
@@ -764,47 +330,91 @@
     <header>
         <h1 class="title-pop" data-text="Un paseo de Cuento">Un paseo de Cuento</h1>
         <p class="subtitle">Magia y aprendizaje en Villarquemado (Teruel)</p>
-        <a href="#teatro" class="btn-magic">¡Descubre el Reino!</a>
+        <a href="#mapa" class="btn-magic">¡Explora el Bosque!</a>
         <div class="scroll-indicator"></div>
     </header>
 
     <div class="magic-divider"></div>
 
-    <section id="teatro" class="theater-section">
-        <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px;">El Gran Teatro de Cuentos</h2>
-        <p class="section-intro">Bienvenidos al corazón mágico del parque. Selecciona tu obra favorita y disfruta de los cuentos que han maravillado a generaciones enteras.</p>
+    <section id="mapa" class="map-navigation">
+        <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px;">Explora las 18 Zonas Mágicas</h2>
+        <p class="section-intro">Haz clic en los puntos dorados del mapa para abrir una ventana mágica y descubrir el cuento que esconde cada rincón del parque.</p>
         
-        <div class="marquee-board">
-            <div class="marquee-title">Cartelera de Obras</div>
-            <div class="video-selector">
-                <div class="selector-item" onclick="playVideo('cenicienta.mp4', this)">La Cenicienta</div>
-                <div class="selector-item" onclick="playVideo('download1.mp4', this)">El Pozo Mágico</div>
-                <div class="selector-item" onclick="playVideo('cerdito.mp4', this)">Los Tres Cerditos</div>
-                <div class="selector-item" onclick="playVideo('caperucita.mp4', this)">Caperucita</div>
-                <div class="selector-item" onclick="playVideo('enano.mp4', this)">Los Enanitos</div>
-                <div class="selector-item" onclick="playVideo('buho.mp4', this)">El Búho Sabio</div>
-                <div class="selector-item" onclick="playVideo('pinocho.mp4', this)">Pinocho</div>
-                <div class="selector-item" onclick="playVideo('ricitos.mp4', this)">Ricitos de Oro</div>
-                <div class="selector-item" onclick="playVideo('conejo.mp4', this)">Conejo Blanco</div>
-                <div class="selector-item" onclick="playVideo('ratita.mp4', this)">Ratita Presumida</div>
-                <div class="selector-item" onclick="playVideo('peterpan.mp4', this)">Peter Pan</div>
-                <div class="selector-item" onclick="playVideo('ratoncito.mp4', this)">Ratoncito Pérez</div>
-                <div class="selector-item" onclick="playVideo('patitofeo.mp4', this)">El Patito Feo</div>
-                <div class="selector-item" onclick="playVideo('hanselgretel.mp4', this)">Hansel y Gretel</div>
-                <div class="selector-item" onclick="playVideo('oz.mp4', this)">Mago de Oz</div>
-                <div class="selector-item" onclick="playVideo('peon.mp4', this)">El Peón Loco</div>
-                <div class="selector-item" onclick="playVideo('hada.mp4', this)">El Hada Madrina</div>
-                <div class="selector-item" onclick="playVideo('rapunzel.mp4', this)">Rapunzel</div>
-            </div>
-        </div>
+        <div class="map-wrapper">
+            <img src="mapa.png" alt="Mapa del parque Un paseo de Cuento">
 
-        <div class="stage-container" id="stage">
-            <div class="curtain curtain-left"></div>
-            <div class="curtain curtain-right"></div>
-            <video id="main-video" poster="thumbnail-cuentos.jpg">
-                Tu navegador no soporta vídeos.
-            </video>
-        </div>
+            <div class="map-point" style="top: 20%; left: 15%;" onclick="openVideoModal('cenicienta.mp4', 'La Cenicienta')">
+                <span class="point-label">La Cenicienta</span>
+            </div>
+
+            <div class="map-point" style="top: 35%; left: 25%;" onclick="openVideoModal('pozo.mp4', 'El Pozo Mágico')">
+                <span class="point-label">El Pozo Mágico</span>
+            </div>
+
+            <div class="map-point" style="top: 15%; left: 50%;" onclick="openVideoModal('cerdito.mp4', 'Los Tres Cerditos')">
+                <span class="point-label">Los Tres Cerditos</span>
+            </div>
+
+            <div class="map-point" style="top: 50%; left: 10%;" onclick="openVideoModal('caperucita.mp4', 'Caperucita Roja')">
+                <span class="point-label">Caperucita Roja</span>
+            </div>
+            
+            <div class="map-point" style="top: 70%; left: 30%;" onclick="openVideoModal('enano.mp4', 'Los Enanitos')">
+                <span class="point-label">Los Enanitos</span>
+            </div>
+            
+            <div class="map-point" style="top: 40%; left: 60%;" onclick="openVideoModal('buho.mp4', 'El Búho Sabio')">
+                <span class="point-label">El Búho Sabio</span>
+            </div>
+            
+            <div class="map-point" style="top: 25%; left: 80%;" onclick="openVideoModal('pinocho.mp4', 'Pinocho')">
+                <span class="point-label">Pinocho</span>
+            </div>
+            
+            <div class="map-point" style="top: 60%; left: 85%;" onclick="openVideoModal('ricitos.mp4', 'Ricitos de Oro')">
+                <span class="point-label">Ricitos de Oro</span>
+            </div>
+            
+            <div class="map-point" style="top: 85%; left: 70%;" onclick="openVideoModal('conejo.mp4', 'El Conejo Blanco')">
+                <span class="point-label">El Conejo Blanco</span>
+            </div>
+            
+            <div class="map-point" style="top: 10%; left: 70%;" onclick="openVideoModal('ratita.mp4', 'La Ratita Presumida')">
+                <span class="point-label">La Ratita Presumida</span>
+            </div>
+            
+            <div class="map-point" style="top: 55%; left: 45%;" onclick="openVideoModal('peterpan.mp4', 'Peter Pan')">
+                <span class="point-label">Peter Pan</span>
+            </div>
+            
+            <div class="map-point" style="top: 80%; left: 15%;" onclick="openVideoModal('ratoncito.mp4', 'Ratoncito Pérez')">
+                <span class="point-label">Ratoncito Pérez</span>
+            </div>
+            
+            <div class="map-point" style="top: 30%; left: 35%;" onclick="openVideoModal('patitofeo.mp4', 'El Patito Feo')">
+                <span class="point-label">El Patito Feo</span>
+            </div>
+            
+            <div class="map-point" style="top: 5%; left: 30%;" onclick="openVideoModal('hanselgretel.mp4', 'Hansel y Gretel')">
+                <span class="point-label">Hansel y Gretel</span>
+            </div>
+            
+            <div class="map-point" style="top: 45%; left: 75%;" onclick="openVideoModal('oz.mp4', 'Mago de Oz')">
+                <span class="point-label">Mago de Oz</span>
+            </div>
+            
+            <div class="map-point" style="top: 90%; left: 40%;" onclick="openVideoModal('peon.mp4', 'El Peón Loco')">
+                <span class="point-label">El Peón Loco</span>
+            </div>
+            
+            <div class="map-point" style="top: 75%; left: 55%;" onclick="openVideoModal('hada.mp4', 'El Hada Madrina')">
+                <span class="point-label">El Hada Madrina</span>
+            </div>
+            
+            <div class="map-point" style="top: 15%; left: 90%;" onclick="openVideoModal('rapunzel.mp4', 'Rapunzel')">
+                <span class="point-label">Rapunzel</span>
+            </div>
+            </div>
     </section>
 
     <div class="magic-divider"></div>
@@ -830,15 +440,6 @@
         <div class="info-card">
             <h3>📜 Leyes del Reino</h3>
             <p style="line-height: 1.8; font-size: 1.05rem;">Respetar las construcciones temáticas, no subir a elementos no permitidos y mantener el entorno limpio para que la magia no desaparezca.</p>
-        </div>
-    </section>
-
-    <div class="magic-divider"></div>
-
-    <section class="map-section">
-        <h2>¿Cómo llegar a nuestro Reino?</h2>
-        <div class="map-container">
-            <img src="mapa.png" alt="Ubicación del parque Un paseo de Cuento">
         </div>
     </section>
 
@@ -871,6 +472,16 @@
         <p>© 2024 Un paseo de Cuento - Villarquemado, Teruel | Donde los sueños cobran vida ✨</p>
     </footer>
 
+
+    <div id="videoModal" class="video-modal" onclick="closeVideoModal()">
+        <div class="modal-content" onclick="event.stopPropagation()"> <button class="close-modal" onclick="closeVideoModal()">×</button>
+            <video id="modal-video" controls>
+                Tu navegador no soporta vídeos.
+            </video>
+        </div>
+    </div>
+
+
     <script>
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -883,55 +494,61 @@
             });
         });
 
-        // Lógica del Teatro (Vídeos)
-        const stage = document.getElementById('stage');
-        const video = document.getElementById('main-video');
-        const selectorItems = document.querySelectorAll('.selector-item');
+        // =========================================
+        // Lógica de la Ventana Mágica (Modal)
+        // =========================================
+        const modal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modal-video');
 
-        function playVideo(fileName, element) {
-            selectorItems.forEach(item => item.classList.remove('active'));
-            if(element) element.classList.add('active');
-
-            stage.classList.remove('open');
-            
-            setTimeout(() => {
-                video.src = fileName;
-                video.load();
-                
-                video.oncanplay = () => {
-                    stage.classList.add('open');
-                    video.play().catch(e => console.log("Autoplay bloqueado por el navegador"));
-                };
-            }, 2000);
+        function openVideoModal(fileName, title) {
+            modalVideo.src = fileName;
+            modalVideo.load();
+            modal.classList.add('open');
+            // Autoplay (opcional, puede ser bloqueado por navegadores)
+            modalVideo.play().catch(e => console.log("Autoplay bloqueado"));
         }
 
-        video.onended = () => {
-            stage.classList.remove('open');
-            selectorItems.forEach(item => item.classList.remove('active'));
-        };
+        function closeVideoModal() {
+            modal.classList.remove('open');
+            modalVideo.pause();
+            modalVideo.src = ""; // Resetea el video para detener la carga
+        }
+
+        // Cerrar modal con la tecla Esc
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && modal.classList.contains('open')) {
+                closeVideoModal();
+            }
+        });
+
 
         // Lógica Carrusel (Making Off)
         const track = document.getElementById('track');
         let index = 0;
 
         function updateCarousel() {
+            if (!track.querySelector('.carousel-slide')) return;
             const size = track.querySelector('.carousel-slide').clientWidth;
             track.style.transform = `translateX(${-index * size}px)`;
         }
 
         function nextSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
+            if (totalSlides === 0) return;
             index = (index + 1) % totalSlides;
             updateCarousel();
         }
 
         function prevSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
+            if (totalSlides === 0) return;
             index = (index - 1 + totalSlides) % totalSlides;
             updateCarousel();
         }
 
         window.addEventListener('resize', updateCarousel);
+        // Asegurar que el carrusel se posicione bien al cargar
+        window.addEventListener('load', updateCarousel);
 
         // Parallax suave en scroll (Luciérnagas)
         window.addEventListener('scroll', () => {

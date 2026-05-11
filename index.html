@@ -3,186 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feria del Cómic Villarquemado 197X</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <title>Un paseo de Cuento - Villarquemado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --cream: #f5f5dc;
-            --dark-cream: #e0d8b0;
-            --comic-red: #d22b2b;
-            --comic-blue: #2b5d8c;
-            --retro-black: #2d2d2d;
-            --wood: #5d4037;
+            --crema: #fdfaf0;
+            --lavanda: #9b89b3;
+            --amarillo: #ffdb58;
+            --texto: #4a3f35;
+            --sombra: rgba(0, 0, 0, 0.15);
         }
 
+        /* Estética General: Papel y Tiza */
         body {
-            background-color: var(--cream);
-            color: var(--retro-black);
-            font-family: 'Courier Prime', monospace;
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--crema);
+            background-image: url('https://www.transparenttextures.com/patterns/felt.png'); /* Textura granulada */
+            color: var(--texto);
+            overflow-x: hidden;
         }
 
-        header {
-            background-color: var(--comic-red);
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 5px solid var(--retro-black);
-            box-shadow: 0 10px 0 rgba(0,0,0,0.1);
-        }
+        h1, h2, h3 { color: var(--lavanda); font-weight: 600; }
 
-        h1, h2, h3 {
-            font-family: 'Bungee', cursive;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* --- CARRUSEL --- */
-        .carousel-container {
-            position: relative;
+        /* Divisores de Nubes */
+        .cloud-divider {
             width: 100%;
-            height: 400px;
-            overflow: hidden;
-            border: 4px solid var(--retro-black);
-            background: #000;
-            margin-bottom: 3rem;
+            height: 100px;
+            background: white;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            mask-size: cover;
+            transform: translateY(-2px);
         }
 
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .slide.active { opacity: 1; }
-
-        /* --- TELEVISIÓN RETRO --- */
-        .tv-frame {
-            background-color: var(--wood);
-            padding: 40px;
+        /* Botones Estilo Pop-up */
+        .btn-popup {
+            background: var(--amarillo);
+            border: 3px solid #f2c100;
+            padding: 15px 30px;
             border-radius: 50px;
-            position: relative;
-            box-shadow: inset 0 0 20px #000, 10px 10px 0 rgba(0,0,0,0.2);
-            max-width: 700px;
-            margin: 4rem auto;
-            border: 4px solid #3e2723;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #d4a017;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
         }
 
-        .tv-screen {
-            background: #000;
-            aspect-ratio: 4/3;
-            border-radius: 30px;
-            overflow: hidden;
-            border: 15px solid #2d2d2d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn-popup:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 0 #d4a017;
         }
 
-        video { width: 100%; height: 100%; object-fit: cover; }
+        .btn-popup:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #d4a017;
+        }
 
-        .tv-controls {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        /* 1. Header */
+        header {
+            height: 80vh;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .knob {
-            width: 40px;
-            height: 40px;
-            background: #2d2d2d;
-            border-radius: 50%;
-            border: 2px solid #1a1a1a;
-        }
-
-        /* --- CARTEL RUTA 66 --- */
-        .route66-sign {
-            background: #fff;
-            border: 10px solid var(--retro-black);
-            padding: 2rem;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            position: relative;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 100%, 0 100%, 0% 25%);
-            margin-top: 3rem;
-            box-shadow: 5px 5px 0 var(--comic-blue);
+            padding: 20px;
         }
 
-        .route66-sign h2 { color: var(--comic-red); font-size: 2.5rem; }
-
-        /* --- AUTORES Y HORARIO --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .title-pop {
+            font-size: 5rem;
+            margin: 0;
+            filter: drop-shadow(4px 4px 0px white);
+            animation: float 4s ease-in-out infinite;
         }
 
-        .card {
-            background: var(--dark-cream);
-            padding: 1.5rem;
-            border: 3px solid var(--retro-black);
-            box-shadow: 5px 5px 0 var(--retro-black);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            font-family: 'Special Elite', cursive;
-        }
-
-        th, td {
-            border: 2px solid var(--retro-black);
-            padding: 10px;
-            text-align: left;
-        }
-
-        th { background: var(--comic-blue); color: white; }
-
-        /* --- COMENTARIOS --- */
-        .bubble {
+        /* 2. Mapa */
+        .map-section {
+            padding: 50px 20px;
+            text-align: center;
             background: white;
-            border: 3px solid #000;
-            padding: 1rem;
-            border-radius: 20px;
+        }
+        .map-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 10px solid white;
+            box-shadow: 0 10px 30px var(--sombra);
+            transform: rotate(-1deg);
+            border-radius: 5px;
+        }
+        .map-container img { width: 100%; border-radius: 2px; }
+
+        /* 3. El Teatro de los Cuentos */
+        .theater-section {
+            background: var(--crema);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .stage-container {
             position: relative;
-            margin-bottom: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 15px solid #4a3f35;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 10px;
         }
 
-        .bubble::after {
-            content: '';
+        .curtain {
             position: absolute;
-            bottom: -20px;
-            left: 50px;
-            border-width: 20px 20px 0;
-            border-style: solid;
-            border-color: #000 transparent;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: #8b0000;
+            z-index: 10;
+            transition: transform 1.5s ease-in-out;
+            background-image: repeating-linear-gradient(90deg, #8b0000 0px, #a00 20px, #8b0000 40px);
+        }
+        .curtain-left { left: 0; }
+        .curtain-right { right: 0; }
+
+        .stage-container.open .curtain-left { transform: translateX(-100%); }
+        .stage-container.open .curtain-right { transform: translateX(100%); }
+
+        #main-video { width: 100%; height: 100%; object-fit: cover; }
+
+        .video-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
-        .mayor-section {
-            background: #ffecb3;
-            border: 4px dashed var(--comic-red);
-            padding: 2rem;
+        .selector-item {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--lavanda);
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .selector-item:hover { transform: scale(1.1) rotate(2deg); background: var(--lavanda); color: white; }
+
+        /* 4. Info General */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 60px 10% ;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.8);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 8px solid var(--amarillo);
+            box-shadow: 5px 5px 15px var(--sombra);
+        }
+        .special-poster {
+            border: 2px dashed var(--lavanda);
+            padding: 20px;
+            margin-top: 15px;
+            background: #fff;
+        }
+
+        /* 5. Making Off */
+        .making-off {
+            padding: 80px 20px;
+            background: var(--lavanda);
+            color: white;
+        }
+        .carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+        .carousel-slide img { width: 100%; display: block; }
+        .caption {
+            position: absolute;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            width: 100%;
+            padding: 15px;
             text-align: center;
         }
 
@@ -190,126 +211,145 @@
 </head>
 <body>
 
-<header>
-    <h1 style="color: white; font-size: 3rem;">Cómics de los 70</h1>
-    <p style="color: var(--dark-cream);">La era de oro del cómic y la narrativa</p>
-</header>
+    <header>
+        <h1 class="title-pop">Un paseo de Cuento</h1>
+        <p style="font-size: 1.5rem;">Magia y aprendizaje en Villarquemado (Teruel)</p>
+        <a href="#video-visor" class="btn-popup">¡Comenzar la función!</a>
+    </header>
 
-<div class="container">
-    <div class="carousel-container">
-        <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1000x400?text=Clasicos+70s')">
-            <span>AVENTURAS GALÁCTICAS</span>
-        </div>
-        <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1000x400?text=Terror+Vintage')">
-            <span>RELATOS DE MISTERIO</span>
-        </div>
-    </div>
+    <div class="cloud-divider"></div>
 
-    <div class="tv-frame">
-        <div class="tv-screen">
-            <video controls>
-                <source src="buho.mp4" type="video/mp4">
+    <section class="map-section">
+        <h2>¿Dónde nos encontramos?</h2>
+        <div class="map-container">
+            <img src="mapa.png" alt="Ubicación del parque Un paseo de Cuento">
+        </div>
+    </section>
+
+    <section id="video-visor" class="theater-section">
+        <h2>Presentación de las 18 Zonas</h2>
+        
+        <div class="stage-container" id="stage">
+            <div class="curtain curtain-left"></div>
+            <div class="curtain curtain-right"></div>
+            <video id="main-video" poster="thumbnail-cuentos.jpg">
                 Tu navegador no soporta vídeos.
             </video>
         </div>
-        <div class="tv-controls">
-            <div class="knob"></div>
-            <div class="knob"></div>
-            <div style="width:10px; height:10px; background:red; border-radius:50%; margin:auto;"></div>
+
+        <div class="video-selector">
+            <div class="selector-item" onclick="playVideo('Cenicienta.mp4')">La Cenicienta</div>
+            <div class="selector-item" onclick="playVideo('pozo.mp4')">El Pozo Mágico</div>
+            <div class="selector-item" onclick="playVideo('cerdito.mp4')">Los Tres Cerditos</div>
+            <div class="selector-item" onclick="playVideo('caperucit.mp4')">Caperucita</div>
+            <div class="selector-item" onclick="playVideo('enano.mp4')">Los Enanitos</div>
+            <div class="selector-item" onclick="playVideo('buho.mp4')">El Búho Sabio</div>
+            <div class="selector-item" onclick="playVideo('pinocho.mp4')">Pinocho</div>
+            <div class="selector-item" onclick="playVideo('ricitos.mp4')">Ricitos de Oro</div>
+            <div class="selector-item" onclick="playVideo('conejo.mp4')">El Conejo Blanco</div>
+            <div class="selector-item" onclick="playVideo('ratita.mp4')">La Ratita Presumida</div>
+            <div class="selector-item" onclick="playVideo('peterpan.mp4')">Peter Pan</div>
+            <div class="selector-item" onclick="playVideo('ratoncito.mp4')">Ratoncito Pérez</div>
+            <div class="selector-item" onclick="playVideo('patitofeo.mp4')">El Patito Feo</div>
+            <div class="selector-item" onclick="playVideo('hanselygretel.mp4')">Hansel y Gretel</div>
+            <div class="selector-item" onclick="playVideo('oz.mp4')">Mago de Oz</div>
+            <div class="selector-item" onclick="playVideo('peon.mp4')">El Peón Loco</div>
+            <div class="selector-item" onclick="playVideo('hada.mp4')">El Hada Madrina</div>
+            <div class="selector-item" onclick="playVideo('rapunzel.mp4')">Rapunzel</div>
         </div>
-    </div>
+    </section>
 
-    <div class="route66-sign">
-        <p style="font-weight: bold;">U.S. ROUTE</p>
-        <h2>FERIA VILLARQUEMADO</h2>
-        <p>10 - 13 DE JULIO | PLAZA DEL AYUNTAMIENTO</p>
-    </div>
-
-    <h2 style="margin-top: 4rem; border-bottom: 4px solid var(--comic-red);">INVITADOS DE HONOR</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>Víctor "Tinta" Velasco</h3>
-            <p>Presenta su nueva novela gráfica: <em>"Sombras sobre el Jiloca"</em>.</p>
+    <section class="info-grid">
+        <div class="info-card">
+            <h3>Horarios y Apertura</h3>
+            <p><strong>Habitual:</strong> Fines de semana y festivos de 10:00 a 19:00.</p>
+            <div class="special-poster">
+                <p>⚠️ <strong>AVISO ESPECIAL:</strong></p>
+                <p>Próxima apertura especial: Semana Santa y Puentes Nacionales. ¡Consulta aquí nuestro cartel!</p>
+            </div>
         </div>
-        <div class="card">
-            <h3>Elena Entintado</h3>
-            <p>La maestra del trazo fino nos trae: <em>"Las crónicas de Villarquemado Futuro"</em>.</p>
+        <div class="info-card">
+            <h3>Tarifas</h3>
+            <ul>
+                <li>Entrada General: 5€</li>
+                <li>Menores de 3 años: Gratis</li>
+                <li>Grupos escolares: Consultar</li>
+            </ul>
         </div>
-        <div class="card">
-            <h3>Boris "Burbuja" Blanco</h3>
-            <p>Especialista en humor retro con: <em>"Aventuras en el Ayuntamiento"</em>.</p>
+        <div class="info-card">
+            <h3>Normas de Funcionamiento</h3>
+            <p>Respetar las construcciones temáticas, no subir a elementos no permitidos y mantener el entorno limpio como en los mejores cuentos.</p>
         </div>
-    </div>
+    </section>
 
-    <h2 style="margin-top: 4rem;">PROGRAMA DE ACTIVIDADES</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Hora</th>
-                <th>Evento</th>
-                <th>Público</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>10:00</td>
-                <td>Apertura de puestos de intercambio</td>
-                <td>General</td>
-            </tr>
-            <tr>
-                <td>12:00</td>
-                <td>Taller: "Dibuja tu superhéroe"</td>
-                <td>Infantil (Niños)</td>
-            </tr>
-            <tr>
-                <td>17:00</td>
-                <td>Presentación oficial novedades 197X</td>
-                <td>General</td>
-            </tr>
-            <tr>
-                <td>19:00</td>
-                <td>Charla: El cómic en la transición</td>
-                <td>Adultos</td>
-            </tr>
-        </tbody>
-    </table>
+    <section class="making-off">
+        <h2 style="color: white; text-align: center;">Making Off: Un proyecto educativo</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">Este parque es fruto de programas experienciales de empleo y formación. Ha sido construido con ilusión por alumnos y alumnas en formación.</p>
+        
+        <div class="carousel">
+            <div class="carousel-track" id="track">
+                <div class="carousel-slide">
+                    <img src="making1.jpg" alt="Construcción inicial">
+                    <div class="caption">Fase de cimentación y diseño de estructuras.</div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="making2.jpg" alt="Pintado artístico">
+                    <div class="caption">Nuestros alumnos aplicando el acabado artístico de tiza.</div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-popup" onclick="prevSlide()">Anterior</button>
+            <button class="btn-popup" onclick="nextSlide()">Siguiente</button>
+        </div>
+    </section>
 
-    <div class="mayor-section" style="margin-top: 3rem;">
-        <h3>🤝 MERCADO DE INTERCAMBIO</h3>
-        <p>Organizado personalmente por nuestro <strong>Alcalde Federico</strong>.</p>
-        <p>Ubicación: <strong>Salón de Plenos del Ayuntamiento</strong>.</p>
-        <p><em>"Trae tus repetidos y llévate joyas. ¡Federico no acepta cromos rotos!"</em></p>
-    </div>
+    <script>
+        // Lógica del Teatro (Vídeos)
+        const stage = document.getElementById('stage');
+        const video = document.getElementById('main-video');
 
-    <h2 style="margin-top: 4rem;">LO QUE SE DIJO EL AÑO PASADO...</h2>
-    <div class="bubble">
-        "¡Increíble la colección de Federico! Conseguí el #1 de Los 4 Fantásticos por tres cómics del Capitán Trueno."
-        <br><strong>- Paco, vecino de Teruel.</strong>
-    </div>
-    <div class="bubble">
-        "Mis hijos aprendieron a dibujar un buey con capa y ahora no paran. ¡Gran feria!"
-        <br><strong>- María L., visitante.</strong>
-    </div>
+        function playVideo(fileName) {
+            // 1. Cerrar telón
+            stage.classList.remove('open');
+            
+            setTimeout(() => {
+                // 2. Cambiar vídeo
+                video.src = fileName;
+                video.load();
+                
+                // 3. Abrir telón al empezar a reproducir
+                video.oncanplay = () => {
+                    stage.classList.add('open');
+                    video.play();
+                };
+            }, 1000);
+        }
 
-</div>
+        video.onended = () => {
+            stage.classList.remove('open'); // Cerrar telón al terminar
+        };
 
-<footer style="text-align: center; padding: 3rem; background: var(--retro-black); color: var(--cream); margin-top: 4rem;">
-    <p>&copy; 1975-2024 Villarquemado Comic-Con - Todos los derechos reservados</p>
-</footer>
+        // Lógica Carrusel (Making Off)
+        const track = document.getElementById('track');
+        let index = 0;
 
-<script>
-    // Lógica simple para el carrusel
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.slide');
+        function updateCarousel() {
+            const size = track.clientWidth;
+            track.style.transform = `translateX(${-index * size}px)`;
+        }
 
-    function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
+        function nextSlide() {
+            index = (index + 1) % 2; // Ajustar según número de fotos
+            updateCarousel();
+        }
 
-    setInterval(nextSlide, 3000);
-</script>
+        function prevSlide() {
+            index = (index - 1 + 2) % 2;
+            updateCarousel();
+        }
 
+        window.addEventListener('resize', updateCarousel);
+    </script>
 </body>
 </html>

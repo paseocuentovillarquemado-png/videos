@@ -14,8 +14,6 @@
             --oro-oscuro: #8a6311;
             --texto-claro: #fdfaf0;
             --sombra-magica: 0 0 30px rgba(255, 229, 92, 0.3);
-            /* Variable dinámica para el color de la puerta */
-            --color-puerta: #4a1c1c; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,7 +28,7 @@
         /* FONDO ILUSTRADO FIJO */
         .bg-illustration {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;
-            background-image: url('fondo.png'); /* TU IMAGEN */
+            background-image: url('fondo.png'); 
             background-size: cover; background-position: center bottom;
             background-attachment: fixed;
             filter: saturate(1.2) contrast(1.05);
@@ -42,11 +40,10 @@
             z-index: 1;
         }
 
-        /* Partículas: Polvo de hadas y Luciérnagas */
+        /* Partículas */
         .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
         .star { position: absolute; background: rgba(255, 250, 200, 0.8); border-radius: 50%; box-shadow: 0 0 5px rgba(255, 250, 200, 0.5); animation: twinkle 4s ease-in-out infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0.2; transform: scale(1) translateY(0); } 50% { opacity: 1; transform: scale(1.3) translateY(-5px); } }
-
         .firefly { position: fixed; width: 5px; height: 5px; background: var(--oro-brillo); border-radius: 50%; box-shadow: 0 0 12px var(--oro-brillo), 0 0 25px var(--oro-brillo); animation: floatup 12s linear infinite, blink 3s ease-in-out infinite; pointer-events: none; z-index: 3; }
         @keyframes floatup { 0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; } 10% { opacity: 1; transform: translateY(90vh) translateX(20px) scale(1); } 90% { opacity: 1; } 100% { transform: translateY(-10vh) translateX(-20px) scale(0); opacity: 0; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
@@ -58,187 +55,140 @@
         .magic-divider::after { content: '✦'; font-size: 2rem; color: var(--oro-brillo); text-shadow: 0 0 20px var(--oro-brillo); padding: 0 20px; z-index: 1; animation: rotate 4s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* Header Hero */
+        /* Header */
         header { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; position: relative; z-index: 10; }
         .title-pop { font-size: clamp(3rem, 10vw, 7rem); margin: 0; color: #fff; text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro); animation: latidoMagico 3s ease-in-out infinite; letter-spacing: 5px; }
         @keyframes latidoMagico { 0%, 100% { text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--bosque-oscuro); transform: scale(1); } 50% { text-shadow: 0 0 30px var(--oro-brillo), 0 0 60px var(--oro-teatro); transform: scale(1.02); } }
         .subtitle { font-size: clamp(1.2rem, 4vw, 2rem); margin: 20px 0 40px; color: var(--oro-brillo); font-family: 'Cinzel', serif; letter-spacing: 3px; }
-        
-        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; }
-        .scroll-indicator::before { content: '↓'; font-size: 2rem; color: var(--oro-brillo); text-shadow: 0 0 10px var(--bosque-oscuro); }
-        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
-
         .btn-magic { background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro)); color: #111; border: 3px solid #fff; padding: 15px 35px; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; text-decoration: none; font-family: 'Cinzel', serif; display: inline-block; box-shadow: var(--sombra-magica); transition: all 0.3s; }
         .btn-magic:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(255, 229, 92, 0.6); }
 
         /* ========================================= */
-        /* LA PUERTA MÁGICA (3D ANIMATION) */
+        /* GALERÍA DE LAS 18 PUERTAS */
         /* ========================================= */
-        .puerta-section {
+        .puertas-section {
             padding: 80px 20px;
             position: relative;
             z-index: 10;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             text-align: center;
         }
 
-        .puerta-intro { max-width: 700px; margin: 0 auto 40px; font-size: 1.2rem; line-height: 1.8; color: #eee; text-shadow: 0 2px 6px rgba(0,0,0,0.9); }
+        .puerta-intro { max-width: 800px; margin: 0 auto 60px; font-size: 1.2rem; line-height: 1.8; color: #eee; text-shadow: 0 2px 6px rgba(0,0,0,0.9); }
 
-        /* El Marco Exterior (Fijo) */
+        .grid-puertas {
+            display: grid;
+            /* Crea columnas automáticas que se adaptan al tamaño de la pantalla */
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 50px 30px;
+            justify-items: center;
+        }
+
+        /* Contenedor individual de cada puerta */
+        .puerta-item {
+            width: 100%;
+            max-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .puerta-item:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Letrero exterior del cuento */
+        .letrero-cuento {
+            background: linear-gradient(to bottom, #4a3018, #2a1a0a);
+            color: var(--oro-brillo);
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--oro-teatro);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,0,0,0.8);
+            width: 90%;
+            text-shadow: 1px 1px 3px #000;
+            position: relative;
+        }
+        
+        .letrero-cuento::before, .letrero-cuento::after {
+            content: '•'; position: absolute; color: #111; font-size: 1.5rem; top: 50%; transform: translateY(-50%);
+        }
+        .letrero-cuento::before { left: 10px; }
+        .letrero-cuento::after { right: 10px; }
+
+        /* El Marco Físico de la Puerta */
         .marco-puerta {
             position: relative;
             width: 100%;
-            max-width: 360px; /* Ancho formato móvil */
-            margin: 0 auto 40px;
-            aspect-ratio: 9 / 16; /* Proporción vertical */
-            padding: 15px; /* Grosor del marco dorado */
-            
-            /* Degradado oro para el marco */
+            aspect-ratio: 9 / 16; /* Vertical */
+            padding: 12px;
             background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro), var(--oro-oscuro), var(--oro-teatro));
-            border-radius: 200px 200px 15px 15px; /* Forma de arco */
-            
-            /* Perspectiva 3D para que las puertas se abran hacia adelante */
+            border-radius: 150px 150px 12px 12px;
             perspective: 1200px;
-            
-            box-shadow: 0 40px 60px rgba(0,0,0,0.9), inset 0 0 15px rgba(255,255,255,0.5), 0 0 50px rgba(212,175,55,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9), inset 0 0 15px rgba(255,255,255,0.4);
+            cursor: pointer;
         }
 
-        /* Contenedor Interior (El Hueco de la Puerta) */
         .hueco-puerta {
             position: relative;
             width: 100%;
             height: 100%;
             background: #000;
-            border-radius: 185px 185px 8px 8px; /* Ligeramente menor que el marco */
+            border-radius: 140px 140px 6px 6px;
             box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
-            transform-style: preserve-3d; /* Clave para el 3D */
+            transform-style: preserve-3d;
         }
 
-        /* Las dos hojas de la puerta (Izquierda y Derecha) */
+        /* Las hojas de la puerta (Usan la variable --color-puerta inyectada vía JS) */
         .hoja-puerta {
             position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            /* Color dinámico vía JS */
+            top: 0; width: 50%; height: 100%;
             background: linear-gradient(180deg, var(--color-puerta) 0%, #111 100%);
             border: 2px solid var(--oro-oscuro);
             z-index: 20;
-            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-            /* Textura de tablones de madera */
+            transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
             background-image: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.2) 15px, rgba(0,0,0,0.2) 16px);
         }
 
-        .hoja-izquierda {
-            left: 0;
-            border-radius: 185px 0 0 8px;
-            transform-origin: left center;
-            border-right: 2px solid #000;
-        }
+        .hoja-izquierda { left: 0; border-radius: 140px 0 0 6px; transform-origin: left center; border-right: 1px solid #000; }
+        .hoja-derecha { right: 0; border-radius: 0 140px 6px 0; transform-origin: right center; border-left: 1px solid rgba(255,255,255,0.2); }
 
-        .hoja-derecha {
-            right: 0;
-            border-radius: 0 185px 8px 0;
-            transform-origin: right center;
-            border-left: 2px solid rgba(255,255,255,0.2);
-        }
+        .hoja-puerta::after { content: ''; position: absolute; top: 50%; width: 8px; height: 18px; background: var(--oro-brillo); border-radius: 8px; box-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        .hoja-izquierda::after { right: 8px; }
+        .hoja-derecha::after { left: 8px; }
 
-        /* Pomos de la puerta */
-        .hoja-puerta::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 12px;
-            height: 25px;
-            background: var(--oro-brillo);
-            border-radius: 10px;
-            box-shadow: 1px 1px 5px rgba(0,0,0,0.8);
-        }
-        .hoja-izquierda::after { right: 10px; }
-        .hoja-derecha::after { left: 10px; }
-
-        /* Clases de animación para abrir la puerta */
+        /* Estados de animación */
         .puerta-abierta .hoja-izquierda { transform: rotateY(-110deg); }
         .puerta-abierta .hoja-derecha { transform: rotateY(110deg); }
 
-        /* Capa superpuesta para hacer CLIC y abrir */
-        .click-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 30;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            border-radius: 185px 185px 8px 8px;
-            transition: opacity 0.3s;
-        }
-
-        .click-overlay:hover .toque-texto { transform: scale(1.1); color: var(--oro-brillo); }
-
-        .toque-texto {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: #fff;
-            text-shadow: 0 2px 10px #000;
-            text-align: center;
-            background: rgba(0,0,0,0.6);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid var(--oro-teatro);
-            transition: all 0.3s;
-            animation: flotarBoton 2s ease-in-out infinite;
-        }
-
-        @keyframes flotarBoton { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-
-        /* Título del Vídeo (Aparece al abrir la puerta) */
+        /* Pantalla de Título interior */
         .titulo-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 1s ease;
-            border-radius: 185px 185px 8px 8px;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; opacity: 0; pointer-events: none;
+            transition: opacity 0.8s ease;
+            border-radius: 140px 140px 6px 6px;
         }
 
-        .titulo-overlay h3 {
-            font-size: 2rem;
-            color: var(--oro-brillo);
-            padding: 20px;
-            text-align: center;
-        }
+        .titulo-overlay h3 { font-size: 1.4rem; color: var(--oro-brillo); padding: 10px; text-align: center; }
 
-        /* El Vídeo Recortado Perfectamente */
+        /* Vídeo */
         .hueco-puerta video {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; /* Centra y recorta los sobrantes */
-            border-radius: 185px 185px 8px 8px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 140px 140px 6px 6px;
             z-index: 5;
         }
 
-        /* Indicador de número de cuento */
-        .contador-cuento {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: var(--oro-brillo);
-            font-family: 'Cinzel', serif;
-            letter-spacing: 2px;
-        }
-
-
         /* ========================================= */
-        /* RESTO DE SECCIONES */
+        /* RESTO DE SECCIONES                        */
         /* ========================================= */
-        
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; padding: 80px 5%; position: relative; z-index: 10; max-width: 1400px; margin: 0 auto; }
         .info-card { background: linear-gradient(135deg, rgba(15, 30, 15, 0.8), rgba(20, 40, 20, 0.9)); backdrop-filter: blur(12px); padding: 40px; border-radius: 20px; border: 2px solid rgba(212, 175, 55, 0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.8); transition: transform 0.3s; }
         .info-card:hover { transform: translateY(-10px); border-color: var(--oro-brillo); }
@@ -264,15 +214,6 @@
         footer { text-align: center; padding: 40px 20px; background: rgba(5, 10, 5, 1); border-top: 2px solid var(--oro-teatro); position: relative; z-index: 10; }
         footer p { color: #999; font-size: 0.9rem; }
 
-        @media (max-width: 768px) {
-            .title-pop { font-size: 3rem; }
-            .info-grid { grid-template-columns: 1fr; padding: 40px 20px; }
-            .marco-puerta { max-width: 90%; border-width: 10px; border-radius: 150px 150px 10px 10px; }
-            .hueco-puerta, .click-overlay, .titulo-overlay, .hueco-puerta video { border-radius: 140px 140px 5px 5px; }
-            .hoja-izquierda { border-radius: 140px 0 0 5px; }
-            .hoja-derecha { border-radius: 0 140px 5px 0; }
-        }
-
     </style>
 </head>
 <body>
@@ -288,7 +229,6 @@
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
             star.style.width = (Math.random() * 4 + 2) + 'px'; 
-            star.style.height = star.style.width;
             star.style.animationDelay = Math.random() * 4 + 's';
             star.style.animationDuration = (Math.random() * 4 + 3) + 's';
             starsContainer.appendChild(star);
@@ -298,36 +238,19 @@
     <header>
         <h1 class="title-pop" data-text="Un paseo de Cuento">Un paseo de Cuento</h1>
         <p class="subtitle">Magia y aprendizaje en Villarquemado</p>
-        <a href="#ruta-magica" class="btn-magic">Iniciar el Paseo</a>
+        <a href="#galeria-magica" class="btn-magic">Adentrarse en el Bosque</a>
         <div class="scroll-indicator"></div>
     </header>
 
     <div class="magic-divider"></div>
 
-    <section class="puerta-section" id="ruta-magica">
+    <section class="puertas-section" id="galeria-magica">
         <h2>Las Puertas del Reino</h2>
-        <p class="puerta-intro">Ábrelas una a una para descubrir todos los cuentos. Al terminar una historia, la puerta se cerrará para dar paso a la siguiente.</p>
+        <p class="puerta-intro">Elige tu propia aventura. Toca cualquier puerta para abrirla y sumergirte en su historia. ¡Puedes verlas en el orden que prefieras!</p>
 
-        <div class="marco-puerta" id="contenedor-puerta">
-            
-            <div class="hueco-puerta">
-                <div class="click-overlay" id="click-overlay" onclick="abrirCuento()">
-                    <div class="toque-texto" id="texto-boton">Toca para<br>Abrir</div>
-                </div>
-
-                <div class="hoja-puerta hoja-izquierda"></div>
-                <div class="hoja-puerta hoja-derecha"></div>
-
-                <div class="titulo-overlay" id="titulo-overlay">
-                    <h3 id="titulo-texto">Título</h3>
-                </div>
-
-                <video id="video-cuento" playsinline></video>
+        <div class="grid-puertas" id="grid-puertas">
             </div>
-            
-        </div>
 
-        <div class="contador-cuento" id="contador-texto">Cuento 1 de 18</div>
     </section>
 
     <div class="magic-divider"></div>
@@ -396,131 +319,148 @@
         });
 
         // =========================================
-        // LÓGICA DE LAS PUERTAS SECUENCIALES
+        // LÓGICA DE LA GALERÍA DE PUERTAS
         // =========================================
         const listaCuentos = [
-            { src: 'cenicienta.mp4', titulo: 'La Cenicienta', color: '#1034a6' },     /* Azul Real */
-            { src: 'pozo.mp4', titulo: 'El Pozo Mágico', color: '#135c34' },          /* Verde Esmeralda */
-            { src: 'cerdito.mp4', titulo: 'Los Tres Cerditos', color: '#a65d10' },    /* Naranja/Madera */
-            { src: 'caperucita.mp4', titulo: 'Caperucita Roja', color: '#8b0000' },    /* Rojo Carmesí */
-            { src: 'enano.mp4', titulo: 'Blancanieva', color: '#5e2129' },           /* Marrón Oscuro */
-            { src: 'buho.mp4', titulo: 'El árbol de los libros', color: '#3a245e' },           /* Morado Místico */
-            { src: 'pinocho.mp4', titulo: 'Pinocho', color: '#8a7011' },              /* Ocre/Madera Clara */
-            { src: 'ricitos.mp4', titulo: 'Ricitos de Oro', color: '#b59218' },       /* Dorado */
-            { src: 'conejo.mp4', titulo: 'Los rosales de Alicia', color: '#a62164' },      /* Magenta */
-            { src: 'ratita.mp4', titulo: 'La Ratita Presumida', color: '#b83b5e' },   /* Rosa Fuerte */
-            { src: 'peterpan.mp4', titulo: 'Peter Pan', color: '#2d6a4f' },           /* Verde Hoja */
-            { src: 'ratoncito.mp4', titulo: 'Ratoncito Pérez', color: '#114a5e' },    /* Azul Oscuro */
-            { src: 'patitofeo.mp4', titulo: 'El Patito Feo', color: '#366e75' },      /* Turquesa */
-            { src: 'hanselgretel.mp4', titulo: 'Hansel y Gretel', color: '#663b15' },/* Chocolate */
-            { src: 'oz.mp4', titulo: 'Mago de Oz', color: '#14753e' },                /* Verde Esmeralda Vivo */
-            { src: 'peon.mp4', titulo: 'El ajedrez de Alicia', color: '#6e142b' },            /* Granate */
-            { src: 'hada.mp4', titulo: 'El árbol de las hadas', color: '#4a115e' },         /* Violeta */
-            { src: 'rapunzel.mp4', titulo: 'Rapunzel', color: '#75146c' }             /* Púrpura */
+            { src: 'cenicienta.mp4', titulo: 'La Cenicienta', color: '#1034a6' },     
+            { src: 'pozo.mp4', titulo: 'El Pozo Mágico', color: '#135c34' },          
+            { src: 'cerdito.mp4', titulo: 'Los Tres Cerditos', color: '#a65d10' },    
+            { src: 'caperucit.mp4', titulo: 'Caperucita Roja', color: '#8b0000' },    
+            { src: 'enano.mp4', titulo: 'Los Enanitos', color: '#5e2129' },           
+            { src: 'buho.mp4', titulo: 'El Búho Sabio', color: '#3a245e' },           
+            { src: 'pinocho.mp4', titulo: 'Pinocho', color: '#8a7011' },              
+            { src: 'ricitos.mp4', titulo: 'Ricitos de Oro', color: '#b59218' },       
+            { src: 'conejo.mp4', titulo: 'El Conejo Blanco', color: '#a62164' },      
+            { src: 'ratita.mp4', titulo: 'La Ratita Presumida', color: '#b83b5e' },   
+            { src: 'peterpan.mp4', titulo: 'Peter Pan', color: '#2d6a4f' },           
+            { src: 'ratoncito.mp4', titulo: 'Ratoncito Pérez', color: '#114a5e' },    
+            { src: 'patitofeo.mp4', titulo: 'El Patito Feo', color: '#366e75' },      
+            { src: 'hanselygretel.mp4', titulo: 'Hansel y Gretel', color: '#663b15' },
+            { src: 'oz.mp4', titulo: 'Mago de Oz', color: '#14753e' },                
+            { src: 'peon.mp4', titulo: 'El Peón Loco', color: '#6e142b' },            
+            { src: 'hada.mp4', titulo: 'El Hada Madrina', color: '#4a115e' },         
+            { src: 'rapunzel.mp4', titulo: 'Rapunzel', color: '#75146c' }             
         ];
 
-        let indiceActual = 0;
-        
-        const contPuerta = document.getElementById('contenedor-puerta');
-        const overlayBoton = document.getElementById('click-overlay');
-        const txtBoton = document.getElementById('texto-boton');
-        const overlayTitulo = document.getElementById('titulo-overlay');
-        const txtTitulo = document.getElementById('titulo-texto');
-        const txtContador = document.getElementById('contador-texto');
-        const videoCuento = document.getElementById('video-cuento');
+        const gridPuertas = document.getElementById('grid-puertas');
+        let puertaActiva = null; // Para saber qué puerta está reproduciendo
 
-        // Configura la puerta antes de abrirla
-        function prepararSiguienteCuento() {
-            const cuento = listaCuentos[indiceActual];
-            
-            // 1. Cambiar el color de la puerta
-            document.documentElement.style.setProperty('--color-puerta', cuento.color);
-            
-            // 2. Preparar textos
-            txtTitulo.innerText = cuento.titulo;
-            txtContador.innerText = `Cuento ${indiceActual + 1} de ${listaCuentos.length}`;
-            
-            // 3. Preparar el vídeo (sin reproducir)
-            videoCuento.src = cuento.src;
-            videoCuento.load();
+        // Generar las 18 puertas en el HTML
+        function renderizarPuertas() {
+            listaCuentos.forEach((cuento, index) => {
+                const puertaHTML = `
+                    <div class="puerta-item">
+                        <div class="letrero-cuento">${cuento.titulo}</div>
+                        
+                        <div class="marco-puerta" style="--color-puerta: ${cuento.color}" id="marco-${index}" onclick="interactuarPuerta(${index})">
+                            <div class="hueco-puerta">
+                                <div class="hoja-puerta hoja-izquierda"></div>
+                                <div class="hoja-puerta hoja-derecha"></div>
+                                
+                                <div class="titulo-overlay" id="titulo-${index}">
+                                    <h3>${cuento.titulo}</h3>
+                                </div>
+                                
+                                <video id="video-${index}" src="${cuento.src}" preload="none" playsinline></video>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                gridPuertas.insertAdjacentHTML('beforeend', puertaHTML);
+                
+                // Configurar el evento de finalización del vídeo
+                setTimeout(() => {
+                    const video = document.getElementById(`video-${index}`);
+                    video.onended = () => cerrarPuerta(index);
+                }, 100); // Pequeño retardo para asegurar que el DOM cargó el video
+            });
         }
 
-        // Se ejecuta al hacer CLIC en la puerta cerrada
-        function abrirCuento() {
-            // Desactivar el botón para evitar doble clic
-            overlayBoton.style.pointerEvents = 'none';
-            overlayBoton.style.opacity = '0';
+        // Función principal al hacer clic en una puerta
+        function interactuarPuerta(index) {
+            const marco = document.getElementById(`marco-${index}`);
             
-            // Abrir las puertas 3D
-            contPuerta.classList.add('puerta-abierta');
-            
-            // Aparece el Título en pantalla negra
-            overlayTitulo.style.opacity = '1';
+            // Si la puerta ya está abierta, no hacer nada o cerrarla
+            if (marco.classList.contains('puerta-abierta')) return;
 
-            // Tras 2.5 segundos (tiempo de abrir puertas + leer el título)...
-            setTimeout(() => {
-                // Desaparece el título revelando el vídeo
-                overlayTitulo.style.opacity = '0';
-                
-                // Empezar el vídeo
-                videoCuento.play().catch(e => {
-                    console.log("No se pudo iniciar automáticamente", e);
-                    // Si falla por alguna restricción, mostrar controles
-                    videoCuento.setAttribute("controls", "controls");
-                });
-                // Activamos controles para que el usuario pueda pausar/volumen
-                videoCuento.setAttribute("controls", "controls");
+            // Si hay OTRA puerta abierta, cerrarla primero
+            if (puertaActiva !== null && puertaActiva !== index) {
+                cerrarPuerta(puertaActiva);
+            }
 
-            }, 2500);
+            abrirPuerta(index);
         }
 
-        // Se ejecuta automáticamente al TERMINAR el vídeo
-        videoCuento.onended = () => {
-            // Quitar controles para que no se vean al cerrar
-            videoCuento.removeAttribute("controls");
-            
-            // Cerrar la puerta
-            contPuerta.classList.remove('puerta-abierta');
-            
-            // Avanzar al siguiente cuento (vuelve al 0 si termina el 18)
-            indiceActual = (indiceActual + 1) % listaCuentos.length;
-            
-            // Tras 1.5s (tiempo que tarda en cerrarse la puerta físicamente)...
-            setTimeout(() => {
-                // Preparar la puerta con los datos del nuevo cuento
-                prepararSiguienteCuento();
-                
-                // Reactivar el botón de clic con texto nuevo
-                txtBoton.innerHTML = "Siguiente Cuento<br><span style='font-size:1rem'>Toca para Abrir</span>";
-                overlayBoton.style.opacity = '1';
-                overlayBoton.style.pointerEvents = 'auto';
-            }, 1500);
-        };
+        function abrirPuerta(index) {
+            puertaActiva = index;
+            const marco = document.getElementById(`marco-${index}`);
+            const video = document.getElementById(`video-${index}`);
+            const overlay = document.getElementById(`titulo-${index}`);
 
-        // Inicializar al cargar la página
-        window.addEventListener('DOMContentLoaded', prepararSiguienteCuento);
+            // 1. Abrir puertas (Añade clase CSS)
+            marco.classList.add('puerta-abierta');
+            
+            // 2. Mostrar Título
+            overlay.style.opacity = '1';
+
+            // 3. Tras 2 segundos (tiempo de apertura y lectura)...
+            setTimeout(() => {
+                // Solo continuar si la puerta SIGUE activa (por si el usuario clicó en otra rápido)
+                if(puertaActiva !== index) return;
+
+                // Desvanecer título
+                overlay.style.opacity = '0';
+                
+                // Mostrar controles y reproducir
+                video.setAttribute("controls", "controls");
+                video.play().catch(e => console.log("Se requiere interacción para iniciar", e));
+            }, 2000);
+        }
+
+        function cerrarPuerta(index) {
+            const marco = document.getElementById(`marco-${index}`);
+            const video = document.getElementById(`video-${index}`);
+            const overlay = document.getElementById(`titulo-${index}`);
+
+            // Pausar y ocultar controles
+            video.pause();
+            video.removeAttribute("controls");
+            
+            // Resetear título
+            overlay.style.opacity = '0';
+            
+            // Cerrar puertas físicas
+            marco.classList.remove('puerta-abierta');
+
+            if (puertaActiva === index) {
+                puertaActiva = null;
+            }
+        }
+
+        // Inicializar galería
+        window.addEventListener('DOMContentLoaded', renderizarPuertas);
 
 
         // =========================================
         // Lógica Carrusel (Making Off)
         // =========================================
         const track = document.getElementById('track');
-        let index = 0;
+        let carruselIndex = 0;
         function updateCarousel() {
             if (!track.querySelector('.carousel-slide')) return;
             const size = track.querySelector('.carousel-slide').clientWidth;
-            track.style.transform = `translateX(${-index * size}px)`;
+            track.style.transform = `translateX(${-carruselIndex * size}px)`;
         }
         function nextSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
             if (totalSlides === 0) return;
-            index = (index + 1) % totalSlides;
+            carruselIndex = (carruselIndex + 1) % totalSlides;
             updateCarousel();
         }
         function prevSlide() {
             const totalSlides = document.querySelectorAll('.carousel-slide').length;
             if (totalSlides === 0) return;
-            index = (index - 1 + totalSlides) % totalSlides;
+            carruselIndex = (carruselIndex - 1 + totalSlides) % totalSlides;
             updateCarousel();
         }
         window.addEventListener('resize', updateCarousel);

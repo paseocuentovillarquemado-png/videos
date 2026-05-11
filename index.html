@@ -19,20 +19,22 @@
             margin: 0;
             font-family: 'Fredoka', sans-serif;
             background-color: var(--crema);
-            background-image: url('https://www.transparenttextures.com/patterns/felt.png'); /* Textura granulada */
+            background-image: url('https://www.transparenttextures.com/patterns/felt.png');
             color: var(--texto);
             overflow-x: hidden;
         }
 
-        h1, h2, h3 { color: var(--lavanda); font-weight: 600; }
+        h1, h2, h3 { color: var(--lavanda); font-weight: 600; text-align: center; }
 
         /* Divisores de Nubes */
         .cloud-divider {
             width: 100%;
             height: 100px;
             background: white;
-            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
             mask-size: cover;
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            -webkit-mask-size: cover;
             transform: translateY(-2px);
         }
 
@@ -47,6 +49,8 @@
             box-shadow: 0 6px 0 #d4a017;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-block;
+            text-decoration: none;
+            color: var(--texto);
         }
 
         .btn-popup:hover {
@@ -71,7 +75,7 @@
         }
 
         .title-pop {
-            font-size: 5rem;
+            font-size: clamp(3rem, 10vw, 5rem);
             margin: 0;
             filter: drop-shadow(4px 4px 0px white);
             animation: float 4s ease-in-out infinite;
@@ -83,11 +87,7 @@
         }
 
         /* 2. Mapa */
-        .map-section {
-            padding: 50px 20px;
-            text-align: center;
-            background: white;
-        }
+        .map-section { padding: 50px 20px; text-align: center; background: white; }
         .map-container {
             max-width: 800px;
             margin: 0 auto;
@@ -96,15 +96,10 @@
             transform: rotate(-1deg);
             border-radius: 5px;
         }
-        .map-container img { width: 100%; border-radius: 2px; }
+        .map-container img { width: 100%; border-radius: 2px; display: block; }
 
         /* 3. El Teatro de los Cuentos */
-        .theater-section {
-            background: var(--crema);
-            padding: 80px 0;
-            text-align: center;
-        }
-
+        .theater-section { background: var(--crema); padding: 80px 0; text-align: center; }
         .stage-container {
             position: relative;
             max-width: 900px;
@@ -114,6 +109,7 @@
             aspect-ratio: 16 / 9;
             overflow: hidden;
             border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .curtain {
@@ -126,8 +122,8 @@
             transition: transform 1.5s ease-in-out;
             background-image: repeating-linear-gradient(90deg, #8b0000 0px, #a00 20px, #8b0000 40px);
         }
-        .curtain-left { left: 0; }
-        .curtain-right { right: 0; }
+        .curtain-left { left: 0; border-right: 2px solid #500; }
+        .curtain-right { right: 0; border-left: 2px solid #500; }
 
         .stage-container.open .curtain-left { transform: translateX(-100%); }
         .stage-container.open .curtain-right { transform: translateX(100%); }
@@ -136,7 +132,7 @@
 
         .video-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 15px;
             max-width: 1000px;
             margin: 30px auto;
@@ -145,21 +141,22 @@
 
         .selector-item {
             background: white;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 12px;
             cursor: pointer;
             box-shadow: 0 4px 0 var(--lavanda);
             font-size: 0.9rem;
             transition: 0.2s;
+            font-weight: 600;
         }
-        .selector-item:hover { transform: scale(1.1) rotate(2deg); background: var(--lavanda); color: white; }
+        .selector-item:hover { transform: scale(1.05) rotate(2deg); background: var(--lavanda); color: white; }
 
         /* 4. Info General */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            padding: 60px 10% ;
+            padding: 60px 10%;
         }
         .info-card {
             background: rgba(255,255,255,0.8);
@@ -168,44 +165,27 @@
             border-left: 8px solid var(--amarillo);
             box-shadow: 5px 5px 15px var(--sombra);
         }
-        .special-poster {
-            border: 2px dashed var(--lavanda);
-            padding: 20px;
-            margin-top: 15px;
-            background: #fff;
-        }
+        .special-poster { border: 2px dashed var(--lavanda); padding: 20px; margin-top: 15px; background: #fff; }
 
-        /* 5. Making Off */
-        .making-off {
+        /* 5. Bitácora / WordPress Iframe */
+        .bitacora-section {
             padding: 80px 20px;
             background: var(--lavanda);
             color: white;
         }
-        .carousel {
-            position: relative;
-            max-width: 800px;
+        .iframe-wrapper {
+            max-width: 1000px;
             margin: 0 auto;
+            background: white;
+            padding: 10px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 8px solid var(--amarillo);
             overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-        .carousel-slide {
-            min-width: 100%;
-            position: relative;
-        }
-        .carousel-slide img { width: 100%; display: block; }
-        .caption {
-            position: absolute;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            width: 100%;
-            padding: 15px;
-            text-align: center;
-        }
+        iframe { width: 100%; height: 600px; border: none; border-radius: 15px; display: block; }
+
+        footer { text-align: center; padding: 40px; background: white; font-size: 0.9rem; }
 
     </style>
 </head>
@@ -227,12 +207,11 @@
     </section>
 
     <section id="video-visor" class="theater-section">
-        <h2>Algunos habitantes del parque</h2>
-        
+        <h2>Habitantes del Parque</h2>
         <div class="stage-container" id="stage">
             <div class="curtain curtain-left"></div>
             <div class="curtain curtain-right"></div>
-            <video id="main-video" poster="thumbnail-cuentos.jpg">
+            <video id="main-video">
                 Tu navegador no soporta vídeos.
             </video>
         </div>
@@ -264,93 +243,63 @@
             <h3>Horarios y Apertura</h3>
             <p><strong>Habitual:</strong> Fines de semana y festivos de 11:00 a 13:00.</p>
             <div class="special-poster">
-                <p>⚠️ <strong>AVISO ESPECIAL:</strong></p>
-                <p>Próxima apertura especial: sin información por el momento. ¡Consulta aquí nuestro cartel!</p>
+                <p>⚠️ <strong>AVISO:</strong></p>
+                <p>Consulta nuestras redes sociales para aperturas extraordinarias durante el verano.</p>
             </div>
         </div>
         <div class="info-card">
             <h3>Tarifas</h3>
             <ul>
                 <li>Entrada General Adultos: 5€</li>
-                <li>Entrada General de 3 a 14 años: 2€</li>
+                <li>Niños (3 a 14 años): 2€</li>
                 <li>Menores de 3 años: Gratis</li>
-                <li>Grupos escolares: Consultar</li>
             </ul>
         </div>
         <div class="info-card">
-            <h3>Normas de Funcionamiento</h3>
-            <p>Respetar las construcciones temáticas, no subir a elementos no permitidos y mantener el entorno limpio como en los mejores cuentos.</p>
+            <h3>Normas</h3>
+            <p>Ayúdanos a mantener la magia: cuida las figuras y utiliza las papeleras. El entorno es de todos.</p>
         </div>
     </section>
 
-    <section class="making-off">
-        <h2 style="color: white; text-align: center;">Making Off</h2>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">Este parque es fruto de programas experienciales de empleo y formación. Ha sido construido con ilusión por alumnos y alumnas en formación.</p>
+    <section class="bitacora-section">
+        <h2 style="color: white; margin-bottom: 10px;">Nuestra Bitácora de Cuento</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">Explora el proceso de creación y las últimas novedades directamente desde nuestro diario oficial.</p>
         
-        <div class="carousel">
-            <div class="carousel-track" id="track">
-                <div class="carousel-slide">
-                    <img src="making1.jpg" alt="Construcción inicial">
-                    <div class="caption">Fase de cimentación y diseño de estructuras.</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="making2.jpg" alt="Pintado artístico">
-                    <div class="caption">Nuestros alumnos aplicando el acabado artístico de tiza.</div>
-                </div>
-            </div>
+        <div class="iframe-wrapper">
+            <iframe src="https://unpaseodecuentovillarquemado.wordpress.com/" title="Un paseo de cuento"></iframe>
         </div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn-popup" onclick="prevSlide()">Anterior</button>
-            <button class="btn-popup" onclick="nextSlide()">Siguiente</button>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="https://unpaseodecuentovillarquemado.wordpress.com/" target="_blank" class="btn-popup">Abrir en ventana completa</a>
         </div>
     </section>
+
+    <footer>
+        <p>Villarquemado, Teruel. Un proyecto de formación y empleo.</p>
+    </footer>
 
     <script>
-        // Lógica del Teatro (Vídeos)
         const stage = document.getElementById('stage');
         const video = document.getElementById('main-video');
 
         function playVideo(fileName) {
-            // 1. Cerrar telón
+            // Cerrar telón antes de cambiar
             stage.classList.remove('open');
             
             setTimeout(() => {
-                // 2. Cambiar vídeo
                 video.src = fileName;
                 video.load();
                 
-                // 3. Abrir telón al empezar a reproducir
                 video.oncanplay = () => {
-                    stage.classList.add('open');
+                    stage.classList.add('open'); // Abrir cuando esté listo
                     video.play();
                 };
             }, 1000);
         }
 
         video.onended = () => {
-            stage.classList.remove('open'); // Cerrar telón al terminar
+            stage.classList.remove('open'); // Cerrar automáticamente al terminar
         };
-
-        // Lógica Carrusel (Making Off)
-        const track = document.getElementById('track');
-        let index = 0;
-
-        function updateCarousel() {
-            const size = track.clientWidth;
-            track.style.transform = `translateX(${-index * size}px)`;
-        }
-
-        function nextSlide() {
-            index = (index + 1) % 2; // Ajustar según número de fotos
-            updateCarousel();
-        }
-
-        function prevSlide() {
-            index = (index - 1 + 2) % 2;
-            updateCarousel();
-        }
-
-        window.addEventListener('resize', updateCarousel);
     </script>
 </body>
 </html>

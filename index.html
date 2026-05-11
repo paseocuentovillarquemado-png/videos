@@ -4,112 +4,443 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un paseo de Cuento - Villarquemado</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --crema: #fdfaf0;
-            --lavanda: #9b89b3;
-            --amarillo: #ffdb58;
-            --texto: #4a3f35;
-            --sombra: rgba(0, 0, 0, 0.15);
+            --noche-magica: #130924;
+            --purpura-mistico: #3a1542;
+            --oro-teatro: #d4af37;
+            --oro-brillo: #ffe55c;
+            --rojo-telon: #6e0000;
+            --rojo-vivo: #a80000;
+            --texto-claro: #fdfaf0;
+            --sombra-magica: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
-        /* Estética General: Papel y Tiza */
-        body {
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Fondo Dinámico: Noche Mágica */
+        body {
             font-family: 'Fredoka', sans-serif;
-            background-color: var(--crema);
-            background-image: url('https://www.transparenttextures.com/patterns/felt.png');
-            color: var(--texto);
+            background: linear-gradient(-45deg, var(--noche-magica), var(--purpura-mistico), #162242, var(--noche-magica));
+            background-size: 400% 400%;
+            animation: cieloMagico 15s ease infinite;
+            color: var(--texto-claro);
             overflow-x: hidden;
+            position: relative;
         }
 
-        h1, h2, h3 { color: var(--lavanda); font-weight: 600; text-align: center; }
+        @keyframes cieloMagico {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-        /* Divisores de Nubes */
-        .cloud-divider {
+        /* Estrellas de fondo */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 100px;
-            background: white;
-            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            mask-size: cover;
-            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' d='M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-            -webkit-mask-size: cover;
-            transform: translateY(-2px);
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        /* Botones Estilo Pop-up */
-        .btn-popup {
-            background: var(--amarillo);
-            border: 3px solid #f2c100;
-            padding: 15px 30px;
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Efecto de Luciérnagas / Polvo de Hadas */
+        .firefly {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--oro-brillo);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--oro-brillo), 0 0 20px var(--oro-brillo);
+            animation: floatup 10s linear infinite, blink 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes floatup {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: scale(1); }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(0); opacity: 0; }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1, h2, h3 { 
+            font-family: 'Cinzel', serif;
+            color: var(--oro-teatro); 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Divisores Mágicos Mejorados */
+        .magic-divider {
+            width: 100%;
+            height: 60px;
+            position: relative;
+            margin: 60px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .magic-divider::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--oro-teatro), transparent);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .magic-divider::after {
+            content: '✦';
+            font-size: 2rem;
+            color: var(--oro-brillo);
+            background: var(--noche-magica);
+            padding: 0 20px;
+            z-index: 1;
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; box-shadow: 0 0 20px var(--oro-teatro); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Botones Principales Mejorados */
+        .btn-magic {
+            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro));
+            color: #222;
+            border: 3px solid #fff;
+            padding: 18px 45px;
             border-radius: 50px;
+            font-size: 1.2rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 6px 0 #d4a017;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
+            box-shadow: var(--sombra-magica), 0 5px 15px rgba(0,0,0,0.4);
+            transition: all 0.4s ease;
             text-decoration: none;
-            color: var(--texto);
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
         }
 
-        .btn-popup:hover {
+        .btn-magic::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-magic:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-magic:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 0 #d4a017;
+            box-shadow: 0 10px 30px rgba(255, 229, 92, 0.8), 0 0 50px rgba(255, 229, 92, 0.4);
+            border-color: var(--oro-brillo);
         }
 
-        .btn-popup:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #d4a017;
-        }
-
-        /* 1. Header */
+        /* 1. Header Mejorado */
         header {
-            height: 80vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             padding: 20px;
+            position: relative;
+            z-index: 10;
         }
 
         .title-pop {
-            font-size: clamp(3rem, 10vw, 5rem);
+            font-size: clamp(3rem, 10vw, 7rem);
             margin: 0;
-            filter: drop-shadow(4px 4px 0px white);
-            animation: float 4s ease-in-out infinite;
+            color: #fff;
+            text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--oro-teatro), 0 0 60px var(--purpura-mistico);
+            animation: latidoMagico 3s ease-in-out infinite;
+            letter-spacing: 5px;
+            position: relative;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        .title-pop::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            text-shadow: 0 0 30px var(--oro-brillo);
+            animation: glitch 5s infinite;
         }
 
-        /* 2. Mapa */
-        .map-section { padding: 50px 20px; text-align: center; background: white; }
-        .map-container {
-            max-width: 800px;
+        @keyframes latidoMagico {
+            0%, 100% { 
+                text-shadow: 0 0 20px var(--oro-teatro), 0 0 40px var(--oro-teatro), 0 0 60px var(--purpura-mistico);
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 30px var(--oro-brillo), 0 0 60px var(--oro-teatro), 0 0 90px var(--oro-brillo);
+                transform: scale(1.02);
+            }
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            margin: 20px 0 40px;
+            color: var(--oro-brillo);
+            font-family: 'Cinzel', serif;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::before {
+            content: '↓';
+            font-size: 2rem;
+            color: var(--oro-brillo);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* 2. Teatro y Cartelera Mejorados */
+        .theater-section {
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
             margin: 0 auto;
-            border: 10px solid white;
-            box-shadow: 0 10px 30px var(--sombra);
-            transform: rotate(-1deg);
-            border-radius: 5px;
         }
-        .map-container img { width: 100%; border-radius: 2px; display: block; }
 
-        /* 3. El Teatro de los Cuentos */
-        .theater-section { background: var(--crema); padding: 80px 0; text-align: center; }
+        .section-intro {
+            max-width: 700px;
+            margin: 0 auto 50px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        /* Cartelera de Programación Mejorada */
+        .marquee-board {
+            background: linear-gradient(135deg, #0a0a0a, #1a0a1a);
+            border: 10px solid var(--oro-teatro);
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            margin: 0 auto 0;
+            box-shadow: inset 0 0 30px #000, 0 0 40px rgba(212, 175, 55, 0.6);
+            position: relative;
+        }
+
+        .marquee-board::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border: 4px dotted var(--oro-brillo);
+            border-radius: 25px 25px 0 0;
+            pointer-events: none;
+            animation: parpadeoLuces 1.5s infinite alternate;
+        }
+
+        @keyframes parpadeoLuces {
+            from { opacity: 0.3; filter: blur(1px); }
+            to { opacity: 1; filter: blur(0); }
+        }
+
+        .marquee-title {
+            color: var(--oro-brillo);
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border-bottom: 3px solid var(--oro-teatro);
+            display: inline-block;
+            padding-bottom: 10px;
+            position: relative;
+        }
+
+        .marquee-title::before,
+        .marquee-title::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--oro-brillo);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .marquee-title::before { left: -40px; }
+        .marquee-title::after { right: -40px; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .video-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .video-selector::-webkit-scrollbar { width: 10px; }
+        .video-selector::-webkit-scrollbar-track { 
+            background: #1a0a1a; 
+            border-radius: 5px; 
+            border: 1px solid #333;
+        }
+        .video-selector::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, var(--oro-brillo), var(--oro-teatro)); 
+            border-radius: 5px;
+            border: 1px solid var(--oro-teatro);
+        }
+
+        .selector-item {
+            background: linear-gradient(135deg, #1a1a1a, #2a1a2a);
+            color: #ddd;
+            padding: 15px 10px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .selector-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 229, 92, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .selector-item:hover::before {
+            left: 100%;
+        }
+
+        .selector-item:hover {
+            background: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo));
+            color: #000;
+            border-color: var(--oro-brillo);
+            box-shadow: 0 5px 25px rgba(255, 229, 92, 0.5);
+            transform: scale(1.08) translateY(-3px);
+        }
+
+        .selector-item.active {
+            background: linear-gradient(135deg, var(--oro-brillo), var(--oro-teatro));
+            color: #000;
+            border-color: #fff;
+            box-shadow: 0 0 30px var(--oro-brillo), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Escenario Mejorado */
         .stage-container {
             position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            background: #1a1a1a;
-            border: 15px solid #4a3f35;
+            background: #000;
+            border: 25px solid;
+            border-image: linear-gradient(135deg, var(--oro-teatro), var(--oro-brillo), var(--oro-teatro)) 1;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
             aspect-ratio: 16 / 9;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9), 0 0 50px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Luz de foco en el escenario */
+        .stage-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(255, 229, 92, 0.1) 0%, transparent 50%);
+            transform: translateX(-50%);
+            pointer-events: none;
+            z-index: 5;
+            animation: spotlight 5s ease-in-out infinite;
+        }
+
+        @keyframes spotlight {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
         }
 
         .curtain {
@@ -117,189 +448,549 @@
             top: 0;
             width: 50%;
             height: 100%;
-            background: #8b0000;
+            background: linear-gradient(to right, 
+                var(--rojo-telon) 0%, 
+                var(--rojo-vivo) 10%, 
+                var(--rojo-telon) 20%, 
+                var(--rojo-vivo) 30%, 
+                var(--rojo-telon) 40%, 
+                var(--rojo-vivo) 50%, 
+                var(--rojo-telon) 60%, 
+                var(--rojo-vivo) 70%, 
+                var(--rojo-telon) 80%, 
+                var(--rojo-vivo) 90%, 
+                var(--rojo-telon) 100%);
             z-index: 10;
-            transition: transform 1.5s ease-in-out;
-            background-image: repeating-linear-gradient(90deg, #8b0000 0px, #a00 20px, #8b0000 40px);
+            transition: transform 2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
         }
-        .curtain-left { left: 0; border-right: 2px solid #500; }
-        .curtain-right { right: 0; border-left: 2px solid #500; }
-
-        .stage-container.open .curtain-left { transform: translateX(-100%); }
-        .stage-container.open .curtain-right { transform: translateX(100%); }
-
-        #main-video { width: 100%; height: 100%; object-fit: cover; }
-
-        .video-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 15px;
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
+        
+        .curtain-left { 
+            left: 0; 
+            border-right: 8px solid rgba(0,0,0,0.6); 
+            transform-origin: left top;
+        }
+        
+        .curtain-right { 
+            right: 0; 
+            border-left: 8px solid rgba(0,0,0,0.6); 
+            transform-origin: right top;
         }
 
-        .selector-item {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 var(--lavanda);
-            font-size: 0.9rem;
-            transition: 0.2s;
-            font-weight: 600;
+        /* Textura de terciopelo */
+        .curtain::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.1) 2px,
+                rgba(0,0,0,0.1) 4px
+            );
         }
-        .selector-item:hover { transform: scale(1.05) rotate(2deg); background: var(--lavanda); color: white; }
 
-        /* 4. Info General */
+        .stage-container.open .curtain-left { 
+            transform: translateX(-105%) rotateY(10deg); 
+        }
+        
+        .stage-container.open .curtain-right { 
+            transform: translateX(105%) rotateY(-10deg); 
+        }
+
+        #main-video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        /* 3. Info General Mejorada */
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 40px;
-            padding: 60px 10%;
-        }
-        .info-card {
-            background: rgba(255,255,255,0.8);
-            padding: 30px;
-            border-radius: 20px;
-            border-left: 8px solid var(--amarillo);
-            box-shadow: 5px 5px 15px var(--sombra);
-        }
-        .special-poster { border: 2px dashed var(--lavanda); padding: 20px; margin-top: 15px; background: #fff; }
-
-        /* 5. Bitácora / WordPress Iframe */
-        .bitacora-section {
-            padding: 80px 20px;
-            background: var(--lavanda);
-            color: white;
-        }
-        .iframe-wrapper {
-            max-width: 1000px;
+            padding: 80px 5%;
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            padding: 10px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border: 8px solid var(--amarillo);
+        }
+        
+        .info-card {
+            background: linear-gradient(135deg, rgba(20, 10, 30, 0.9), rgba(30, 15, 40, 0.85));
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid var(--oro-teatro);
+            box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.15), 
+                        0 15px 40px rgba(0,0,0,0.6),
+                        0 0 50px rgba(212, 175, 55, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
             overflow: hidden;
         }
-        iframe { width: 100%; height: 600px; border: none; border-radius: 15px; display: block; }
 
-        footer { text-align: center; padding: 40px; background: white; font-size: 0.9rem; }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 229, 92, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .info-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-card:hover { 
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--oro-brillo);
+            box-shadow: inset 0 0 40px rgba(255, 229, 92, 0.2), 
+                        0 20px 50px rgba(0,0,0,0.7),
+                        0 0 60px rgba(255, 229, 92, 0.4);
+        }
+
+        .info-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--oro-brillo);
+        }
+
+        .info-card ul { 
+            padding-left: 25px; 
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+        
+        .special-poster {
+            border: 3px dashed var(--oro-brillo);
+            padding: 20px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 229, 92, 0.1));
+            border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        /* 4. Mapa Mejorado */
+        .map-section {
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .map-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 50px;
+        }
+
+        .map-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 12px solid var(--oro-teatro);
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(20,10,30,0.6));
+            border-radius: 15px;
+            box-shadow: var(--sombra-magica), 0 20px 50px rgba(0,0,0,0.7);
+            transform: perspective(1000px) rotateY(-2deg);
+            transition: all 0.5s ease;
+        }
+
+        .map-container:hover { 
+            transform: perspective(1000px) rotateY(0deg) scale(1.02);
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.6), 0 25px 60px rgba(0,0,0,0.8);
+        }
+
+        .map-container img { 
+            width: 100%; 
+            border-radius: 8px; 
+            display: block;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* 5. Making Off Mejorado */
+        .making-off {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+            border-top: 3px solid var(--oro-teatro);
+            position: relative;
+            z-index: 10;
+        }
+
+        .making-off h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 30px;
+        }
+
+        .making-off > p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border: 6px solid var(--oro-teatro);
+            border-radius: 15px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 60px rgba(212, 175, 55, 0.3);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img { 
+            width: 100%; 
+            display: block;
+            filter: brightness(0.9);
+            transition: filter 0.3s;
+        }
+
+        .carousel:hover .carousel-slide img {
+            filter: brightness(1);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.95));
+            width: 100%;
+            padding: 40px 20px 20px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--oro-brillo);
+            box-sizing: border-box;
+        }
+
+        .carousel-controls {
+            text-align: center;
+            margin-top: 40px;
+            gap: 25px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.5);
+            border-top: 2px solid var(--oro-teatro);
+            margin-top: 60px;
+        }
+
+        footer p {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title-pop { font-size: 3rem; }
+            .subtitle { font-size: 1.2rem; }
+            
+            .video-selector {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                max-height: 250px;
+            }
+            
+            .selector-item {
+                padding: 12px 8px;
+                font-size: 0.8rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+            }
+            
+            .btn-magic {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+
+            .marquee-title::before,
+            .marquee-title::after {
+                display: none;
+            }
+        }
+
+        /* Animación de entrada para las cards */
+        .info-card {
+            opacity: 0;
+            animation: fadeInScale 0.6s ease forwards;
+        }
+
+        .info-card:nth-child(1) { animation-delay: 0.1s; }
+        .info-card:nth-child(2) { animation-delay: 0.2s; }
+        .info-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
 
     </style>
 </head>
 <body>
 
+    <!-- Estrellas -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Generador de Luciérnagas -->
+    <script>
+        // Generar estrellas
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = (Math.random() * 3 + 1) + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Generar luciérnagas
+        for (let i = 0; i < 50; i++) {
+            let firefly = document.createElement('div');
+            firefly.className = 'firefly';
+            firefly.style.left = Math.random() * 100 + 'vw';
+            firefly.style.animationDelay = Math.random() * 10 + 's';
+            firefly.style.animationDuration = (8 + Math.random() * 5) + 's';
+            document.body.appendChild(firefly);
+        }
+    </script>
+
+    <!-- 1. Header Hero -->
     <header>
-        <h1 class="title-pop">Un paseo de Cuento</h1>
-        <p style="font-size: 1.5rem;">Magia y aprendizaje en Villarquemado (Teruel)</p>
-        <a href="#video-visor" class="btn-popup">¡Comenzar la función!</a>
+        <h1 class="title-pop" data-text="Un paseo de Cuento">Un paseo de Cuento</h1>
+        <p class="subtitle">
+            Magia y aprendizaje en Villarquemado (Teruel)
+        </p>
+        <a href="#teatro" class="btn-magic">¡Descubre el Reino!</a>
+        <div class="scroll-indicator"></div>
     </header>
 
-    <div class="cloud-divider"></div>
+    <div class="magic-divider"></div>
 
+    <!-- 2. Teatro y Cartelera -->
+    <section id="teatro" class="theater-section">
+        <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px;">El Gran Teatro de Cuentos</h2>
+        <p class="section-intro">
+            Bienvenidos al corazón mágico del parque. Selecciona tu obra favorita y disfruta de los cuentos que han maravillado a generaciones enteras.
+        </p>
+        
+        <!-- Cartelera -->
+        <div class="marquee-board">
+            <div class="marquee-title">Cartelera de Obras</div>
+            <div class="video-selector">
+                <div class="selector-item" onclick="playVideo('cenicienta.mp4', this)">La Cenicienta</div>
+                <div class="selector-item" onclick="playVideo('pozo.mp4', this)">El Pozo Mágico</div>
+                <div class="selector-item" onclick="playVideo('cerdito.mp4', this)">Los Tres Cerditos</div>
+                <div class="selector-item" onclick="playVideo('caperucita.mp4', this)">Caperucita</div>
+                <div class="selector-item" onclick="playVideo('enano.mp4', this)">Los Enanitos</div>
+                <div class="selector-item" onclick="playVideo('buho.mp4', this)">El Búho Sabio</div>
+                <div class="selector-item" onclick="playVideo('pinocho.mp4', this)">Pinocho</div>
+                <div class="selector-item" onclick="playVideo('ricitos.mp4', this)">Ricitos de Oro</div>
+                <div class="selector-item" onclick="playVideo('conejo.mp4', this)">Conejo Blanco</div>
+                <div class="selector-item" onclick="playVideo('ratita.mp4', this)">Ratita Presumida</div>
+                <div class="selector-item" onclick="playVideo('peterpan.mp4', this)">Peter Pan</div>
+                <div class="selector-item" onclick="playVideo('ratoncito.mp4', this)">Ratoncito Pérez</div>
+                <div class="selector-item" onclick="playVideo('patitofeo.mp4', this)">El Patito Feo</div>
+                <div class="selector-item" onclick="playVideo('hanselgretel.mp4', this)">Hansel y Gretel</div>
+                <div class="selector-item" onclick="playVideo('oz.mp4', this)">Mago de Oz</div>
+                <div class="selector-item" onclick="playVideo('peon.mp4', this)">El Peón Loco</div>
+                <div class="selector-item" onclick="playVideo('hada.mp4', this)">El Hada Madrina</div>
+                <div class="selector-item" onclick="playVideo('rapunzel.mp4', this)">Rapunzel</div>
+            </div>
+        </div>
+
+        <!-- Escenario -->
+        <div class="stage-container" id="stage">
+            <div class="curtain curtain-left"></div>
+            <div class="curtain curtain-right"></div>
+            <video id="main-video" poster="thumbnail-cuentos.jpg">
+                Tu navegador no soporta vídeos.
+            </video>
+        </div>
+
+    </section>
+
+    <div class="magic-divider"></div>
+
+    <!-- 3. Información Práctica -->
+    <section class="info-grid">
+        <div class="info-card">
+            <h3>⏳ Horarios y Apertura</h3>
+            <p><strong>Horario Habitual:</strong><br>Fines de semana y festivos de 11:00 a 13:00.</p>
+            <div class="special-poster">
+                <p style="margin:0; color: var(--oro-brillo); font-weight: 600;">✨ Aviso Mágico</p>
+                <p style="margin:10px 0 0; font-size: 0.95rem;">Próxima apertura especial: sin información por el momento. ¡Consulta aquí nuestro cartel!</p>
+            </div>
+        </div>
+        <div class="info-card">
+            <h3>🎟️ Tarifas Reales</h3>
+            <ul style="list-style-type: '👑 ';">
+                <li>Entrada General Adultos: <strong>5€</strong></li>
+                <li>Entrada Niños (3 a 14 años): <strong>2€</strong></li>
+                <li>Menores de 3 años: <strong>Gratis</strong></li>
+                <li>Grupos escolares: Consultar al gremio</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>📜 Leyes del Reino</h3>
+            <p style="line-height: 1.8; font-size: 1.05rem;">Respetar las construcciones temáticas, no subir a elementos no permitidos y mantener el entorno limpio para que la magia no desaparezca.</p>
+        </div>
+    </section>
+
+    <div class="magic-divider"></div>
+
+    <!-- 4. Mapa de Ubicación -->
     <section class="map-section">
-        <h2>¿Mapa del parque?</h2>
+        <h2>¿Cómo llegar a nuestro Reino?</h2>
         <div class="map-container">
             <img src="mapa.png" alt="Ubicación del parque Un paseo de Cuento">
         </div>
     </section>
 
-    <section id="video-visor" class="theater-section">
-        <h2>Habitantes del Parque</h2>
-        <div class="stage-container" id="stage">
-            <div class="curtain curtain-left"></div>
-            <div class="curtain curtain-right"></div>
-            <video id="main-video">
-                Tu navegador no soporta vídeos.
-            </video>
-        </div>
+    <div class="magic-divider"></div>
 
-        <div class="video-selector">
-            <div class="selector-item" onclick="playVideo('cenicienta.mp4')">La Cenicienta</div>
-            <div class="selector-item" onclick="playVideo('pozo.mp4')">El Pozo Mágico</div>
-            <div class="selector-item" onclick="playVideo('cerdito.mp4')">Los Tres Cerditos</div>
-            <div class="selector-item" onclick="playVideo('caperucita.mp4')">Caperucita</div>
-            <div class="selector-item" onclick="playVideo('enano.mp4')">Los Enanitos</div>
-            <div class="selector-item" onclick="playVideo('buho.mp4')">El Búho Sabio</div>
-            <div class="selector-item" onclick="playVideo('pinocho.mp4')">Pinocho</div>
-            <div class="selector-item" onclick="playVideo('ricitos.mp4')">Ricitos de Oro</div>
-            <div class="selector-item" onclick="playVideo('conejo.mp4')">El Conejo Blanco</div>
-            <div class="selector-item" onclick="playVideo('ratita.mp4')">La Ratita Presumida</div>
-            <div class="selector-item" onclick="playVideo('peterpan.mp4')">Peter Pan</div>
-            <div class="selector-item" onclick="playVideo('ratoncito.mp4')">Ratoncito Pérez</div>
-            <div class="selector-item" onclick="playVideo('patitofeo.mp4')">El Patito Feo</div>
-            <div class="selector-item" onclick="playVideo('hanselgretel.mp4')">Hansel y Gretel</div>
-            <div class="selector-item" onclick="playVideo('oz.mp4')">Mago de Oz</div>
-            <div class="selector-item" onclick="playVideo('peon.mp4')">El Peón Loco</div>
-            <div class="selector-item" onclick="playVideo('hada.mp4')">El Hada Madrina</div>
-            <div class="selector-item" onclick="playVideo('rapunzel.mp4')">Rapunzel</div>
-        </div>
-    </section>
-
-    <section class="info-grid">
-        <div class="info-card">
-            <h3>Horarios y Apertura</h3>
-            <p><strong>Habitual:</strong> Fines de semana y festivos de 11:00 a 13:00.</p>
-            <div class="special-poster">
-                <p>⚠️ <strong>AVISO:</strong></p>
-                <p>Consulta nuestras redes sociales para aperturas extraordinarias durante el verano.</p>
+    <!-- 5. Making Off -->
+    <section class="making-off">
+        <h2 style="text-align: center;">El Hechizo de Creación</h2>
+        <p style="text-align: center; max-width: 750px; margin: 0 auto 50px; color: #ddd;">
+            Este parque es fruto de programas experienciales de empleo y formación. Ha sido construido con ilusión por alumnos y alumnas en formación que han dejado su huella en cada rincón mágico.
+        </p>
+        
+        <div class="carousel">
+            <div class="carousel-track" id="track">
+                <div class="carousel-slide">
+                    <img src="making1.jpg" alt="Construcción inicial">
+                    <div class="caption">Fase de cimentación y diseño de estructuras mágicas</div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="making2.jpg" alt="Pintado artístico">
+                    <div class="caption">Nuestros alumnos aplicando el acabado artístico y los detalles finales</div>
+                </div>
             </div>
         </div>
-        <div class="info-card">
-            <h3>Tarifas</h3>
-            <ul>
-                <li>Entrada General Adultos: 5€</li>
-                <li>Niños (3 a 14 años): 2€</li>
-                <li>Menores de 3 años: Gratis</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h3>Normas</h3>
-            <p>Ayúdanos a mantener la magia: cuida las figuras y utiliza las papeleras. El entorno es de todos.</p>
-        </div>
-    </section>
-
-    <section class="bitacora-section">
-        <h2 style="color: white; margin-bottom: 10px;">Nuestra Bitácora de Cuento</h2>
-        <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">Explora el proceso de creación y las últimas novedades directamente desde nuestro diario oficial.</p>
         
-        <div class="iframe-wrapper">
-            <iframe src="https://unpaseodecuentovillarquemado.wordpress.com/" title="Un paseo de cuento"></iframe>
-        </div>
-
-        <div style="text-align: center; margin-top: 30px;">
-            <a href="https://unpaseodecuentovillarquemado.wordpress.com/" target="_blank" class="btn-popup">Abrir en ventana completa</a>
+        <div class="carousel-controls">
+            <button class="btn-magic" onclick="prevSlide()" style="padding: 12px 35px; font-size: 1rem;">◄ Anterior</button>
+            <button class="btn-magic" onclick="nextSlide()" style="padding: 12px 35px; font-size: 1rem;">Siguiente ►</button>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer>
-        <p>Villarquemado, Teruel. Un proyecto de formación y empleo.</p>
+        <p>© 2024 Un paseo de Cuento - Villarquemado, Teruel | Donde los sueños cobran vida ✨</p>
     </footer>
 
     <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Lógica del Teatro (Vídeos)
         const stage = document.getElementById('stage');
         const video = document.getElementById('main-video');
+        const selectorItems = document.querySelectorAll('.selector-item');
 
-        function playVideo(fileName) {
-            // Cerrar telón antes de cambiar
+        function playVideo(fileName, element) {
+            // Quitar clase activa a todos y ponerla al clickeado
+            selectorItems.forEach(item => item.classList.remove('active'));
+            if(element) element.classList.add('active');
+
+            // 1. Cerrar telón
             stage.classList.remove('open');
             
             setTimeout(() => {
+                // 2. Cambiar vídeo
                 video.src = fileName;
                 video.load();
                 
+                // 3. Abrir telón al empezar a reproducir
                 video.oncanplay = () => {
-                    stage.classList.add('open'); // Abrir cuando esté listo
-                    video.play();
+                    stage.classList.add('open');
+                    video.play().catch(e => console.log("Autoplay bloqueado por el navegador"));
                 };
-            }, 1000);
+            }, 2000);
         }
 
         video.onended = () => {
-            stage.classList.remove('open'); // Cerrar automáticamente al terminar
+            stage.classList.remove('open');
+            selectorItems.forEach(item => item.classList.remove('active'));
         };
+
+        // Lógica Carrusel (Making Off)
+        const track = document.getElementById('track');
+        let index = 0;
+
+        function updateCarousel() {
+            const size = track.querySelector('.carousel-slide').clientWidth;
+            track.style.transform = `translateX(${-index * size}px)`;
+        }
+
+        function nextSlide() {
+            const totalSlides = document.querySelectorAll('.carousel-slide').length;
+            index = (index + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            const totalSlides = document.querySelectorAll('.carousel-slide').length;
+            index = (index - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        window.addEventListener('resize', updateCarousel);
+
+        // Parallax suave en scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const fireflies = document.querySelectorAll('.firefly');
+            fireflies.forEach(firefly => {
+                firefly.style.transform = `translateY(${scrolled * 0.3}px)`;
+            });
+        });
     </script>
 </body>
 </html>
